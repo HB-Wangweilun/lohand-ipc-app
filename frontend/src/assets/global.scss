@@ -1,0 +1,108 @@
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+
+.dialogc {
+  border-radius: 8px !important;
+  padding: 20px 0px 20px 0px !important;
+  background: linear-gradient(to bottom, #2897db, #4e61cc) !important;
+  color: white !important;
+
+
+  .el-dialog__header {
+    text-align: center;
+    // margin-left: 24px;
+
+    line-height: 0px;
+    border-bottom: 3px solid #93bdf5;
+
+    .el-dialog__title {
+      // font-family: SYHT-Bold;
+      // font-size: 20px;
+      // letter-spacing: 2px;
+      // color: white !important;
+    }
+
+    .el-dialog__headerbtn {
+      display: none;
+    }
+  }
+
+  .dialogc_header_box {
+    padding: 10px 0px;
+
+    .title {
+      margin-left: 41px;
+      font-family: SYHT-Bold;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: white !important;
+    }
+
+    .close_icon {}
+  }
+
+  .el-dialog__body {
+    padding-left: 26px;
+    padding-right: 26px;
+  }
+
+  .el-dialog__footer {
+    padding-left: 26px;
+    padding-right: 26px;
+
+    .dialog-footer {
+
+      .el-button {
+        transition: 0.2s;
+        width: 48.6%;
+        height: 42px;
+        text-align: center;
+
+        span {
+          color: rgb(97, 96, 96) !important;
+          font-family: 'SYHT-Bold';
+          font-size: 17px;
+          letter-spacing: 14px;
+          // position: relative;
+          margin-left: 20px;
+          // border: 1px solid red;
+        }
+      }
+
+      .el-button:active {
+        transform: scale(0.8);
+      }
+
+      .el-button--primary {
+        background: linear-gradient(180deg, rgb(23, 170, 238) 0%, rgba(15, 104, 251, 1) 100%);
+        border: none;
+
+        span {
+          color: white !important;
+        }
+      }
+
+    }
+  }
+
+
+
+  /* 表单 */
+  .el-form {
+    .el-form-item {
+      margin-bottom: 25px;
+
+      .el-form-item__label-wrap {
+        .el-form-item__label {
+          color: white;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

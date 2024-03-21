@@ -1,0 +1,21 @@
+@import './assets/font/font.css';
+
+* {
+  user-select: none;
+}
+
+#app {
+  // background: linear-gradient(180deg, #302374 0%, #302374 100%);
+  // background: linear-gradient(180deg, rgba(37, 117, 252, 1) 0%, rgba(106, 17, 203, 1) 100%) !important;
+  color: transparent;
+  overflow: hidden;
+}
+
+// body {
+//   background: #ffffff !important;
+// }
+
+.v-screen-box {
+  background: linear-gradient(180deg, rgba(37, 117, 252, 1) 0%, rgba(106, 17, 203, 1) 100%) !important;
+  // background: linear-gradient(180deg, rgba(106, 17, 203, 1) 0%, rgba(37, 117, 252, 1) 100%) !important;
+}
