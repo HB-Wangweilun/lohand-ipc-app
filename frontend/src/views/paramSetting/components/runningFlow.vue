@@ -1,18 +1,13 @@
 <template>
-  <div>
-    <audio id="myAudio">
-      <source src="./click_sound1.mp3" type="audio/mpeg" />
-    </audio>
-  </div>
+  <div class="running_flow_wrap">RunningFlow</div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "ClickAudio",
+  name: "RunningFlow",
 });
 </script>
-
 <script setup></script>
 
 <style lang="scss" scoped></style>
