@@ -54,6 +54,7 @@ export default defineComponent({
   width: 100%;
   height: 80%;
   overflow: hidden;
+  opacity: 0.6;
 }
 
 .circles li {

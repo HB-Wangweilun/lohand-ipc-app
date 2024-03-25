@@ -15,9 +15,19 @@
           class="return_home_icon"
           src="../../../assets/icon/icon-home.png"
         />
+
         <!-- <span class="text">返回首页</span> -->
       </div>
     </div>
+    <img
+      v-if="
+        globalVariableStore.envMode == 'development' &&
+        !globalVariableStore.isHome
+      "
+      class="reload_icon"
+      @click="reloadPage"
+      src="../../../assets/icon/reload.png"
+    />
     <!-- <div class="title_box">
       <span class="text">{{ globalVariableStore.navTitle }}</span>
     </div> -->
@@ -102,6 +112,11 @@ const userLoginInfo = ref({
   userPwd: "",
 });
 
+// 刷新页面的点击事件
+const reloadPage = () => {
+  location.reload();
+};
+
 // 是否显示用户登录弹窗的标识
 const isShowUserLoginDialog = ref(false);
 
@@ -154,6 +169,8 @@ onMounted(() => {
     userName: "",
     userPwd: "",
   };
+
+  console.log(globalVariableStore.envMode);
 });
 </script>
 
@@ -205,6 +222,14 @@ onMounted(() => {
         letter-spacing: 2px;
       }
     }
+  }
+
+  .reload_icon {
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    top: 12px;
+    left: 100px;
   }
 
   .right_box {

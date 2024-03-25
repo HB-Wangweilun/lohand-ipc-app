@@ -17,7 +17,9 @@ export default defineComponent({
   padding: 20px;
   height: 100%;
   border-radius: 10px;
-  backdrop-filter: blur(4px);
+  /* 性能消耗大，不建议使用 */
+  // backdrop-filter: blur(2px);
+  // transform: translateZ(0);
   background: rgba(255, 255, 255, 0.2);
 }
 </style>

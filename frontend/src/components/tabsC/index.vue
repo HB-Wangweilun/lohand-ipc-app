@@ -63,6 +63,7 @@ onMounted(() => {
   background-color: rgba(0, 0, 0, 0.4);
 
   .tab_item {
+    cursor: pointer;
     // transition: 0.3s;
     // border: 1px solid red;
     display: flex;
