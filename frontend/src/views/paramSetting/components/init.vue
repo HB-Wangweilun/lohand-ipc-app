@@ -54,7 +54,8 @@
     </div>
 
     <div class="action_box">
-      <el-button type="primary" @click="saveClick">保存</el-button>
+      <!-- <el-button type="primary" @click="saveClick">保存</el-button> -->
+      <SaveButton @save-click="saveClick">保存</SaveButton>
     </div>
   </div>
 </template>
@@ -67,11 +68,12 @@ export default defineComponent({
 </script>
 <script setup>
 import TitleC from "../../../components/global/titleC.vue";
+import SaveButton from "../../../components/global/saveButton.vue";
 import { playClickSound } from "../../../utils/other.js";
 
 // 保存点击事件
 const saveClick = () => {
-  playClickSound();
+  // playClickSound();
 };
 
 // 清洗水入口选择点击事件
@@ -159,14 +161,14 @@ onMounted(() => {});
   height: 100%;
   position: relative;
   .cleaning_water_entrance_box {
-    margin-bottom: 36px;
+    margin-bottom: 70px;
     .cleaning_water_entrance_group {
       padding: 4px 24px;
     }
   }
 
   .sampling_pump_job_mode_box {
-    margin-bottom: 36px;
+    margin-bottom: 70px;
     .sampling_pump_job_mode_group {
       padding: 4px 24px;
     }
@@ -241,25 +243,25 @@ onMounted(() => {});
   top: -1px;
 }
 
-::v-deep .el-button--primary {
-  background: linear-gradient(
-    180deg,
-    rgb(23, 170, 238) 0%,
-    rgba(15, 104, 251, 1) 100%
-  );
-  border: none;
-  box-shadow:
-    1px 1px 2px #7056e2,
-    -1px -1px 2px #7056e2;
-  font-family: "SYHT-Bold";
-  font-size: 22px;
-  padding: 26px 50px 26px 68px;
-  letter-spacing: 14px;
-  span {
-    color: white !important;
-  }
-}
-::v-deep .el-button--primary:active {
-  transform: scale(0.9);
-}
+// ::v-deep .el-button--primary {
+//   background: linear-gradient(
+//     180deg,
+//     rgb(23, 170, 238) 0%,
+//     rgba(15, 104, 251, 1) 100%
+//   );
+//   border: none;
+//   box-shadow:
+//     1px 1px 2px #7056e2,
+//     -1px -1px 2px #7056e2;
+//   font-family: "SYHT-Bold";
+//   font-size: 22px;
+//   padding: 26px 50px 26px 68px;
+//   letter-spacing: 14px;
+//   span {
+//     color: white !important;
+//   }
+// }
+// ::v-deep .el-button--primary:active {
+//   transform: scale(0.9);
+// }
 </style>

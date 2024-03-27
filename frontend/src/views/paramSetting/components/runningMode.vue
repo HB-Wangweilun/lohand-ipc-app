@@ -115,7 +115,7 @@
               ;&nbsp;
             </span>
             <span
-              >起始时间：
+              >间隔时间：
               <el-tag type="primary" class="period_tag"
                 >{{ periodModeSelectData.intervalTime }}小时
               </el-tag>
@@ -128,7 +128,8 @@
     </div>
 
     <div class="action_box" v-if="currentMode !== '触发模式'">
-      <el-button type="primary" @click="saveClick">保存</el-button>
+      <!-- <el-button type="primary" @click="saveClick">保存</el-button> -->
+      <SaveButton @save-click="saveClick">保存</SaveButton>
     </div>
   </div>
 </template>
@@ -141,6 +142,7 @@ export default defineComponent({
 </script>
 <script setup>
 import TitleC from "../../../components/global/titleC.vue";
+import SaveButton from "../../../components/global/saveButton.vue";
 import { playClickSound } from "../../../utils/other.js";
 
 // 周期模式起始时间的Select点击事件
@@ -165,6 +167,15 @@ const periodIntervalTimeOptionClick = () => {
 
 // 定时模式保存事件
 const timingModeSave = () => {
+  // 更新定时模式已选中的时间
+  let nTimingModeTimes = [];
+  timingModeSelectListData.value.forEach((itemT) => {
+    if (itemT.isActive) {
+      nTimingModeTimes.push(itemT.value);
+    }
+  });
+  timingModeTimes.value = nTimingModeTimes;
+  console.log(timingModeTimes.value);
   // 拼接时间
   let timeJoinStr = timingModeTimes.value.join(";");
 };
@@ -176,7 +187,7 @@ const periodModeSave = () => {
 
 // 保存的点击事件
 const saveClick = () => {
-  playClickSound();
+  // playClickSound();
   // 根据不同的模式，触发不同的保存事件
   switch (currentMode.value) {
     case "定时模式":
@@ -253,16 +264,6 @@ const timeSelectItemClick = (index) => {
 
   // 更新响应式数据
   timingModeSelectListData.value = nTimingModeSelectListData;
-
-  // 更新定时模式已选中的时间
-  let nTimingModeTimes = [];
-  timingModeSelectListData.value.forEach((itemT) => {
-    if (itemT.isActive) {
-      nTimingModeTimes.push(itemT.value);
-    }
-  });
-  timingModeTimes.value = nTimingModeTimes;
-  console.log(timingModeTimes.value);
 };
 
 // 模式选择列表数据
@@ -781,27 +782,27 @@ const currentStatus = ref(false);
 }
 
 /* save button */
-::v-deep .el-button--primary {
-  background: linear-gradient(
-    180deg,
-    rgb(23, 170, 238) 0%,
-    rgba(15, 104, 251, 1) 100%
-  );
-  border: none;
-  box-shadow:
-    1px 1px 2px #7056e2,
-    -1px -1px 2px #7056e2;
-  font-family: "SYHT-Bold";
-  font-size: 22px;
-  padding: 26px 50px 26px 68px;
-  letter-spacing: 14px;
-  span {
-    color: white !important;
-  }
-}
-::v-deep .el-button--primary:active {
-  transform: scale(0.9);
-}
+// ::v-deep .el-button--primary {
+//   background: linear-gradient(
+//     180deg,
+//     rgb(23, 170, 238) 0%,
+//     rgba(15, 104, 251, 1) 100%
+//   );
+//   border: none;
+//   box-shadow:
+//     1px 1px 2px #7056e2,
+//     -1px -1px 2px #7056e2;
+//   font-family: "SYHT-Bold";
+//   font-size: 22px;
+//   padding: 26px 50px 26px 68px;
+//   letter-spacing: 14px;
+//   span {
+//     color: white !important;
+//   }
+// }
+// ::v-deep .el-button--primary:active {
+//   transform: scale(0.9);
+// }
 
 /* Radio */
 ::v-deep .mode_select_box_group {

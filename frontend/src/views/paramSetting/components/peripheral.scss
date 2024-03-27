@@ -1,0 +1,413 @@
+.peripheral_wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  /* tabs */
+  .flow_tabs_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 660px;
+    height: 50px;
+    // border: 1px solid red;
+
+    .flow_tab_item {
+      position: relative;
+      display: flex;
+      width: 220px;
+      height: 100%;
+      // border: 1px solid red;
+      // padding: 10px 16px 16px 16px;
+      line-height: 22px;
+      transition: 2s;
+      text-align: center;
+      // border-right: 1px solid rgba(255, 255, 255, 0.5);
+
+      .content {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+
+        .tab_item_img {
+          width: 28px;
+          height: 28px;
+          margin-right: 10px;
+          position: relative;
+          top: 5px;
+        }
+
+        .title {
+          font-size: 22px;
+          font-family: SYHT-Bold;
+          letter-spacing: 2px;
+        }
+      }
+    }
+
+    .is_active {
+      height: 100%;
+      // border: 1px solid red;
+    }
+
+    .is_active::after {
+      position: absolute;
+      content: "";
+      height: 3px;
+      width: 72%;
+      background-color: rgba(255, 255, 255, 0.8);
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: 2s;
+
+      // border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .is_show_right_border::before {
+      position: absolute;
+      top: 14%;
+      right: 0;
+      content: "";
+      height: 60%;
+      width: 2px;
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  /* 内容 */
+  .peripheral_content_box {
+    width: 100%;
+    height: 90%;
+    // border: 1px solid red;
+    margin-top: 20px;
+
+    /* 空调设置内容 */
+    .air_conditioner_content_box {
+      .air_info_show_box {
+        width: 1160px;
+        // border: 1px solid red;
+        padding: 30px 0px 40px 44px;
+        display: flex;
+        flex-direction: row;
+
+        .current_temp_box {
+          display: flex;
+          flex-direction: row;
+          width: 506px;
+          display: flex;
+          flex-direction: row;
+          // margin-bottom: 40px;
+          letter-spacing: 2px;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+          }
+
+          .label {
+            font-size: 20px;
+            margin-right: 12px;
+          }
+
+          .value {
+            font-size: 22px;
+            font-family: SYHT-Bold;
+            margin-right: 8px;
+            position: relative;
+            top: -2px;
+          }
+
+          .unit {
+            font-size: 20px;
+            position: relative;
+            // top: 2px;
+          }
+        }
+
+        .air_switch_box {
+          display: flex;
+          flex-direction: row;
+          letter-spacing: 2px;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+          }
+
+          .label {
+            font-size: 20px;
+            margin-right: 12px;
+          }
+        }
+      }
+
+      /* 温度展示 */
+      .temp_view_box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 1160px;
+        padding: 20px 0px 0px 44px;
+
+        .item {
+          width: 506px;
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 40px;
+          letter-spacing: 2px;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+          }
+
+          .label {
+            font-size: 20px;
+            margin-right: 12px;
+          }
+
+          .value {
+            font-size: 22px;
+            margin-right: 8px;
+            font-family: SYHT-Bold;
+          }
+
+          .unit {
+            font-size: 20px;
+            position: relative;
+            top: 2px;
+          }
+        }
+
+        .curren_temp_item {
+          position: relative;
+          top: 38px;
+        }
+      }
+
+      /* 温度修改 */
+      .update_temp_box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 1160px;
+        padding: 20px 0px 0px 44px;
+
+        .item {
+          width: 506px;
+          // border: 1px solid red;
+          display: flex;
+          flex-direction: row;
+          line-height: 30px;
+          margin-bottom: 40px;
+          letter-spacing: 2px;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+          }
+
+          .label {
+            font-size: 20px;
+            margin-right: 12px;
+          }
+
+          .unit {
+            font-size: 20px;
+            position: relative;
+            top: 2px;
+            margin-left: 12px;
+          }
+        }
+      }
+    }
+
+    /* UPS状态内容 */
+    .upsStatus_content_box {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 1200px;
+      padding: 20px 0px 0px 44px;
+
+      .upsStatus_item_box {
+        display: flex;
+        flex-direction: row;
+        // border: 1px solid red;
+        padding: 6px 0px 6px 0px;
+        width: 500px;
+        height: 50px;
+        line-height: 36px;
+        margin-bottom: 50px;
+
+        .icon {
+          width: 30px;
+          height: 30px;
+          margin-right: 8px;
+          position: relative;
+          top: 3px;
+        }
+
+        .label {
+          width: 220px;
+          font-size: 20px;
+          letter-spacing: 2px;
+        }
+
+        .value {
+          font-size: 22px;
+          font-family: SYHT-Bold;
+          letter-spacing: 2px;
+          margin-right: 12px;
+        }
+
+        .unit {
+          // border: 1px solid red;
+          font-size: 20px;
+          letter-spacing: 2px;
+          position: relative;
+          top: 2px;
+        }
+      }
+    }
+
+
+    /* 采样器设置内容 */
+    .samplingApparatusSetting_content_box {
+      padding: 20px 0px 0px 44px;
+      width: 900px;
+
+      .one_box {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        // border: 1px solid red;
+
+        .sampler_function_box {
+          display: flex;
+          flex-direction: row;
+          // border: 1px solid red;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+          }
+
+          .label {
+            font-size: 20px;
+            margin-right: 26px;
+          }
+        }
+
+
+        .last_samplingBottleNumber_box {
+          display: flex;
+          // flex-direction: row;
+          width: 300px;
+          margin-left: 20px;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+          }
+
+          .label {
+            display: inline-block !important;
+            // border: 1px solid red;
+            margin-right: 8px;
+            font-size: 20px;
+            margin-right: 12px;
+          }
+
+          .value {
+            font-size: 20px;
+            margin-right: 26px;
+          }
+        }
+      }
+
+      .two_box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        // border: 1px solid red;
+        width: 1200px;
+        margin-top: 50px;
+
+        .item {
+          width: 556px;
+          display: flex;
+          flex-direction: row;
+          height: 50px;
+          line-height: 50px;
+          margin-bottom: 40px;
+
+          .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            position: relative;
+            top: 10px;
+          }
+
+          .label {
+            font-size: 20px;
+            margin-right: 8px;
+            width: 180px;
+          }
+
+
+          .unit {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  /* 操作 */
+  .action_box {
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+  }
+
+  .communicationStatus_box {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    display: flex;
+    flex-direction: row;
+    // border: 1px solid red;
+    line-height: 28px;
+    letter-spacing: 2px;
+
+    .label {
+      font-size: 20px;
+      font-family: SYHT-Bold;
+    }
+
+    .value {
+      font-size: 18px;
+
+      margin-left: 8px;
+      // font-family: SYHT-Bold;
+    }
+
+    .status_icon {
+      width: 26px;
+      height: 26px;
+      position: relative;
+      top: 2px;
+    }
+  }
+}

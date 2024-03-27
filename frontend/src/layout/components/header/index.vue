@@ -66,18 +66,13 @@
           style="max-width: 600px"
         >
           <el-form-item label="用户名">
-            <el-input
-              v-model="userLoginInfo.userName"
-              style="width: 260px"
-              @click="openScreenKeyboardFunc"
-            />
+            <el-input v-model="userLoginInfo.userName" style="width: 260px" />
           </el-form-item>
           <el-form-item label="密码">
             <el-input
               type="password"
               v-model="userLoginInfo.userPwd"
               style="width: 260px"
-              @click="openScreenKeyboardFunc"
             />
           </el-form-item>
         </el-form>
