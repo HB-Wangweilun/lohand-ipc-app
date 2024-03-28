@@ -67,7 +67,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .loading_page_wrap {
-  background: url(../../assets/image/bg.png);
+  // background: url(../../assets/image/bg.png);
+  background: url(../../assets/image/bg1.png);
   background-size: 100%, 100%;
   width: 100vw;
   height: 100vh;
@@ -80,7 +81,7 @@ onMounted(() => {
     position: absolute;
     top: 0;
     left: 0;
-    backdrop-filter: blur(3px);
+    // backdrop-filter: blur(3px);
     // border: 1px solid red;
     background: rgba(0, 0, 0, 0.1);
   }

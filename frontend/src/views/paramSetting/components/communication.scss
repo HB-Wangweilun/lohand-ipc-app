@@ -1,0 +1,128 @@
+.communication_wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .communication_tabs_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 540px;
+    // border: 1px solid red;
+
+    .communication_tab_item {
+      position: relative;
+      display: flex;
+      width: 270px;
+      // border: 1px solid red;
+      padding: 10px 0px 16px 44px;
+      line-height: 22px;
+      transition: 2s;
+      // border-right: 1px solid rgba(255, 255, 255, 0.5);
+
+      .tab_item_img {
+        width: 28px;
+        height: 28px;
+        margin-right: 12px;
+      }
+
+      .title {
+        font-size: 22px;
+        font-family: SYHT-Bold;
+        letter-spacing: 2px;
+      }
+    }
+
+    .is_active::after {
+      position: absolute;
+      content: "";
+      height: 3px;
+      width: 70%;
+      background-color: rgba(255, 255, 255, 0.8);
+      bottom: 0;
+      left: 16%;
+      transition: 2s;
+
+      // border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .is_show_right_border::before {
+      position: absolute;
+      top: 14%;
+      right: 0;
+      content: "";
+      height: 60%;
+      width: 2px;
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+
+  /* 仪表通信内容 */
+  .instrument_content_box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 1040px;
+    // border: 1px solid red;
+    padding: 30px 0px 0px 40px;
+
+    .item {
+      width: 480px;
+      margin-bottom: 40px;
+
+
+      .label {
+        display: inline-block;
+        width: 140px;
+        font-size: 20px;
+      }
+    }
+  }
+
+  /* 平台通信内容 */
+  .platform_content_box {}
+
+  /* 操作 */
+  .action_box {
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+  }
+
+  /* 通讯参数 */
+  .communication_param_box {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    letter-spacing: 2px;
+    font-size: 20px;
+
+    .baudRate {
+      margin-right: 20px;
+    }
+
+    .dataBit {
+      margin-right: 20px;
+    }
+
+    .stopBit {
+      margin-right: 20px;
+    }
+
+    .label {
+      font-family: SYHT-Bold;
+    }
+
+    .value {
+      font-family: SYHT-Bold;
+      color: #01fcfb;
+      margin-left: 6px;
+      // font-size: 20px;
+    }
+
+    .unit {
+      margin-left: 4px;
+    }
+  }
+}
