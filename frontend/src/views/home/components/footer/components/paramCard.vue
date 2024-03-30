@@ -15,6 +15,11 @@
           />
           <img
             class="param_icon"
+            v-if="isShowParamIconFunc('COD')"
+            src="../image/CODcr.png"
+          />
+          <img
+            class="param_icon"
             v-if="isShowParamIconFunc('CODmn')"
             src="../image/CODmn.png"
           />
@@ -30,7 +35,7 @@
           />
           <img
             class="param_icon"
-            v-if="isShowParamIconFunc('PH')"
+            v-if="isShowParamIconFunc('pH')"
             src="../image/ph.png"
           />
           <img
@@ -72,7 +77,7 @@
           <count-up
             :start-val="0"
             :end-val="props.paramValue"
-            :duration="4"
+            :duration="3"
             :decimal-places="3"
             :loop="1"
             :delay="2"
@@ -86,25 +91,25 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "ParamCard",
-});
+  name: "ParamCard"
+})
 </script>
 <script setup>
-import CountUp from "vue-countup-v3";
+import CountUp from "vue-countup-v3"
 
-const props = defineProps(["paramName", "paramValue", "paramUnit"]);
+const props = defineProps(["paramName", "paramValue", "paramUnit"])
 
 const isShowParamIconFunc = (name) => {
-  let flag;
+  let flag
   if (name == props.paramName) {
-    flag = true;
+    flag = true
   } else {
-    flag = false;
+    flag = false
   }
-  return flag;
-};
+  return flag
+}
 </script>
 
 <style lang="scss" scoped>

@@ -11,6 +11,7 @@
       src="./image/home-module-icon-logManagement.png"
     />
     <img
+    
       class="iconc_img"
       v-if="props.name == 'logOut'"
       src="./image/home-module-icon-logOut.png"
@@ -32,8 +33,8 @@
     />
     <img
       class="iconc_img"
-      v-if="props.name == 'selectData'"
-      src="./image/home-module-icon-selectData.png"
+      v-if="props.name == 'historicalData'"
+      src="./image/home-module-icon-historicalData.png"
     />
     <img
       class="iconc_img"
@@ -49,6 +50,8 @@ export default defineComponent({
   name: "IconC",
 });
 </script>
+
+
 <script setup>
 const props = defineProps(["name"]);
 </script>

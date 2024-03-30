@@ -1,7 +1,14 @@
-const { Application } = require("ee-core");
+const {Application} = require("ee-core");
+const Store = require('electron-store')
+const xlsx = require('xlsx')
 const Log = require("ee-core/log");
-const { app, BrowserWindow, ipcMain, screen, shell } = require("electron");
+const {app,BrowserWindow,ipcMain,screen,shell} = require("electron");
+const dialog = require('electron').dialog
+const fs = require('fs')
+const ExcelJS = require('exceljs')
+// console.log(dialog.showOpenDialog({ properties: [ 'openFile', 'openDirectory', 'multiSelections' ]}));
 const path = require("path");
+const request = require('request')
 const { exec } = require("child_process");
 // const { screen } = require("electron/main");
 // const { showVirtualKeyboard, hideVirtualKeyboard } = require("./utils");
@@ -10,6 +17,9 @@ const { exec } = require("child_process");
 const startAppUrl = `${path.resolve()}\\${app.isPackaged ? "resources" : "build"}\\extraResources\\server\\server.bat`;
 // const fileUrl = `file://${__dirname}/index.html`;
 // const serverUrl = `${__dirname}/index.html`;
+// const store = new Store()
+
+
 
 class Index extends Application {
   constructor() {
@@ -31,7 +41,7 @@ class Index extends Application {
 
     // 开机自启动
     app.setLoginItemSettings({
-      openAtLogin: true, // Boolean 在登录时启动应用
+      openAtLogin: false, // Boolean 在登录+时启动应用
       openAsHidden: true, // Boolean (可选) mac 表示以隐藏的方式启动应用。~~~~
       // path: '', String (可选) Windows - 在登录时启动的可执行文件。默认为 process.execPath.
       // args: [] String Windows - 要传递给可执行文件的命令行参数。默认为空数组。注意用引号将路径换行。
@@ -94,6 +104,29 @@ class Index extends Application {
       console.log(e, msg);
       // childWin.webContents.send("msgFromMain", msg);
     });
+
+    // 下载文件
+    // ipcMain.on("downloadFile",(e,fileName,fileType) => {
+    //   // 设置保存路径
+    //   const targetFolder = path.join(__dirname,'/download')
+    //   let stream = fs.createWriteStream()
+    //   request({
+    //     url: 'http://106.54.233.201:11005/mg/checkData/exportCheckData?devId=1720&startTime=2024-03-29+00:00:00&endTime=2024-03-30+23:59:59',
+    //     method:'GET'
+    //   },function (err,res,body) {
+    //     fs.writeFile(path.join(targetFolder,`${ fileName }.${ fileType }`,body,function (err) {
+    //       if (err) {
+    //         console.log(err)
+    //       } else {
+    //         console.log('文件写入成功')
+    //         shell.openPath(path.join(targetFolder,`${ fileName }.${ fileType }`))
+    //       }
+    //     }))
+    //   })
+    // });
+
+
+    
   }
 
   /**

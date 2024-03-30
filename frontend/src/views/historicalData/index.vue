@@ -1,12 +1,12 @@
 <template>
-  <div>数据查询</div>
+  <div>历史数据</div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "selectData",
-});
+  name: "selectData"
+})
 </script>
 <script setup></script>
 

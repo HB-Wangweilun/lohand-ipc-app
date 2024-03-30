@@ -1,6 +1,6 @@
 <template>
   <div class="home_footer_wrap">
-    <div class="top">
+    <!-- <div class="top">
       <paramCard
         :param-name="'氨氮'"
         :param-value="200"
@@ -21,14 +21,19 @@
         :param-value="0.306"
         :param-unit="'mg/L'"
       ></paramCard>
-    </div>
+    </div> -->
     <div class="bottom">
       <paramCard
-        :param-name="'PH'"
-        :param-value="0.306"
-        :param-unit="'mg/L'"
+        :class="{
+          is_top: indexP % 2 !== 0
+        }"
+        v-for="(pdl, indexP) in paramDataList"
+        :key="indexP"
+        :param-name="pdl.paramName"
+        :param-value="pdl.paramValue"
+        :param-unit="pdl.paramUnit"
       ></paramCard>
-      <paramCard
+      <!-- <paramCard
         :param-name="'余氯'"
         :param-value="0.306"
         :param-unit="'mg/L'"
@@ -47,19 +52,65 @@
         :param-name="'电导率'"
         :param-value="0.306"
         :param-unit="'mg/L'"
-      ></paramCard>
+      ></paramCard> -->
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, onMounted } from "vue"
 export default defineComponent({
-  name: "Footer",
-});
+  name: "Footer"
+})
 </script>
 <script setup>
-import paramCard from "./components/paramCard.vue";
+import paramCard from "./components/paramCard.vue"
+import { selectHomeParamDataApi } from "../../../../api/home.js"
+
+// 参数数据列表
+const paramDataList = ref([])
+
+// 单位列表
+const unitList = ref({
+  总磷: "mg/L",
+  温度: "℃",
+  浊度: "NTU",
+  电导率: "μS/cm",
+  pH: "",
+  COD: "mg/L",
+  溶解氧: "mg/L",
+  氨氮: "mg/L",
+  总氮: "mg/L"
+})
+
+// 处理参数数据的函数
+const disposeParamDataFunc = (params) => {
+  let nParamData = []
+  for (const param in params) {
+    console.log(param)
+    nParamData.push({
+      paramName: param,
+      paramValue: Number(params[param]),
+
+      paramUnit: unitList.value[param] ? unitList.value[param] : ""
+    })
+  }
+
+  paramDataList.value = nParamData
+  console.log(paramDataList.value)
+}
+
+// 查询参数数据的函数
+const selectHomeParamDataFunc = async () => {
+  await selectHomeParamDataApi().then((res) => {
+    disposeParamDataFunc(res.data.checkDataMap)
+  })
+}
+
+// init
+onMounted(() => {
+  selectHomeParamDataFunc()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -92,11 +143,18 @@ import paramCard from "./components/paramCard.vue";
 
   .bottom {
     // margin-top: 10px;
+    margin-top: 150px;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .is_top {
+      position: relative;
+      top: -100px;
+    }
   }
+
   // 0, 0, 0, 0.4
   // background-color: rgb(235, 123, 32);
 

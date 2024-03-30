@@ -110,9 +110,9 @@
           </div>
           <div class="item">
             <img class="icon" src="../image/refrigeration.png" />
-            <span class="label">制冷开启温度：</span>
+            <span class="label">制冷停止温度：</span>
             <el-input-number
-              v-model="airTempData.coolStartTemp"
+              v-model="airTempData.coolStopTemp"
               :step="0.1"
               :min="1"
               :max="1000"
@@ -121,10 +121,10 @@
             <span class="unit">℃</span>
           </div>
           <div class="item">
-            <img class="icon" src="../image/refrigeration.png" />
-            <span class="label">制冷开启温度：</span>
+            <img class="icon" src="../image/warm.png" />
+            <span class="label">加热开启温度：</span>
             <el-input-number
-              v-model="airTempData.coolStartTemp"
+              v-model="airTempData.heatStartTemp"
               :step="0.1"
               :min="1"
               :max="1000"
@@ -133,10 +133,10 @@
             <span class="unit">℃</span>
           </div>
           <div class="item">
-            <img class="icon" src="../image/refrigeration.png" />
-            <span class="label">制冷开启温度：</span>
+            <img class="icon" src="../image/warm.png" />
+            <span class="label">加热停止温度：</span>
             <el-input-number
-              v-model="airTempData.coolStartTemp"
+              v-model="airTempData.heatStopTemp"
               :step="0.1"
               :min="1"
               :max="1000"

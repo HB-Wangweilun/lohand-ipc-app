@@ -1,33 +1,34 @@
-import axios from "axios";
-import { ElMessage } from "element-plus";
-import router from "@/router/index";
+import axios from "axios"
+import { ElMessage } from "element-plus"
+import router from "@/router/index"
 
 // 创建axios实例
 
-const baseUrl = import.meta.env.VITE_GO_URL;
+const baseUrl = import.meta.env.VITE_GO_URL
+console.log(baseUrl)
 const http = axios.create({
   baseURL: baseUrl,
-  timeout: 200000, // 请求超时时间
-});
-let isRefreshing = true;
+  timeout: 200000 // 请求超时时间
+})
+let isRefreshing = true
 
 // request拦截器
 http.interceptors.request.use(
   (config) => {
     if (localStorage.getItem("token")) {
-      config.headers["Authorization"] = localStorage.getItem("token");
+      config.headers["Authorization"] = localStorage.getItem("token")
     } else {
-      config.headers["Authorization"] = "Basic cGM6cGM=";
+      config.headers["Authorization"] = "Basic cGM6cGM="
     }
-    config.headers["Content-type"] = "multipart/form-data";
-    config.headers["clientType"] = "PC";
+    config.headers["Content-type"] = "multipart/form-data"
+    config.headers["clientType"] = "PC"
 
-    return config;
+    return config
   },
   (error) => {
-    Promise.reject(error);
+    Promise.reject(error)
   }
-);
+)
 
 // respone拦截器
 http.interceptors.response.use(
@@ -39,52 +40,52 @@ http.interceptors.response.use(
         return refreshToken()
           .then((res) => {
             if (res.data.code == 1) {
-              localStorage.setItem("token", "Bearer " + res.data.access_token);
+              localStorage.setItem("token", "Bearer " + res.data.access_token)
               // 已经刷新了token，将所有队列中的请求进行重试
-              onAccessTokenFetched();
+              onAccessTokenFetched()
               // 再发请求
-              return instance(response.config);
+              return instance(response.config)
             } else {
-              localStorage.removeItem("token");
-              router.push({ path: "/login" });
-              return false;
+              localStorage.removeItem("token")
+              // router.push({ path: "/login" });
+              return false
             }
           })
           .catch(() => {
-            console.log("请求refreshToken接口异常", error);
-            localStorage.removeItem("token");
-            router.push({ path: "/login" });
+            console.log("请求refreshToken接口异常", error)
+            localStorage.removeItem("token")
+            // router.push({ path: "/login" })
 
-            return false;
+            return false
           })
           .finally(() => {
-            isRefreshing = true;
-          });
+            isRefreshing = true
+          })
       } else {
         // 正在刷新token 将失败401的请求放入队列
         const retryOriginalRequest = new Promise((resolve) => {
           addSubscriber(() => {
-            resolve(instance(response.config));
-          });
-        });
-        return retryOriginalRequest;
+            resolve(instance(response.config))
+          })
+        })
+        return retryOriginalRequest
       }
     } else if (response.data.result !== "success") {
-      ElMessage.error(response.data.msg);
-      return response.data;
+      ElMessage.error(response.data.msg)
+      return response.data
     } else {
-      return response.data;
+      return response.data
     }
   },
   (error) => {
     // message.error(error.message);
-    ElMessage.error(error.message);
-    router.push({ path: "/login" });
-    return Promise.reject(error);
+    ElMessage.error(error.message)
+    router.push({ path: "/login" })
+    return Promise.reject(error)
   }
-);
+)
 
-export default http;
+export default http
 
 // 刷新token请求
 function refreshToken() {
@@ -92,29 +93,29 @@ function refreshToken() {
     `${baseUrl}auth/oauth/token`,
     {
       grant_type: "refresh_token",
-      refresh_token: sessionStorage.getItem("screen_token"),
+      refresh_token: sessionStorage.getItem("screen_token")
     },
     {
       headers: {
         Authorization: "Basic cGM6cGM=",
         clientType: "SCREEN",
-        "Content-type": "multipart/form-data",
-      },
+        "Content-type": "multipart/form-data"
+      }
     }
-  );
+  )
 }
 
-let subscribers = [];
+let subscribers = []
 
 // 执行队列
 function onAccessTokenFetched() {
   subscribers.forEach((callback) => {
-    callback();
-  });
-  subscribers = [];
+    callback()
+  })
+  subscribers = []
 }
 
 // 添加队列
 function addSubscriber(callback) {
-  subscribers.push(callback);
+  subscribers.push(callback)
 }

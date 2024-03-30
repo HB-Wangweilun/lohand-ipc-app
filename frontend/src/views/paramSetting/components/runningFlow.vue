@@ -6,7 +6,7 @@
           flow_tab_item: true,
           is_show_right_border: true,
           is_active: tabsData[1].isActive,
-          is_activec: !tabsData[1].isActive,
+          is_activec: !tabsData[1].isActive
         }"
         @click="tabItemClick('definition')"
       >
@@ -18,7 +18,7 @@
           flow_tab_item: true,
 
           is_active: tabsData[0].isActive,
-          is_activec: !tabsData[0].isActive,
+          is_activec: !tabsData[0].isActive
         }"
         @click="tabItemClick('single')"
       >
@@ -63,7 +63,7 @@
             </span>
             <span
               :class="{
-                is_highlight: cl.isHighlight,
+                is_highlight: cl.isHighlight
               }"
               >{{ cl.value }}</span
             >
@@ -81,7 +81,7 @@
           :class="{
             value: true,
             is_green: flowSingleStatus == '运行中',
-            is_red: flowSingleStatus == '停止',
+            is_red: flowSingleStatus == '停止'
           }"
           >{{ flowSingleStatus }}</span
         >
@@ -128,109 +128,109 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted } from "vue"
 export default defineComponent({
-  name: "RunningFlow",
-});
+  name: "RunningFlow"
+})
 </script>
 <script setup>
-import SaveButton from "../../../components/global/saveButton.vue";
-import { playClickSound } from "../../../utils/other.js";
+import SaveButton from "../../../components/global/saveButton.vue"
+import { playClickSound } from "../../../utils/other.js"
 
 onMounted(() => {
-  console.log(currentTab.value);
-});
+  console.log(currentTab.value)
+})
 
 // 流程单控停止点击事件
 const flowSingleStopClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 流程单控运行点击事件
 const flowSingleRunningClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 流程定义保存点击事件
-const flowDefinitionSaveClick = () => {};
+const flowDefinitionSaveClick = () => {}
 
 // 流程单控Radio点击事件
 const flowSingleRadioClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 流程定义Radio点击事件
 const flowDefinitionRadioClick = () => {
-  playClickSound();
-  console.log(flowDefinitionData.value);
-};
+  playClickSound()
+  console.log(flowDefinitionData.value)
+}
 
 // tab项点击事件
 const tabItemClick = (type) => {
-  playClickSound();
+  playClickSound()
   switch (type) {
     case "single":
-      tabsData.value[0].isActive = true;
-      tabsData.value[1].isActive = false;
-      currentTab.value = "single";
-      break;
+      tabsData.value[0].isActive = true
+      tabsData.value[1].isActive = false
+      currentTab.value = "single"
+      break
 
     case "definition":
-      tabsData.value[0].isActive = false;
-      tabsData.value[1].isActive = true;
-      currentTab.value = "definition";
-      break;
+      tabsData.value[0].isActive = false
+      tabsData.value[1].isActive = true
+      currentTab.value = "definition"
+      break
 
     default:
-      break;
+      break
   }
-};
+}
 
 /* 数据 */
 // 流程单控选择数据
-const flowSingleData = ref("采水");
+const flowSingleData = ref("采水")
 
 // 流程单控状态
-const flowSingleStatus = "停止";
+const flowSingleStatus = "停止"
 
 // 流程单控单选数据列表
 const flowSingleRadioData = ref([
   {
     label: "采水",
-    value: "采水",
+    value: "采水"
   },
   {
     label: "沉砂",
-    value: "沉砂",
+    value: "沉砂"
   },
   {
     label: "仪表测量",
-    value: "仪表测量",
+    value: "仪表测量"
   },
   {
     label: "排空",
-    value: "排空",
+    value: "排空"
   },
   {
     label: "除藻清洗",
-    value: "除藻清洗",
+    value: "除藻清洗"
   },
   {
     label: "普通清洗",
-    value: "普通清洗",
+    value: "普通清洗"
   },
   {
     label: "传感器保养",
-    value: "传感器保养",
+    value: "传感器保养"
   },
   {
     label: "气吹清洗",
-    value: "气吹清洗",
-  },
-]);
+    value: "气吹清洗"
+  }
+])
 
 // 流程定义选择数据
-const flowDefinitionData = ref("mode1");
+const flowDefinitionData = ref("mode1")
 
 // 流程定义单选数据列表
 const flowDefinitionRadioData = ref([
@@ -239,149 +239,149 @@ const flowDefinitionRadioData = ref([
     contentList: [
       {
         value: "采水",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "传感器测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "沉砂",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "仪表测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "排空",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "除藻清洗",
-        isHighlight: true,
+        isHighlight: true
       },
       {
         value: "传感器保养",
-        isHighlight: false,
-      },
+        isHighlight: false
+      }
     ],
-    value: "mode1",
+    value: "mode1"
   },
   {
     title: "模式二： ",
     contentList: [
       {
         value: "采水",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "传感器测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "沉砂",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "仪表测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "排空",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "普通清洗",
-        isHighlight: true,
+        isHighlight: true
       },
       {
         value: "传感器保养",
-        isHighlight: false,
-      },
+        isHighlight: false
+      }
     ],
-    value: "mode2",
+    value: "mode2"
   },
   {
     title: "模式三： ",
     contentList: [
       {
         value: "采水",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "传感器测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "沉砂",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "仪表测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "排空",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "气吹清洗",
-        isHighlight: true,
+        isHighlight: true
       },
       {
         value: "传感器保养",
-        isHighlight: false,
-      },
+        isHighlight: false
+      }
     ],
-    value: "mode3",
+    value: "mode3"
   },
   {
     title: "模式四： ",
     contentList: [
       {
         value: "采水",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "传感器测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "沉砂",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "仪表测量",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "排空",
-        isHighlight: false,
+        isHighlight: false
       },
       {
         value: "传感器保养",
-        isHighlight: false,
-      },
+        isHighlight: false
+      }
     ],
-    value: "mode4",
-  },
-]);
+    value: "mode4"
+  }
+])
 
 // 当前tab项
-const currentTab = ref("definition");
+const currentTab = ref("definition")
 
 // tabs数据
 const tabsData = ref([
   {
     title: "流程单控",
-    isActive: false,
+    isActive: false
   },
   {
     title: "流程定义",
-    isActive: true,
-  },
-]);
+    isActive: true
+  }
+])
 </script>
 
 <style lang="scss" scoped>
@@ -564,7 +564,7 @@ const tabsData = ref([
 ::v-deep .el-button--primary {
   background: linear-gradient(
     180deg,
-    s rgb(23, 170, 238) 0%,
+    rgb(23, 170, 238) 0%,
     rgba(15, 104, 251, 1) 100%
   );
   border: none;
