@@ -26,29 +26,29 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "DialogC",
-});
+  name: "LoginC"
+})
 </script>
 
 <script setup>
-const props = defineProps(["show", "title", "isFooter"]);
+const props = defineProps(["show", "title", "isFooter"])
 
-const emits = defineEmits(["showDialog", "closeDialog", "okClick"]);
+const emits = defineEmits(["showDialog", "closeDialog", "okClick"])
 
 const closeDialog = () => {
-  emits("closeDialog");
-};
+  emits("closeDialog")
+}
 
 const okClick = () => {
-  emits("okClick");
-  emits("closeDialog");
-};
+  emits("okClick")
+  emits("closeDialog")
+}
 
 const closeUserLoginDialog = () => {
-  emits("closeDialog");
-};
+  emits("closeDialog")
+}
 </script>
 
 <style lang="scss" scoped></style>

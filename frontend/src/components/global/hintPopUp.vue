@@ -17,7 +17,11 @@
       </template>
       <div class="message_content_box">
         <div class="center_box">
-          <img class="status_img" src="../../assets/icon/saveSuccess.png" />
+          <img
+            v-if="props.isShowIcon !== false"
+            class="status_img"
+            src="../../assets/icon/saveSuccess.png"
+          />
           <span class="message">{{ props.messageContent }}</span>
         </div>
       </div>
@@ -34,22 +38,42 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue"
+import { defineComponent, ref, onMounted, computed } from "vue"
 export default defineComponent({
   name: "HintPopUp"
 })
 </script>
 <script setup>
-const props = defineProps(["show", "title", "messageContent"])
+const props = defineProps([
+  "show",
+  "title",
+  "messageContent",
+  "fontSize",
+  "letterSpacing",
+  "isShowIcon"
+])
 
 const emits = defineEmits(["showDialog", "closeDialog"])
 
 const closeDialog = () => {
   emits("closeDialog")
 }
+
+// fontSize - Com
+const fontSizeCom = computed(() => {
+  return `${props.fontSize}px`
+})
+
+// letterSpacing - Com
+const letterSpacingCom = computed(() => {
+  return `${props.letterSpacing}px`
+})
 </script>
 
 <style lang="scss" scoped>
+$fontSizeCom: v-bind(fontSizeCom);
+$letterSpacingCom: v-bind(letterSpacingCom);
+
 .message_content_box {
   color: white;
   height: 400px;
@@ -57,9 +81,10 @@ const closeDialog = () => {
   position: relative;
 
   .center_box {
-    width: 420px;
+    // width: 620px;
+    min-width: 400px;
     position: absolute;
-    top: 48%;
+    top: 50%;
     left: 55%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -76,10 +101,12 @@ const closeDialog = () => {
     .message {
       font-family: SYHT-Bold;
       letter-spacing: 20px;
+      font-size: $fontSizeCom;
+      letter-spacing: $letterSpacingCom;
     }
   }
 }
-::v-deep .dialogc {
+:deep(.dialogc) {
   background: linear-gradient(
     to bottom,
     rgba(16, 119, 184, 0.8),
@@ -94,7 +121,7 @@ const closeDialog = () => {
     padding: 0 !important;
     .dialogc_header_box {
       padding: 16px 0px;
-      background: rgba(94, 142, 230, 0.6) !important;
+      background: rgba(94, 142, 230, 0.4) !important;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
 

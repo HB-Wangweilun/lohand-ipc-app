@@ -25,17 +25,43 @@
     />
     <img v-if="props.tag == 'alarm'" src="./image/alarm.png" />
     <img v-if="props.tag == 'alarm_a'" src="./image/alarm_a.png" />
+    <img v-if="props.tag == 'metricalData'" src="./image/metricalData.png" />
+    <img
+      v-if="props.tag == 'metricalData_a'"
+      src="./image/metricalData_a.png"
+    />
+    <img v-if="props.tag == 'realTimeData'" src="./image/realTimeData.png" />
+    <img
+      v-if="props.tag == 'realTimeData_a'"
+      src="./image/realTimeData_a.png"
+    />
+
+    <img v-if="props.tag == 'runLog'" src="./image/runLog.png" />
+    <img v-if="props.tag == 'runLog_a'" src="./image/runLog_a.png" />
+    <img v-if="props.tag == 'alarmLog'" src="./image/alarmLog.png" />
+    <img v-if="props.tag == 'alarmLog_a'" src="./image/alarmLog_a.png" />
+    <img v-if="props.tag == 'operationLog'" src="./image/operationLog.png" />
+    <img
+      v-if="props.tag == 'operationLog_a'"
+      src="./image/operationLog_a.png"
+    />
+
+    <img v-if="props.tag == 'reportedData'" src="./image/reportedData.png" />
+    <img
+      v-if="props.tag == 'reportedData_a'"
+      src="./image/reportedData_a.png"
+    />
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "IconC",
-});
+  name: "IconC"
+})
 </script>
 <script setup>
-const props = defineProps(["tag"]);
+const props = defineProps(["tag"])
 </script>
 
 <style lang="scss" scoped>

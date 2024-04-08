@@ -3,15 +3,15 @@
     <div class="load-inner load-one"></div>
     <div class="load-inner load-two"></div>
     <div class="load-inner load-three"></div>
-    <span class="text">Loading...</span>
+    <span class="text">加载中...</span>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "LoadingC",
-});
+  name: "LoadingC"
+})
 </script>
 <script setup></script>
 

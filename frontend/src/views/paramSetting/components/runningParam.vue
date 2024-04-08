@@ -5,7 +5,7 @@
       <div class="param_setting_item">
         <span class="label">采水时间：</span>
         <el-input-number
-          v-model="paramSettingData.collectWaterTime"
+          v-model="paramSettingData.gatherWaterTime"
           :min="1"
           :max="1000"
           @click="inputPlaySound"
@@ -89,34 +89,70 @@
       <!-- <el-button type="primary" @click="saveClick">保存</el-button> -->
       <SaveButton @save-click="saveClick">保存</SaveButton>
     </div>
+
+    <!-- 保存成功提示 -->
+    <HintPopUp
+      title="提示"
+      :show="isShowSaveSuccessHintPopUp"
+      :message-content="'保存成功！'"
+    >
+    </HintPopUp>
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue"
 export default defineComponent({
-  name: "RunningMode",
-});
+  name: "RunningMode"
+})
 </script>
 <script setup>
-import TitleC from "../../../components/global/titleC.vue";
-import SaveButton from "../../../components/global/saveButton.vue";
-import { playClickSound } from "../../../utils/other.js";
+import TitleC from "../../../components/global/titleC.vue"
+import SaveButton from "../../../components/global/saveButton.vue"
+import HintPopUp from "../../../components/global/hintPopUp.vue"
+import { playClickSound } from "../../../utils/other.js"
+import {
+  selectRunParamSetApi,
+  updateRunParamSetApi
+} from "../../../api/paramSetting.js"
 
 // 保存点击事件
-const saveClick = () => {
+const saveClick = async () => {
   // playClickSound();
-};
+  let data = {
+    runParamId: paramSettingData.value.runParamId,
+    gatherWaterTime: paramSettingData.value.gatherWaterTime,
+    precipitateTime: paramSettingData.value.sandSettingTime,
+    drainTime: paramSettingData.value.evacuationTime,
+    temClearCount: paramSettingData.value.sampleCupRinseCount,
+    residualWaterDrainTime: paramSettingData.value.residualWaterEvacuationTime,
+    airCleanTime: paramSettingData.value.airBlowingCleaningTime,
+    cleanWaterEnterTime: paramSettingData.value.cleaningWaterInflowTime,
+    temWaterOutTime: paramSettingData.value.sampleCupInflowAndDrainWaterTime
+  }
+  await updateRunParamSetApi(data)
+    .then((res) => {
+      isShowSaveSuccessHintPopUp.value = true
+      setTimeout(() => {
+        isShowSaveSuccessHintPopUp.value = false
+      }, 1500)
+    })
+    .finally(() => {
+      selectRunParamSetFunc()
+    })
+}
 
 // 输入框点击事件-触发点击音效
 const inputPlaySound = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 参数设置数据
 const paramSettingData = ref({
-  // 采集时间
-  collectWaterTime: 0,
+  // runparamId
+  runParamId: "",
+  // 采水时间
+  gatherWaterTime: 0,
   // 沉砂时间
   sandSettingTime: 0,
   // 排空时间
@@ -130,8 +166,51 @@ const paramSettingData = ref({
   // 清洗水进水时间
   cleaningWaterInflowTime: 0,
   // 样杯 进/排 水时间
-  sampleCupInflowAndDrainWaterTime: 0,
-});
+  sampleCupInflowAndDrainWaterTime: 0
+})
+
+// 保存成功提示弹窗显示的标识
+const isShowSaveSuccessHintPopUp = ref(false)
+
+// 查询运行参数设置的函数
+const selectRunParamSetFunc = async () => {
+  await selectRunParamSetApi().then((res) => {
+    console.log(res.data, "运行参数设置数据")
+    paramSettingData.value.runParamId = res.data.runParamId
+
+    // 采水时间
+    paramSettingData.value.gatherWaterTime = res.data.gatherWaterTime
+
+    // 沉砂时间
+    paramSettingData.value.sandSettingTime = res.data.precipitateTime
+
+    // 排空时间
+    paramSettingData.value.evacuationTime = res.data.drainTime
+
+    // 样杯清洗次数
+    paramSettingData.value.sampleCupRinseCount = res.data.temClearCount
+
+    // 残留水排空时间
+    paramSettingData.value.residualWaterEvacuationTime =
+      res.data.residualWaterDrainTime
+
+    // 气吹清洗时间
+    paramSettingData.value.airBlowingCleaningTime = res.data.airCleanTime
+
+    // 清洗水进水时间
+    paramSettingData.value.cleaningWaterInflowTime =
+      res.data.cleanWaterEnterTime
+
+    // 样杯进排水时间
+    paramSettingData.value.sampleCupInflowAndDrainWaterTime =
+      res.data.temWaterOutTime
+  })
+}
+
+// init
+onMounted(() => {
+  selectRunParamSetFunc()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -180,7 +259,7 @@ const paramSettingData = ref({
 }
 
 /* save button */
-// ::v-deep .el-button--primary {
+// :deep .el-button--primary {
 //   background: linear-gradient(
 //     180deg,
 //     rgb(23, 170, 238) 0%,
@@ -198,12 +277,12 @@ const paramSettingData = ref({
 //     color: white !important;
 //   }
 // }
-// ::v-deep .el-button--primary:active {
+// :deep .el-button--primary:active {
 //   transform: scale(0.9);
 // }
 
 /* Number - input */
-::v-deep .el-input-number {
+:deep(.el-input-number) {
   width: 180px;
   height: 40px;
   .el-input-number__decrease {

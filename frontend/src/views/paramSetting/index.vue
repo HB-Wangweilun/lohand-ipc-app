@@ -124,73 +124,73 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue"
 export default defineComponent({
-  name: "ParamSetting",
-});
+  name: "ParamSetting"
+})
 </script>
 <script setup>
-import Init from "./components/init.vue";
-import Alarm from "./components/alarm.vue";
-import Communication from "./components/communication.vue";
-import Peripheral from "./components/peripheral.vue";
-import RunningFlow from "./components/runningFlow.vue";
-import RunningMode from "./components/runningMode.vue";
-import RunningParam from "./components/runningParam.vue";
-import SingleControl from "./components/singleControl.vue";
-import ContentCardC from "../../components/global/contentCardC.vue";
-import { playClickSound } from "../../utils/other.js";
-import TabsC from "../../components/tabsC/index.vue";
+import Init from "./components/init.vue"
+import Alarm from "./components/alarm.vue"
+import Communication from "./components/communication.vue"
+import Peripheral from "./components/peripheral.vue"
+import RunningFlow from "./components/runningFlow.vue"
+import RunningMode from "./components/runningMode.vue"
+import RunningParam from "./components/runningParam.vue"
+import SingleControl from "./components/singleControl.vue"
+import ContentCardC from "../../components/global/contentCardC.vue"
+import { playClickSound } from "../../utils/other.js"
+import TabsC from "../../components/tabsC/index.vue"
 
 // 当前tabs的activeItem
 const currentTabsActiveItem = ref({
   title: "初始化设置",
-  icon: "init",
-});
+  icon: "init"
+})
 
 // 修改当前tabs的activeItem
 const setCurrentTabsActiveItem = (item) => {
-  currentTabsActiveItem.value = item;
-};
+  currentTabsActiveItem.value = item
+}
 
 const tabsOptions = ref([
   {
     title: "初始化设置",
-    icon: "init",
+    icon: "init"
   },
   {
     title: "运行模式设置",
-    icon: "runningMode",
+    icon: "runningMode"
   },
   {
     title: "运行参数设置",
-    icon: "runningParam",
+    icon: "runningParam"
   },
   {
     title: "运行流程设置",
-    icon: "runningFlow",
+    icon: "runningFlow"
   },
   {
     title: "模块单控",
-    icon: "singleControl",
+    icon: "singleControl"
   },
   {
     title: "外设管理",
-    icon: "peripheral",
+    icon: "peripheral"
   },
   {
     title: "通信管理",
-    icon: "communication",
+    icon: "communication"
   },
   {
     title: "报警设置",
-    icon: "alarm",
-  },
-]);
+    icon: "alarm"
+  }
+])
 
 const tabClick = (e) => {
-  playClickSound();
-};
+  playClickSound()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -230,7 +230,7 @@ const tabClick = (e) => {
   margin-right: 10px;
 }
 
-::v-deep .param_setting_tabs .el-tabs__header {
+:deep(.param_setting_tabs .el-tabs__header) {
   position: fixed;
   bottom: 0px;
   left: 0;

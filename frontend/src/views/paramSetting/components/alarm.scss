@@ -4,15 +4,21 @@
   height: 100%;
 
   .alarm_setting_box {
-    width: 1880px;
-    padding: 30px 0px 0px 30px;
+    width: 1866px;
+    height: 94%;
+    padding: 30px 0px 0px 40px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    overflow-y: auto;
+    --sb-track-color: #979898 !important;
+    --sb-thumb-color: rgb(79, 79, 80);
+    --sb-size: 8px;
+
 
 
     .alarm_setting_item {
-      width: 920px;
+      width: 1430px;
       display: flex;
       flex-direction: row;
       margin-bottom: 60px;
@@ -30,7 +36,7 @@
 
         width: 30px;
         height: 30px;
-        margin-right: 8px;
+        margin-right: 20px;
       }
 
       .label {
@@ -41,15 +47,16 @@
       }
 
       .rangeType {
-        margin-right: 16px;
+        margin-right: 30px;
       }
 
       .rangeLeft {
-        margin-right: 16px;
+        margin-left: 6px;
+        margin-right: 20px;
       }
 
       .rangeCenter {
-        margin-right: 16px;
+        margin-right: 20px;
       }
 
       .rangeRight {
@@ -61,9 +68,45 @@
         width: 100px;
         text-align: left;
         position: absolute;
-        right: 96px;
-        margin-left: 8px;
+        right: 482px;
+        margin-left: 16px;
       }
+
+      .save_button {
+        position: absolute;
+        top: -10px;
+        right: 260px;
+      }
+    }
+  }
+
+
+
+
+  .alarm_setting_box::-webkit-scrollbar {
+    width: var(--sb-size)
+  }
+
+  .alarm_setting_box::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 3px;
+  }
+
+  .alarm_setting_box::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 3px;
+
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .alarm_setting_box {
+      scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .alarm_setting_box {
+      scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
     }
   }
 
@@ -72,5 +115,14 @@
     position: absolute;
     bottom: 0;
     right: 20px;
+  }
+
+
+  /* 加载 */
+  .loadingc_mode {
+    position: absolute;
+    top: 34%;
+    left: 48%;
+    transform: translate(-50%, -50%);
   }
 }

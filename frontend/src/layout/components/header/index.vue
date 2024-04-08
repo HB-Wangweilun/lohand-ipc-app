@@ -51,7 +51,7 @@
     </div>
 
     <!-- 用户登录弹窗 -->
-    <DialogC
+    <LoginC
       :show="isShowUserLoginDialog"
       :title="`用户登录`"
       :is-footer="true"
@@ -77,96 +77,93 @@
           </el-form-item>
         </el-form>
       </div>
-    </DialogC>
+    </LoginC>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted } from "vue"
 export default defineComponent({
-  name: "Header",
-});
+  name: "Header"
+})
 </script>
 <script setup>
-import dayjs from "dayjs";
-import { useGlobalVariableStore, useUserStore } from "../../../store";
-import { useRouter } from "vue-router";
-import DialogC from "../../../components/dialogC/index.vue";
-import {
-  openScreenKeyboardFunc,
-  playClickSound,
-} from "../../../utils/other.js";
+import dayjs from "dayjs"
+import { useGlobalVariableStore, useUserStore } from "../../../store"
+import { useRouter } from "vue-router"
+import LoginC from "../../../components/loginC/index.vue"
+import { openScreenKeyboardFunc, playClickSound } from "../../../utils/other.js"
 
-const globalVariableStore = useGlobalVariableStore();
-const userStore = useUserStore();
-const router = useRouter();
+const globalVariableStore = useGlobalVariableStore()
+const userStore = useUserStore()
+const router = useRouter()
 
 // 用户登录信息
 const userLoginInfo = ref({
   userName: "",
-  userPwd: "",
-});
+  userPwd: ""
+})
 
 // 刷新页面的点击事件
 const reloadPage = () => {
-  location.reload();
-};
+  location.reload()
+}
 
 // 是否显示用户登录弹窗的标识
-const isShowUserLoginDialog = ref(false);
+const isShowUserLoginDialog = ref(false)
 
 // 关闭用户登录弹窗
 const closeUserLoginDialog = () => {
-  playClickSound();
-  isShowUserLoginDialog.value = false;
-};
+  playClickSound()
+  isShowUserLoginDialog.value = false
+}
 
 // 打开用户登录弹窗
 const showUserLoginDialog = () => {
-  playClickSound();
-  isShowUserLoginDialog.value = true;
-};
+  playClickSound()
+  isShowUserLoginDialog.value = true
+}
 
 // 确定点击事件
 const userLoginDialogOkClick = () => {
-  playClickSound();
-  userStore.userInfo = userLoginInfo.value;
-};
+  playClickSound()
+  userStore.userInfo = userLoginInfo.value
+}
 
 // 用户头像点击事件
 const userClick = () => {
-  playClickSound();
+  playClickSound()
   if (userStore.isUserLogin) {
-    console.log("用户已登录");
+    console.log("用户已登录")
   } else {
-    isShowUserLoginDialog.value = true;
-    console.log("用户未登录");
+    isShowUserLoginDialog.value = true
+    console.log("用户未登录")
   }
-};
+}
 
 const toHome = () => {
-  playClickSound();
+  playClickSound()
   router.push({
-    path: "/home",
-  });
-};
-const time = ref(dayjs().format("YYYY-MM-DD HH:mm:ss"));
+    path: "/home"
+  })
+}
+const time = ref(dayjs().format("YYYY-MM-DD HH:mm:ss"))
 
 const updateTimeFunc = () => {
   setInterval(() => {
-    time.value = dayjs().format("YYYY-MM-DD HH:mm:ss");
-  }, 1000);
-};
+    time.value = dayjs().format("YYYY-MM-DD HH:mm:ss")
+  }, 1000)
+}
 
 onMounted(() => {
-  updateTimeFunc();
+  updateTimeFunc()
   userStore.userInfo = {
     userName: "",
-    userPwd: "",
-  };
+    userPwd: ""
+  }
 
-  console.log(globalVariableStore.envMode);
-});
+  console.log(globalVariableStore.envMode)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -8,21 +8,21 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "SaveButton",
-});
+  name: "SaveButton"
+})
 </script>
 <script setup>
-import { playClickSound } from "../../utils/other.js";
+import { playClickSound } from "../../utils/other.js"
 
 // emits
-const emits = defineEmits(["saveClick"]);
+const emits = defineEmits(["saveClick"])
 
 const save = () => {
-  playClickSound();
-  emits("saveClick");
-};
+  playClickSound()
+  emits("saveClick")
+}
 </script>
 
 <style lang="scss" scoped>
@@ -35,7 +35,7 @@ const save = () => {
 }
 
 /* save button */
-::v-deep .el-button--primary {
+:deep(.el-button--primary) {
   background: linear-gradient(
     180deg,
     rgb(23, 170, 238) 0%,
@@ -54,7 +54,7 @@ const save = () => {
     color: white !important;
   }
 }
-::v-deep .el-button--primary:active {
+:deep(.el-button--primary:active) {
   transform: scale(0.9);
 }
 </style>

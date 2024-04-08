@@ -17,7 +17,7 @@
         :class="{
           time_select_item_box: true,
           is_active: tmsld.isActive,
-          is_disabled: tmsld.isDisabled,
+          is_disabled: tmsld.isDisabled
         }"
         v-for="(tmsld, indexT) in timingModeSelectListData"
         :key="indexT"
@@ -85,7 +85,7 @@
           :class="{
             info_value: true,
             is_normal: currentStatus,
-            is_not_normal: !currentStatus,
+            is_not_normal: !currentStatus
           }"
         >
           {{ currentStatus ? "正常" : "停止" }}
@@ -131,514 +131,299 @@
       <!-- <el-button type="primary" @click="saveClick">保存</el-button> -->
       <SaveButton @save-click="saveClick">保存</SaveButton>
     </div>
+
+    <!-- 保存成功提示 -->
+    <HintPopUp
+      title="提示"
+      :show="isShowSaveSuccessHintPopUp"
+      :message-content="'保存成功！'"
+    >
+    </HintPopUp>
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue"
 export default defineComponent({
-  name: "RunningParam",
-});
+  name: "RunningParam"
+})
 </script>
 <script setup>
-import TitleC from "../../../components/global/titleC.vue";
-import SaveButton from "../../../components/global/saveButton.vue";
-import { playClickSound } from "../../../utils/other.js";
+import TitleC from "../../../components/global/titleC.vue"
+import SaveButton from "../../../components/global/saveButton.vue"
+import HintPopUp from "../../../components/global/hintPopUp.vue"
+import { playClickSound } from "../../../utils/other.js"
+import runModeStaticData from "../data/runningModeData.json"
+import {
+  selectRunModeSetApi,
+  updateRunModeSetApi
+} from "../../../api/paramSetting.js"
 
 // 周期模式起始时间的Select点击事件
 const periodStartTimeSelectClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 周期模式起始时间的Option点击事件
 const periodStartTimeOptionClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 周期模式间隔时间的Select点击事件
 const periodIntervalTimeSelectClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 周期模式间隔时间的Option点击事件
 const periodIntervalTimeOptionClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 定时模式保存事件
-const timingModeSave = () => {
-  // 更新定时模式已选中的时间
-  let nTimingModeTimes = [];
-  timingModeSelectListData.value.forEach((itemT) => {
-    if (itemT.isActive) {
-      nTimingModeTimes.push(itemT.value);
-    }
-  });
-  timingModeTimes.value = nTimingModeTimes;
-  console.log(timingModeTimes.value);
-  // 拼接时间
-  let timeJoinStr = timingModeTimes.value.join(";");
-};
+const timingModeSave = () => {}
 
 // 周期模式的保存事件
 const periodModeSave = () => {
-  console.log(periodModeSelectData.value);
-};
+  console.log(periodModeSelectData.value)
+}
 
 // 保存的点击事件
-const saveClick = () => {
-  // playClickSound();
-  // 根据不同的模式，触发不同的保存事件
+const saveClick = async () => {
+  // 当前模式number
+  let currentModeNumber
   switch (currentMode.value) {
     case "定时模式":
-      timingModeSave();
-      break;
-
+      currentModeNumber = 1
+      break
     case "周期模式":
-      periodModeSave();
-      break;
-
+      currentModeNumber = 2
+      break
+    case "触发模式":
+      currentModeNumber = 3
+      break
     default:
-      break;
+      break
   }
-};
+
+  // 更新定时模式已选中的时间
+  let nTimingModeTimes = []
+  timingModeSelectListData.value.forEach((itemT) => {
+    if (itemT.isActive) {
+      nTimingModeTimes.push(itemT.value)
+    }
+  })
+  timingModeTimes.value = nTimingModeTimes
+  console.log(timingModeTimes.value)
+  // 拼接时间
+  let timeJoinStr = timingModeTimes.value.join(";")
+
+  // 发送的数据
+  let data = {
+    runModeId: runModeId.value,
+    runModeSelect: currentModeNumber,
+    regularMode: {
+      regularModeId: regularModeId.value,
+      regularModeSelect: timeJoinStr
+    },
+    cycleMode: {
+      cycleModeId: cycleModeId.value,
+      cycleModeIntervalHour: periodModeSelectData.value.intervalTime,
+      cycleModeStartHour: periodModeSelectData.value.startTime
+    }
+  }
+
+  await updateRunModeSetApi(data)
+    .then((res) => {
+      isShowSaveSuccessHintPopUp.value = true
+      setTimeout(() => {
+        isShowSaveSuccessHintPopUp.value = false
+      }, 1500)
+    })
+    .finally(() => {
+      selectRunModeSetFunc()
+    })
+}
 
 // 运行模式的radio点击事件
 const modeRadioClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 选择时间的点击事件
 const timeSelectItemClick = (index) => {
   // 判断当前点击的是否是禁用状态，如果是直接退出
   if (timingModeSelectListData.value[index].isDisabled) {
-    return;
+    return
   }
 
   // 播放音频
-  playClickSound();
+  playClickSound()
 
   // 创建介质新数组，用来存储数据
-  let nTimingModeSelectListData = timingModeSelectListData.value;
+  // let nTimingModeSelectListData = timingModeSelectListData.value
 
   // 遍历数据，找到点击的时间，选中数据
-  nTimingModeSelectListData.forEach((item, indexI) => {
+  timingModeSelectListData.value.forEach((item, indexI) => {
     if (indexI == index) {
-      item.isActive = !item.isActive;
+      item.isActive = !item.isActive
     }
-  });
+  })
 
-  // 当前已经被选中的时间的下标列表
-  let currentActiveTimeIndexs = [];
+  produceDisabledTimeFunc()
+}
 
-  // 遍历数据，找到已经选中的时间下标，形成一个数组
-  nTimingModeSelectListData.forEach((item, indexI) => {
-    if (item.isActive) {
-      currentActiveTimeIndexs.push(indexI);
-    }
-    item.isDisabled = false;
-  });
-
-  // 遍历已经选中的时间下标数组，判断是否需要禁用
-  currentActiveTimeIndexs.forEach((itemI) => {
-    if (itemI == 0) {
-      // 如果下标为0（00:00），则禁用下标为1（01:00）和下标为23（23:00）
-      nTimingModeSelectListData[23].isDisabled = true;
-      nTimingModeSelectListData[itemI + 1].isDisabled = true;
-    } else if (itemI == 23) {
-      // 如果下标为23（23:00），则禁用下标为22（22:00）和下标为0（00:00）
-      nTimingModeSelectListData[0].isDisabled = true;
-      nTimingModeSelectListData[itemI - 1].isDisabled = true;
-    } else {
-      // 如果下标不为0和23，则禁用下标为当前下标-1（上一次）和当前下标+1（下一次）
-      if (!nTimingModeSelectListData[itemI - 1].isActive) {
-        nTimingModeSelectListData[itemI - 1].isDisabled = true;
-        nTimingModeSelectListData[itemI + 1].isDisabled = true;
-      }
-      if (!nTimingModeSelectListData[itemI + 1].isActive) {
-        nTimingModeSelectListData[itemI + 1].isDisabled = true;
-        nTimingModeSelectListData[itemI - 1].isDisabled = true;
-      }
-    }
-  });
-
-  // 更新响应式数据
-  timingModeSelectListData.value = nTimingModeSelectListData;
-};
+// 保存成功提示弹窗显示的标识
+const isShowSaveSuccessHintPopUp = ref(false)
 
 // 模式选择列表数据
 const modeSelectListData = [
   {
     index: 0,
     label: "定时模式",
-    value: "timing_mode",
+    value: "timing_mode"
   },
   {
     index: 1,
     label: "周期模式",
-    value: "period_mode",
+    value: "period_mode"
   },
   {
     index: 2,
     label: "触发模式",
-    value: "trigger_mode",
-  },
-];
+    value: "trigger_mode"
+  }
+]
 
 // 当前选择的模式
-const currentMode = ref("定时模式");
+const currentMode = ref("定时模式")
 
 // 周期模式选择的数据
 const periodModeSelectData = ref({
   startTime: "00:00",
-  intervalTime: 3,
-});
+  intervalTime: 3
+})
 
 // 周期模式起始时间选择数据
-const periodModeStartTimeSelectList = [
-  {
-    label: "00:00",
-    value: "00:00",
-  },
-  {
-    label: "01:00",
-    value: "01:00",
-  },
-  {
-    label: "02:00",
-    value: "02:00",
-  },
-  {
-    label: "03:00",
-    value: "03:00",
-  },
-  {
-    label: "04:00",
-    value: "04:00",
-  },
-  {
-    label: "05:00",
-    value: "05:00",
-  },
-  {
-    label: "06:00",
-    value: "06:00",
-  },
-  {
-    label: "07:00",
-    value: "07:00",
-  },
-  {
-    label: "08:00",
-    value: "08:00",
-  },
-  {
-    label: "09:00",
-    value: "09:00",
-  },
-  {
-    label: "10:00",
-    value: "10:00",
-  },
-  {
-    label: "11:00",
-    value: "11:00",
-  },
-  {
-    label: "12:00",
-    value: "12:00",
-  },
-  {
-    label: "13:00",
-    value: "13:00",
-  },
-  {
-    label: "14:00",
-    value: "14:00",
-  },
-  {
-    label: "15:00",
-    value: "15:00",
-  },
-  {
-    label: "16:00",
-    value: "16:00",
-  },
-  {
-    label: "17:00",
-    value: "17:00",
-  },
-  {
-    label: "18:00",
-    value: "18:00",
-  },
-  {
-    label: "19:00",
-    value: "19:00",
-  },
-  {
-    label: "20:00",
-    value: "20:00",
-  },
-  {
-    label: "21:00",
-    value: "21:00",
-  },
-  {
-    label: "22:00",
-    value: "22:00",
-  },
-  {
-    label: "23:00",
-    value: "23:00",
-  },
-];
+let periodModeStartTimeSelectList = []
 
 // 周期模式间隔时间选择数据
-const periodModeIntervalTimeSelectList = [
-  {
-    label: 2,
-    value: 2,
-  },
-  {
-    label: 3,
-    value: 3,
-  },
-  {
-    label: 4,
-    value: 4,
-  },
-  {
-    label: 5,
-    value: 5,
-  },
-  {
-    label: 6,
-    value: 6,
-  },
-  {
-    label: 7,
-    value: 7,
-  },
-  {
-    label: 8,
-    value: 8,
-  },
-  {
-    label: 9,
-    value: 9,
-  },
-  {
-    label: 10,
-    value: 10,
-  },
-  {
-    label: 11,
-    value: 11,
-  },
-  {
-    label: 12,
-    value: 12,
-  },
-  {
-    label: 13,
-    value: 13,
-  },
-  {
-    label: 14,
-    value: 14,
-  },
-  {
-    label: 15,
-    value: 15,
-  },
-  {
-    label: 16,
-    value: 16,
-  },
-  {
-    label: 17,
-    value: 17,
-  },
-  {
-    label: 18,
-    value: 18,
-  },
-  {
-    label: 19,
-    value: 19,
-  },
-  {
-    label: 20,
-    value: 20,
-  },
-  {
-    label: 21,
-    value: 21,
-  },
-  {
-    label: 22,
-    value: 22,
-  },
-  {
-    label: 23,
-    value: 23,
-  },
-];
+let periodModeIntervalTimeSelectList = []
 
 // 定时模式选择列表数据
-const timingModeSelectListData = ref([
-  {
-    name: "00:00",
-    value: "00:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "01:00",
-    value: "01:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "02:00",
-    value: "02:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "03:00",
-    value: "03:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "04:00",
-    value: "04:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "05:00",
-    value: "05:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "06:00",
-    value: "06:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "07:00",
-    value: "07:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "08:00",
-    value: "08:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "09:00",
-    value: "09:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "10:00",
-    value: "10:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "11:00",
-    value: "11:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "12:00",
-    value: "12:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "13:00",
-    value: "13:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "14:00",
-    value: "14:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "15:00",
-    value: "15:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "16:00",
-    value: "16:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "17:00",
-    value: "17:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "18:00",
-    value: "18:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "19:00",
-    value: "19:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "20:00",
-    value: "20:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "21:00",
-    value: "21:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "22:00",
-    value: "22:00",
-    isDisabled: false,
-    isActive: false,
-  },
-  {
-    name: "23:00",
-    value: "23:00",
-    isDisabled: false,
-    isActive: false,
-  },
-]);
+const timingModeSelectListData = ref([])
 
 // 定时模式选择的时间
-const timingModeTimes = ref([]);
+const timingModeTimes = ref([])
 
 // 当前状态
-const currentStatus = ref(false);
+const currentStatus = ref(false)
+
+// runmodeId
+const runModeId = ref(null)
+
+// regularModeId
+const regularModeId = ref(null)
+
+// cycleModeId
+const cycleModeId = ref(null)
+
+// 处理定时模式默认数据的函数
+const diposeRegularDefaultDataFunc = (times) => {
+  console.log(times)
+  // 选择数据
+  timingModeSelectListData.value.forEach((item) => {
+    item.isActive = false
+    if (times.indexOf(item.value) != -1) {
+      item.isActive = true
+    }
+  })
+
+  produceDisabledTimeFunc()
+}
+
+// 生成禁用时间的函数
+const produceDisabledTimeFunc = () => {
+  // 创建介质新数组，用来存储数据
+  let nTimingModeSelectListData = timingModeSelectListData.value
+
+  // 当前已经被选中的时间的下标列表
+  let currentActiveTimeIndexs = []
+
+  // 遍历数据，找到已经选中的时间下标，形成一个数组
+  nTimingModeSelectListData.forEach((item, indexI) => {
+    if (item.isActive) {
+      currentActiveTimeIndexs.push(indexI)
+    }
+    item.isDisabled = false
+  })
+
+  // 遍历已经选中的时间下标数组，判断是否需要禁用
+  currentActiveTimeIndexs.forEach((itemI) => {
+    if (itemI == 0) {
+      // 如果下标为0（00:00），则禁用下标为1（01:00）和下标为23（23:00）
+      nTimingModeSelectListData[23].isDisabled = true
+      nTimingModeSelectListData[itemI + 1].isDisabled = true
+    } else if (itemI == 23) {
+      // 如果下标为23（23:00），则禁用下标为22（22:00）和下标为0（00:00）
+      nTimingModeSelectListData[0].isDisabled = true
+      nTimingModeSelectListData[itemI - 1].isDisabled = true
+    } else {
+      // 如果下标不为0和23，则禁用下标为当前下标-1（上一次）和当前下标+1（下一次）
+      if (!nTimingModeSelectListData[itemI - 1].isActive) {
+        nTimingModeSelectListData[itemI - 1].isDisabled = true
+        nTimingModeSelectListData[itemI + 1].isDisabled = true
+      }
+      if (!nTimingModeSelectListData[itemI + 1].isActive) {
+        nTimingModeSelectListData[itemI + 1].isDisabled = true
+        nTimingModeSelectListData[itemI - 1].isDisabled = true
+      }
+    }
+  })
+
+  // 更新响应式数据
+  timingModeSelectListData.value = nTimingModeSelectListData
+}
+
+// 查询运行模式设置的函数
+const selectRunModeSetFunc = async () => {
+  await selectRunModeSetApi().then((res) => {
+    console.log(res, "运行模式设置数据")
+    // 根据请求的数据更改默认模式
+    currentMode.value = modeSelectListData[res.data.runModeSelect - 1].label
+
+    // runModeId
+    runModeId.value = res.data.runModeId
+
+    // regularModeId
+    regularModeId.value = res.data.regularMode.regularModeId
+
+    // cycleModeId
+    cycleModeId.value = res.data.cycleMode.cycleModeId
+
+    // 切割定时模式时间数据
+    let nRegularModeTimes = res.data.regularMode.regularModeSelect.split(";")
+
+    // 处理定时模式数据
+    diposeRegularDefaultDataFunc(nRegularModeTimes)
+
+    // 处理周期模式数据
+    periodModeSelectData.value = {
+      intervalTime: res.data.cycleMode.cycleModeIntervalHour,
+      startTime: res.data.cycleMode.cycleModeStartHour
+    }
+  })
+}
+
+// init
+onMounted(() => {
+  periodModeStartTimeSelectList =
+    runModeStaticData.periodModeStartTimeSelectList
+  periodModeIntervalTimeSelectList =
+    runModeStaticData.periodModeIntervalTimeSelectList
+  timingModeSelectListData.value = runModeStaticData.timingModeSelectListData
+
+  selectRunModeSetFunc()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -662,7 +447,7 @@ const currentStatus = ref(false);
       box-sizing: border-box;
       color: #504f4f;
       // border: 2px solid rgba(92, 91, 91, 0.4);
-      background: rgb(255, 255, 255);
+      background: rgba(255, 255, 255);
       text-align: center;
       border-radius: 6px;
       position: relative;
@@ -782,7 +567,7 @@ const currentStatus = ref(false);
 }
 
 /* save button */
-// ::v-deep .el-button--primary {
+// :deep .el-button--primary {
 //   background: linear-gradient(
 //     180deg,
 //     rgb(23, 170, 238) 0%,
@@ -800,12 +585,12 @@ const currentStatus = ref(false);
 //     color: white !important;
 //   }
 // }
-// ::v-deep .el-button--primary:active {
+// :deep .el-button--primary:active {
 //   transform: scale(0.9);
 // }
 
 /* Radio */
-::v-deep .mode_select_box_group {
+:deep(.mode_select_box_group) {
   padding: 6px 0px 40px 24px;
   width: 524px;
   display: flex;
@@ -814,7 +599,7 @@ const currentStatus = ref(false);
   // border: 1px solid red;
 }
 
-::v-deep .el-radio {
+:deep(.el-radio) {
   .el-radio__label {
     color: white;
     font-size: 22px;
@@ -825,7 +610,7 @@ const currentStatus = ref(false);
   }
 }
 
-::v-deep .el-radio {
+:deep(.el-radio) {
   .el-radio__original {
   }
 
@@ -843,13 +628,13 @@ const currentStatus = ref(false);
   }
 }
 
-::v-deep .el-radio__label {
+:deep(.el-radio__label) {
   position: relative;
   top: -1px;
 }
 
 /* select */
-::v-deep .el-select {
+:deep(.el-select) {
   .el-select__wrapper {
     .el-select__selection {
       .el-select__selected-item {

@@ -3,7 +3,7 @@
     <div
       :class="{
         tab_item: true,
-        tab_item_active: index == activeIndex,
+        tab_item_active: index == activeIndex
       }"
       v-for="(item, index) in props.options"
       :key="index"
@@ -19,37 +19,37 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue"
 export default defineComponent({
-  name: "TabsC",
-});
+  name: "TabsC"
+})
 </script>
 <script setup>
-import IconC from "./iconC.vue";
-import { playClickSound } from "../../utils/other.js";
+import IconC from "./iconC.vue"
+import { playClickSound } from "../../utils/other.js"
 
-const props = defineProps(["options"]);
+const props = defineProps(["options"])
 
-const emits = defineEmits(["setActiveItem"]);
+const emits = defineEmits(["setActiveItem"])
 
 // active index
-const activeIndex = ref(0);
+const activeIndex = ref(0)
 
 // 选项点击事件
 const tabClick = (index, item) => {
-  playClickSound();
-  activeIndex.value = index;
-  emits("setActiveItem", item);
-};
+  playClickSound()
+  activeIndex.value = index
+  emits("setActiveItem", item)
+}
 
 // 拼接图片地址的函数
 const joinIconCTag = (icon, index) => {
-  return `${icon}${activeIndex.value == index ? "_a" : ""}`;
-};
+  return `${icon}${activeIndex.value == index ? "_a" : ""}`
+}
 
 onMounted(() => {
-  console.log(props);
-});
+  console.log(props)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -59,6 +59,7 @@ onMounted(() => {
   // border: 1px solid red;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   padding: 0px 80px;
   background-color: rgba(0, 0, 0, 0.4);
 

@@ -1,29 +1,27 @@
-const {Application} = require("ee-core");
-const Store = require('electron-store')
-const xlsx = require('xlsx')
-const Log = require("ee-core/log");
-const {app,BrowserWindow,ipcMain,screen,shell} = require("electron");
-const dialog = require('electron').dialog
-const fs = require('fs')
-const ExcelJS = require('exceljs')
+const { Application } = require("ee-core")
+const Store = require("electron-store")
+const xlsx = require("xlsx")
+const Log = require("ee-core/log")
+const { app, BrowserWindow, ipcMain, screen, shell } = require("electron")
+const dialog = require("electron").dialog
+const fs = require("fs")
+const ExcelJS = require("exceljs")
 // console.log(dialog.showOpenDialog({ properties: [ 'openFile', 'openDirectory', 'multiSelections' ]}));
-const path = require("path");
-const request = require('request')
-const { exec } = require("child_process");
+const path = require("path")
+const request = require("request")
+const { exec } = require("child_process")
 // const { screen } = require("electron/main");
 // const { showVirtualKeyboard, hideVirtualKeyboard } = require("./utils");
 
 // 启动时打开第三方服务的 Url
-const startAppUrl = `${path.resolve()}\\${app.isPackaged ? "resources" : "build"}\\extraResources\\server\\server.bat`;
+const startAppUrl = `${path.resolve()}\\${app.isPackaged ? "resources" : "build"}\\extraResources\\server\\server.bat`
 // const fileUrl = `file://${__dirname}/index.html`;
 // const serverUrl = `${__dirname}/index.html`;
 // const store = new Store()
 
-
-
 class Index extends Application {
   constructor() {
-    super();
+    super()
     // this === eeApp;
   }
 
@@ -32,7 +30,7 @@ class Index extends Application {
    */
   async ready() {
     // 关闭开发模式下控制台的风险提示信息
-    process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
+    process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true"
     // console.log(fileUrl);
     // console.log(serverUrl);
     // console.log(
@@ -42,10 +40,10 @@ class Index extends Application {
     // 开机自启动
     app.setLoginItemSettings({
       openAtLogin: false, // Boolean 在登录+时启动应用
-      openAsHidden: true, // Boolean (可选) mac 表示以隐藏的方式启动应用。~~~~
+      openAsHidden: true // Boolean (可选) mac 表示以隐藏的方式启动应用。~~~~
       // path: '', String (可选) Windows - 在登录时启动的可执行文件。默认为 process.execPath.
       // args: [] String Windows - 要传递给可执行文件的命令行参数。默认为空数组。注意用引号将路径换行。
-    });
+    })
 
     // 应用打开时启动第三方程序
     // shell.openPath(startAppUrl);
@@ -62,48 +60,54 @@ class Index extends Application {
     /* 自定义操作事件 */
     // 关闭窗口
     ipcMain.on("close", () => {
-      const win = this.electron.mainWindow;
-      win.close();
-      Log.logger.info("关闭窗口");
+      const win = this.electron.mainWindow
+      win.close()
+      Log.logger.info("关闭窗口")
       // exec("shutdown /s /t 0");
-    });
+    })
     // 最大化窗口
     ipcMain.on("max", () => {
-      const win = this.electron.mainWindow;
-      win.maximize();
-    });
+      const win = this.electron.mainWindow
+      win.maximize()
+    })
     // 最小化窗口
     ipcMain.on("min", () => {
-      const win = this.electron.mainWindow;
-      win.minimize();
-    });
+      const win = this.electron.mainWindow
+      win.minimize()
+    })
     // 向下还原
     ipcMain.on("restoreDown", () => {
-      const win = this.electron.mainWindow;
-      win.unmaximize();
-    });
+      const win = this.electron.mainWindow
+      win.unmaximize()
+    })
     // 退出全屏
     ipcMain.on("exitFullScreen", () => {
-      const win = this.electron.mainWindow;
-      win.setFullScreen(false);
-    });
+      const win = this.electron.mainWindow
+      win.setFullScreen(false)
+    })
     // 进入全屏
     ipcMain.on("goFullScreen", () => {
-      const win = this.electron.mainWindow;
-      win.setFullScreen(true);
-    });
+      const win = this.electron.mainWindow
+      win.setFullScreen(true)
+    })
 
     // 打开屏幕键盘
     ipcMain.on("openScreenKeyboard", () => {
-      exec("osk.exe");
+      exec("osk.exe")
       // showVirtualKeyboard();
-    });
+    })
+
+    // 进入屏幕保护程序
+    ipcMain.on("enterScreensaver", () => {
+      console.log("打开屏保")
+      exec("C:\\Windows\\System32\\Mystify.scr -s")
+    })
 
     // 给新窗口发消息
     ipcMain.on("sendMsgMain", (e, msg) => {
-      console.log(e, msg);
+      console.log(e, msg)
       // childWin.webContents.send("msgFromMain", msg);
-    });
+    })
 
     // 下载文件
     // ipcMain.on("downloadFile",(e,fileName,fileType) => {
@@ -124,9 +128,6 @@ class Index extends Application {
     //     }))
     //   })
     // });
-
-
-    
   }
 
   /**
@@ -142,17 +143,17 @@ class Index extends Application {
   async windowReady() {
     // do some things
     // 延迟加载，无白屏
-    const winOpt = this.config.windowsOption;
+    const winOpt = this.config.windowsOption
     if (winOpt.show == false) {
-      const win = this.electron.mainWindow;
+      const win = this.electron.mainWindow
 
       // 默认全屏
-      win.setFullScreen(true);
+      win.setFullScreen(true)
 
       win.once("ready-to-show", () => {
-        win.show();
-        win.focus();
-      });
+        win.show()
+        win.focus()
+      })
     }
   }
 
@@ -165,5 +166,5 @@ class Index extends Application {
   }
 }
 
-Index.toString = () => "[class Index]";
-module.exports = Index;
+Index.toString = () => "[class Index]"
+module.exports = Index

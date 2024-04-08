@@ -7,7 +7,7 @@
           communication_tab_item: true,
           is_show_right_border: true,
           is_active: tabsData[0].isActive,
-          is_activec: !tabsData[0].isActive,
+          is_activec: !tabsData[0].isActive
         }"
         @click="tabItemClick('instrument')"
       >
@@ -27,7 +27,7 @@
         :class="{
           communication_tab_item: true,
           is_active: tabsData[1].isActive,
-          is_activec: !tabsData[1].isActive,
+          is_activec: !tabsData[1].isActive
         }"
         @click="tabItemClick('platform')"
       >
@@ -95,122 +95,122 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
-import "./communication.scss";
+import { defineComponent, ref, onMounted } from "vue"
+import "./communication.scss"
 export default defineComponent({
-  name: "Communication",
-});
+  name: "Communication"
+})
 </script>
 <script setup>
-import { playClickSound } from "../../../utils/other.js";
-import SaveButton from "../../../components/global/saveButton.vue";
+import { playClickSound } from "../../../utils/other.js"
+import SaveButton from "../../../components/global/saveButton.vue"
 
 // 仪表通信设置保存事件
-const instrumentCommunicationSave = () => {};
+const instrumentCommunicationSave = () => {}
 
 // 平台通信设置保存事件
-const platformCommunicationSave = () => {};
+const platformCommunicationSave = () => {}
 
 // 保存点击事件
-const saveClick = () => {};
+const saveClick = () => {}
 
 // 数字输入框点击事件
 const inputNumberClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 当前tab
-const currentTab = ref("instrument");
+const currentTab = ref("instrument")
 
 // tab项点击事件
 const tabItemClick = (type) => {
-  playClickSound();
+  playClickSound()
   switch (type) {
     case "instrument":
-      tabsData.value[0].isActive = true;
-      tabsData.value[1].isActive = false;
-      currentTab.value = "instrument";
-      break;
+      tabsData.value[0].isActive = true
+      tabsData.value[1].isActive = false
+      currentTab.value = "instrument"
+      break
 
     case "platform":
-      tabsData.value[0].isActive = false;
-      tabsData.value[1].isActive = true;
-      currentTab.value = "platform";
-      break;
+      tabsData.value[0].isActive = false
+      tabsData.value[1].isActive = true
+      currentTab.value = "platform"
+      break
 
     default:
-      break;
+      break
   }
-};
+}
 
 // tabs数据
 const tabsData = ref([
   {
     title: "仪表通信设置",
-    isActive: true,
+    isActive: true
   },
   {
     title: "平台通信设置",
-    isActive: false,
-  },
-]);
+    isActive: false
+  }
+])
 
 // 仪表通信设置数据
 const instrumentCommunicationSettingData = ref([
   {
     label: "氨氮地址",
-    value: 0,
+    value: 0
   },
   {
     label: "压力表地址",
-    value: 0,
+    value: 0
   },
   {
     label: "总磷地址",
-    value: 0,
+    value: 0
   },
   {
     label: "空调地址",
-    value: 0,
+    value: 0
   },
   {
     label: "总氮地址",
-    value: 0,
+    value: 0
   },
   {
     label: "采样器地址",
-    value: 0,
+    value: 0
   },
   {
     label: "CODcr地址",
-    value: 0,
+    value: 0
   },
   {
     label: "传感器地址",
-    value: 0,
+    value: 0
   },
   {
     label: "CODmn地址",
-    value: 0,
+    value: 0
   },
   {
     label: "通讯板地址",
-    value: 0,
-  },
-]);
+    value: 0
+  }
+])
 
 // 通讯参数数据
 const communicationParamData = ref({
   baudRate: 9600,
   dataBit: 8,
   stopBit: 1,
-  parityBit: "无",
-});
+  parityBit: "无"
+})
 </script>
 
 <style lang="scss" scoped>
 /* Number - input */
-::v-deep .el-input-number {
+:deep(.el-input-number) {
   width: 160px;
   height: 40px;
   position: relative;

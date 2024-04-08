@@ -75,6 +75,7 @@
           <!-- <el-statistic :value="props.paramValue" />
           -->
           <count-up
+            v-if="typeof props.paramValue == 'number'"
             :start-val="0"
             :end-val="props.paramValue"
             :duration="3"
@@ -83,6 +84,7 @@
             :delay="2"
           >
           </count-up>
+          <span v-else class="notData_value">{{ props.paramValue }}</span>
         </span>
         <span class="unit"> {{ props.paramUnit }} </span>
       </div>
@@ -91,7 +93,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue"
+import { defineComponent, ref, onMounted } from "vue"
 export default defineComponent({
   name: "ParamCard"
 })
@@ -110,6 +112,14 @@ const isShowParamIconFunc = (name) => {
   }
   return flag
 }
+
+// onMounted(() => {
+//   // console.log(props.paramValue)
+//   if (props.paramValue == NaN) {
+//     props.paramValue = "--"
+//   }
+//   console.log(props.paramValue)
+// })
 </script>
 
 <style lang="scss" scoped>
@@ -145,6 +155,11 @@ const isShowParamIconFunc = (name) => {
         font-size: 30px;
         font-family: SYHT-Bold;
         // border: 1px solid red;
+
+        .notData_value {
+          letter-spacing: 2px;
+          margin-left: 4px;
+        }
       }
 
       .unit {

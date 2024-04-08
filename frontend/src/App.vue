@@ -6,17 +6,17 @@
 </template>
 
 <script>
-import "./App.scss";
-import { defineComponent, onUnmounted } from "vue";
+import "./App.scss"
+import { defineComponent, onUnmounted } from "vue"
 export default defineComponent({
-  name: "App",
-});
+  name: "App"
+})
 </script>
 <script setup>
-import ClickAudio from "./components/audio/index.vue";
-document.getElementById("loader").remove();
+import ClickAudio from "./components/audio/index.vue"
+document.getElementById("loader").remove()
 
-onUnmounted(() => {});
+onUnmounted(() => {})
 </script>
 
 <style lang="less" scoped></style>

@@ -286,7 +286,7 @@ onMounted(() => {
   }
 }
 
-::v-deep .el-select {
+:deep(.el-select) {
   .el-select__wrapper {
     .el-select__selection {
       .el-select__selected-item {
@@ -299,7 +299,7 @@ onMounted(() => {
   }
 }
 
-::v-deep .el-radio {
+:deep(.el-radio) {
   .el-radio__label {
     color: white;
     font-size: 22px;
@@ -310,7 +310,7 @@ onMounted(() => {
   }
 }
 
-::v-deep .el-radio {
+:deep(.el-radio) {
   .el-radio__original {
   }
 
@@ -328,12 +328,12 @@ onMounted(() => {
   }
 }
 
-::v-deep .el-radio__label {
+:deep(.el-radio__label) {
   position: relative;
   top: -1px;
 }
 
-// ::v-deep .el-button--primary {
+// :deep .el-button--primary {
 //   background: linear-gradient(
 //     180deg,
 //     rgb(23, 170, 238) 0%,
@@ -351,7 +351,7 @@ onMounted(() => {
 //     color: white !important;
 //   }
 // }
-// ::v-deep .el-button--primary:active {
+// :deep .el-button--primary:active {
 //   transform: scale(0.9);
 // }
 </style>

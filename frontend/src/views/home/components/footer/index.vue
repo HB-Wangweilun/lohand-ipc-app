@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue"
+import { defineComponent, ref, onMounted, onUnmounted } from "vue"
 export default defineComponent({
   name: "Footer"
 })
@@ -66,38 +66,72 @@ export default defineComponent({
 <script setup>
 import paramCard from "./components/paramCard.vue"
 import { selectHomeParamDataApi } from "../../../../api/home.js"
+import UnitJson from "../../../../data/unit.json"
 
 // 参数数据列表
-const paramDataList = ref([])
-
-// 单位列表
-const unitList = ref({
-  总磷: "mg/L",
-  温度: "℃",
-  浊度: "NTU",
-  电导率: "μS/cm",
-  pH: "",
-  COD: "mg/L",
-  溶解氧: "mg/L",
-  氨氮: "mg/L",
-  总氮: "mg/L"
-})
+const paramDataList = ref([
+  {
+    paramName: "pH",
+    paramValue: "--",
+    paramUnit: ""
+  },
+  {
+    paramName: "氨氮",
+    paramValue: "--",
+    paramUnit: "mg/L"
+  },
+  {
+    paramName: "余氯",
+    paramValue: "--",
+    paramUnit: "mg/L"
+  },
+  {
+    paramName: "CODcr",
+    paramValue: "--",
+    paramUnit: "mg/L"
+  },
+  {
+    paramName: "CODmn",
+    paramValue: "--",
+    paramUnit: "mg/L"
+  },
+  {
+    paramName: "浊度",
+    paramValue: "--",
+    paramUnit: "NTU"
+  },
+  {
+    paramName: "ORP",
+    paramValue: "--",
+    paramUnit: "mV"
+  },
+  {
+    paramName: "溶解氧",
+    paramValue: "--",
+    paramUnit: "mg/L"
+  },
+  {
+    paramName: "电导率",
+    paramValue: "--",
+    paramUnit: "μS/cm"
+  }
+])
 
 // 处理参数数据的函数
 const disposeParamDataFunc = (params) => {
+  if (params == null) return
   let nParamData = []
   for (const param in params) {
-    console.log(param)
+    // console.log(param)
     nParamData.push({
       paramName: param,
-      paramValue: Number(params[param]),
-
-      paramUnit: unitList.value[param] ? unitList.value[param] : ""
+      paramValue: params[param] == "--" ? "--" : Number(params[param]),
+      paramUnit: UnitJson.unitKeys[param] ? UnitJson.unitKeys[param] : ""
     })
   }
 
   paramDataList.value = nParamData
-  console.log(paramDataList.value)
+  // console.log(paramDataList.value)
 }
 
 // 查询参数数据的函数
@@ -107,9 +141,19 @@ const selectHomeParamDataFunc = async () => {
   })
 }
 
+var updateTimer = setInterval(() => {
+  selectHomeParamDataFunc()
+  console.log("数据查询计时中....")
+}, 30000)
+
 // init
 onMounted(() => {
   selectHomeParamDataFunc()
+})
+
+// destory
+onUnmounted(() => {
+  clearInterval(updateTimer)
 })
 </script>
 

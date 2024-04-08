@@ -5,7 +5,7 @@ import router from "@/router/index"
 // 创建axios实例
 
 const baseUrl = import.meta.env.VITE_GO_URL
-console.log(baseUrl)
+// console.log(baseUrl)
 const http = axios.create({
   baseURL: baseUrl,
   timeout: 200000 // 请求超时时间
@@ -20,9 +20,13 @@ http.interceptors.request.use(
     } else {
       config.headers["Authorization"] = "Basic cGM6cGM="
     }
-    config.headers["Content-type"] = "multipart/form-data"
+    // config.headers["Content-type"] = "multipart/form-data"
     config.headers["clientType"] = "PC"
+    // console.log(config)
 
+    if (config.headers["Content-Type"] != "application/json;charset=UTF-8") {
+      config.headers["Content-type"] = "multipart/form-data"
+    }
     return config
   },
   (error) => {
@@ -80,7 +84,7 @@ http.interceptors.response.use(
   (error) => {
     // message.error(error.message);
     ElMessage.error(error.message)
-    router.push({ path: "/login" })
+    // router.push({ path: "/login" })
     return Promise.reject(error)
   }
 )

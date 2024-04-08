@@ -7,7 +7,7 @@
           flow_tab_item: true,
           is_show_right_border: true,
           is_active: tabsData[0].isActive,
-          is_activec: !tabsData[0].isActive,
+          is_activec: !tabsData[0].isActive
         }"
         @click="tabItemClick('airConditioner')"
       >
@@ -21,7 +21,7 @@
           flow_tab_item: true,
           is_show_right_border: true,
           is_active: tabsData[1].isActive,
-          is_activec: !tabsData[1].isActive,
+          is_activec: !tabsData[1].isActive
         }"
         @click="tabItemClick('upsStatus')"
       >
@@ -34,7 +34,7 @@
         :class="{
           flow_tab_item: true,
           is_active: tabsData[2].isActive,
-          is_activec: !tabsData[2].isActive,
+          is_activec: !tabsData[2].isActive
         }"
         @click="tabItemClick('samplingApparatusSetting')"
       >
@@ -286,109 +286,109 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
-import "./peripheral.scss";
+import { defineComponent, ref, onMounted } from "vue"
+import "./peripheral.scss"
 export default defineComponent({
-  name: "Peripheral",
-});
+  name: "Peripheral"
+})
 </script>
 <script setup>
-import { playClickSound } from "../../../utils/other.js";
-import SaveButton from "../../../components/global/saveButton.vue";
+import { playClickSound } from "../../../utils/other.js"
+import SaveButton from "../../../components/global/saveButton.vue"
 
 // 空调开关点击事件
 const airSwitchClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 采样器功能开关点击事件
 const samplingSwitchClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 温度输入框点击事件
 const inputNumberClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 空调设置的保存事件
-const airSettingSave = () => {};
+const airSettingSave = () => {}
 
 // 空调采样器的保存事件a
-const samplingSettingSave = () => {};
+const samplingSettingSave = () => {}
 
 // 保存按钮点击事件
 const saveClick = () => {
   switch (currentTab.value) {
     case "airConditioner":
-      airSettingSave();
-      break;
+      airSettingSave()
+      break
 
     case "samplingApparatusSetting":
-      samplingSettingSave();
-      break;
+      samplingSettingSave()
+      break
 
     default:
-      break;
+      break
   }
-};
+}
 
 // tab项点击事件
 const tabItemClick = (type) => {
-  playClickSound();
+  playClickSound()
   switch (type) {
     case "airConditioner":
-      tabsData.value[0].isActive = true;
-      tabsData.value[1].isActive = false;
-      tabsData.value[2].isActive = false;
-      currentTab.value = "airConditioner";
-      break;
+      tabsData.value[0].isActive = true
+      tabsData.value[1].isActive = false
+      tabsData.value[2].isActive = false
+      currentTab.value = "airConditioner"
+      break
 
     case "upsStatus":
-      tabsData.value[0].isActive = false;
-      tabsData.value[1].isActive = true;
-      tabsData.value[2].isActive = false;
-      currentTab.value = "upsStatus";
-      break;
+      tabsData.value[0].isActive = false
+      tabsData.value[1].isActive = true
+      tabsData.value[2].isActive = false
+      currentTab.value = "upsStatus"
+      break
 
     case "samplingApparatusSetting":
-      tabsData.value[0].isActive = false;
-      tabsData.value[1].isActive = false;
-      tabsData.value[2].isActive = true;
-      currentTab.value = "samplingApparatusSetting";
-      break;
+      tabsData.value[0].isActive = false
+      tabsData.value[1].isActive = false
+      tabsData.value[2].isActive = true
+      currentTab.value = "samplingApparatusSetting"
+      break
 
     default:
-      break;
+      break
   }
 
-  console.log(currentTab.value);
-};
+  console.log(currentTab.value)
+}
 
 // 通讯状态
-const communicationStatus = ref("未连接");
+const communicationStatus = ref("未连接")
 
 // 当前tab
-const currentTab = ref("airConditioner");
+const currentTab = ref("airConditioner")
 
 // tabs列表
 const tabsData = ref([
   {
     title: "空调设置",
-    isActive: true,
+    isActive: true
   },
   {
     title: "UPS状态",
-    isActive: false,
+    isActive: false
   },
   {
     title: "采样器设置",
-    isActive: false,
-  },
-]);
+    isActive: false
+  }
+])
 
 // 空调开关状态
-const airSwitchStatus = ref(false);
+const airSwitchStatus = ref(false)
 
 // 空调温度数据
 const airTempData = ref({
@@ -401,8 +401,8 @@ const airTempData = ref({
   // 加热开启温度
   heatStartTemp: 22.5,
   // 加热停止温度
-  heatStopTemp: 22.5,
-});
+  heatStopTemp: 22.5
+})
 
 // ups状态数据
 const upsStatusData = ref({
@@ -417,8 +417,8 @@ const upsStatusData = ref({
   // UPS上次输入电压
   upsLastInputVoltage: "2.5",
   // UPS输入频率
-  upsInputFrequency: "2.5",
-});
+  upsInputFrequency: "2.5"
+})
 
 // 采样器设置参数数据
 const samplingSettingParamData = ref([
@@ -426,47 +426,47 @@ const samplingSettingParamData = ref([
     label: "氨氮采样阈值：",
     icon: "andan",
     value: 2.26,
-    unit: "mg/L",
+    unit: "mg/L"
   },
   {
     label: "总磷采样阈值：",
     icon: "zonglin",
     value: 2.26,
-    unit: "mg/L",
+    unit: "mg/L"
   },
   {
     label: "总氮采样阈值：",
     icon: "zongdan",
     value: 2.26,
-    unit: "mg/L",
+    unit: "mg/L"
   },
   {
     label: "CODcr采样阈值：",
     icon: "CODcr",
     value: 2.26,
-    unit: "mg/L",
+    unit: "mg/L"
   },
   {
     label: "CODmn采样阈值：",
     icon: "CODmn",
     value: 2.26,
-    unit: "mg/L",
+    unit: "mg/L"
   },
   {
     label: "采样量：",
     icon: "samplingQuantity",
     value: 2.26,
-    unit: "mL",
-  },
-]);
+    unit: "mL"
+  }
+])
 
 // 采样器功能开关状态
-const samplingSwitchStatus = ref(false);
+const samplingSwitchStatus = ref(false)
 </script>
 
 <style lang="scss" scoped>
 /* switch */
-::v-deep .el-switch {
+:deep(.el-switch) {
   transform: scale(1.6);
   position: relative;
   // top: -3px;
@@ -481,13 +481,13 @@ const samplingSwitchStatus = ref(false);
   }
 }
 
-::v-deep .el-switch.is-checked .el-switch__core {
+:deep(.el-switch.is-checked .el-switch__core) {
   background-color: #13ce66 !important;
   border: 1px solid rgb(140, 191, 247) !important;
 }
 
 /* Number - input */
-::v-deep .el-input-number {
+:deep(.el-input-number) {
   width: 180px;
   height: 40px;
   position: relative;

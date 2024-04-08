@@ -70,8 +70,8 @@
           v-if="asd.rangeType == '两者之间'"
           v-model="asd.rangeLeftValue"
           class="rangeLeft"
-          :step="0.01"
-          :min="1"
+          :step="0.001"
+          :min="0"
           :max="1000"
           @click="numberInputClick()"
           style="position: relative; top: -4px"
@@ -82,8 +82,8 @@
         <el-input-number
           v-if="asd.rangeType == '两者之间'"
           v-model="asd.rangeRightValue"
-          :step="0.01"
-          :min="1"
+          :step="0.001"
+          :min="0"
           :max="1000"
           @click="numberInputClick()"
           style="position: relative; top: -4px"
@@ -92,8 +92,8 @@
         <el-input-number
           v-if="asd.rangeType == '大于等于' || asd.rangeType == '小于等于'"
           v-model="asd.rangeCenterValue"
-          :step="0.01"
-          :min="1"
+          :step="0.001"
+          :min="0"
           :max="1000"
           @click="numberInputClick()"
           style="position: relative; top: -4px"
@@ -101,225 +101,225 @@
         <!-- <span class="rangeCenter">{{ asd.rangeCenterValue }}</span> -->
         <!-- <span class="rangeRight">{{ asd.rangeRightValue }}</span> -->
         <span class="unit">{{ asd.unit }}</span>
+        <SaveButton class="save_button" @save-click="saveClick(asd)"
+          >保存</SaveButton
+        >
       </div>
     </div>
     <!-- 操作 -->
-    <div class="action_box">
-      <SaveButton @save-click="saveClick">保存</SaveButton>
-    </div>
+    <!-- <div class="action_box">
+     
+    </div> -->
+
+    <!-- 保存成功提示 -->
+    <HintPopUp
+      title="提示"
+      :show="isShowSaveSuccessHintPopUp"
+      :message-content="'保存成功！'"
+    >
+    </HintPopUp>
+
+    <!-- 加载 -->
+    <LoadingC v-if="isShowLoading" class="loadingc_mode"></LoadingC>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
-import "./alarm.scss";
+import { defineComponent, ref, onMounted } from "vue"
+import "./alarm.scss"
 export default defineComponent({
-  name: "Alarm",
-});
+  name: "Alarm"
+})
 </script>
 <script setup>
-import TitleC from "../../../components/global/titleC.vue";
-import SaveButton from "../../../components/global/saveButton.vue";
-import { playClickSound } from "../../../utils/other.js";
+import TitleC from "../../../components/global/titleC.vue"
+import SaveButton from "../../../components/global/saveButton.vue"
+import HintPopUp from "../../../components/global/hintPopUp.vue"
+import LoadingC from "../../../components/loadingC/index.vue"
+import { playClickSound } from "../../../utils/other.js"
+import alarmJsonData from "../data/alarm.json"
+import {
+  selectAlarmSetApi,
+  updateAlarmSetApi,
+  editAlarmStatusApi
+} from "../../../api/paramSetting.js"
 
 // 选择框的option点击事件
 const selectOpionClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 选择框的点击事件
 const selectClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 保存点击事件
-const saveClick = () => {
+const saveClick = async (item) => {
+  let data = {
+    paramReportId: item.paramReportId,
+    paramReportRange: ""
+  }
+
+  // 拼接范围数据
+  switch (item.rangeType) {
+    case "两者之间":
+      data.paramReportRange = `${item.rangeLeftValue}-${item.rangeRightValue}`
+      break
+    case "大于等于":
+      data.paramReportRange = `>=${item.rangeCenterValue}`
+      break
+    case "小于等于":
+      data.paramReportRange = `<=${item.rangeCenterValue}`
+      break
+    default:
+      break
+  }
+  console.log(data)
   // playClickSound();
-};
+  await updateAlarmSetApi(data).then((res) => {
+    isShowSaveSuccessHintPopUp.value = true
+    setTimeout(() => {
+      isShowSaveSuccessHintPopUp.value = false
+    }, 1500)
+  })
+}
 
 // switch点击事件
 const switchClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 数字输入框点击事件
 const numberInputClick = () => {
-  playClickSound();
-};
+  playClickSound()
+}
 
 // 报警设置数据
-const alarmSettingData = ref([
-  {
-    paramName: "管路压力",
-    rangeType: "两者之间",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "kPa",
-    status: false,
-    icon: "pipeline",
-  },
-  {
-    paramName: "站内温度",
-    rangeType: "两者之间",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "℃",
-    status: false,
-    icon: "instationTemp",
-  },
-  {
-    paramName: "水温",
-    rangeType: "大于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "℃",
-    status: false,
-    icon: "temp",
-  },
-  {
-    paramName: "PH",
-    rangeType: "大于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "",
-    status: false,
-    icon: "ph",
-  },
-  {
-    paramName: "溶解氧",
-    rangeType: "小于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "mg/L",
-    status: false,
-    icon: "rongjieyang",
-  },
-  {
-    paramName: "电导率",
-    rangeType: "小于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "µS/cm",
-    status: false,
-    icon: "diandaolv",
-  },
-  {
-    paramName: "浊度",
-    rangeType: "两者之间",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "NTU",
-    status: false,
-    icon: "zhuodu",
-  },
-  {
-    paramName: "氨氮",
-    rangeType: "小于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "mg/L",
-    status: false,
-    icon: "andan",
-  },
-  {
-    paramName: "总磷",
-    rangeType: "小于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "mg/L",
-    status: false,
-    icon: "zonglin",
-  },
-  {
-    paramName: "总氮",
-    rangeType: "两者之间",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "mg/L",
-    status: false,
-    icon: "zongdan",
-  },
-  {
-    paramName: "CODcr",
-    rangeType: "两者之间",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "mg/L",
-    status: false,
-    icon: "CODcr",
-  },
-  {
-    paramName: "CODmn",
-    rangeType: "小于等于",
-    rangeLeftValue: 10.0,
-    rangeRightValue: 20.0,
-    rangeCenterValue: 15.0,
-    rangeValue: "",
-    unit: "mg/L",
-    status: false,
-    icon: "CODmn",
-  },
-]);
+const alarmSettingData = ref([])
 
 // 参数范围类型选择数据
 const paramRangeTypeSelectOptions = ref([
   {
     label: "两者之间",
-    value: "两者之间",
+    value: "两者之间"
   },
   {
     label: "大于等于",
-    value: "大于等于",
+    value: "大于等于"
   },
   {
     label: "小于等于",
-    value: "小于等于",
-  },
-]);
+    value: "小于等于"
+  }
+])
+
+// 查询报警配置的函数
+const selectAlarmSetFunc = async () => {
+  isShowLoading.value = true
+  await selectAlarmSetApi().then((res) => {
+    console.log(res, "报警配置数据")
+    let nAlarmSetData = res.data.map((itemA) => {
+      let rData = judgeRangeValueTypeF(itemA.paramReportRange)
+      return {
+        paramName: itemA.paramName,
+        rangeType: rData.type,
+        rangeLeftValue: Number(rData.leftValue),
+        rangeRightValue: Number(rData.rightValue),
+        rangeCenterValue: Number(rData.centerValue),
+        unit: paramUnitMatchingFunc(itemA.paramName),
+        status: itemA.status == 1 ? true : false,
+        icon: paramIconMatchingFunc(itemA.paramName),
+        paramReportId: itemA.paramReportId
+      }
+    })
+    alarmSettingData.value = nAlarmSetData
+
+    isShowLoading.value = false
+  })
+}
+
+// 参数单位匹配函数
+const paramUnitMatchingFunc = (paramName) => {
+  return alarmJsonData.paramUnitList[paramName]
+}
+
+// 参数icon匹配函数
+const paramIconMatchingFunc = (paramName) => {
+  return alarmJsonData.paramIconList[paramName]
+}
+
+// 保存成功显示的标识
+const isShowSaveSuccessHintPopUp = ref(false)
+
+// 显示加载效果的标识
+const isShowLoading = ref(false)
+
+// 判断范围值的类型的函数
+const judgeRangeValueTypeF = (value) => {
+  let rData = {
+    type: "",
+    leftValue: "",
+    rightValue: "",
+    centerValue: ""
+  }
+  if (value.indexOf("-") != -1) {
+    rData.type = "两者之间"
+    let values = value.split("-")
+    console.log(values)
+    rData.leftValue = values[0]
+    rData.rightValue = values[1]
+  } else if (value.indexOf(">") != -1) {
+    rData.type = "大于等于"
+    let values = value.split(">=")
+    rData.centerValue = values[1]
+    // console.log(values)
+  } else {
+    rData.type = "小于等于"
+    let values = value.split("<=")
+    rData.centerValue = values[1]
+    // console.log(values)
+  }
+  return rData
+}
+
+// init
+onMounted(() => {
+  selectAlarmSetFunc()
+})
 </script>
 
 <style lang="scss" scoped>
 /* switch */
-::v-deep .el-switch {
-  transform: scale(1.6);
+:deep(.el-switch) {
+  // transform: scale(1.6);
   position: relative;
   // top: -3px;
-  margin-right: 30px;
+  margin-right: 20px;
 
   .el-switch__core {
+    width: 64px;
+    height: 32px;
+    border-radius: 30px;
     .el-switch__action {
+      width: 26px;
+      height: 26px;
+      left: 3px !important;
     }
   }
+}
 
-  .el-switch.is-checked {
+:deep(.el-switch.is-checked) {
+  .el-switch__core {
+    .el-switch__action {
+      left: 35px !important;
+    }
   }
 }
 
 /* Number - input */
-::v-deep .el-input-number {
-  width: 160px;
+:deep(.el-input-number) {
+  width: 200px;
   height: 40px;
   position: relative;
   top: -4px;
@@ -345,12 +345,12 @@ const paramRangeTypeSelectOptions = ref([
   }
 }
 
-::v-deep .el-switch.is-checked .el-switch__core {
+:deep(.el-switch.is-checked .el-switch__core) {
   background-color: #13ce66 !important;
   border: 1px solid rgb(140, 191, 247) !important;
 }
 
-::v-deep .el-select {
+:deep(.el-select) {
   .el-select__wrapper {
     .el-select__selection {
       .el-select__selected-item {

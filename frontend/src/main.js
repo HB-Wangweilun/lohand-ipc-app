@@ -1,42 +1,45 @@
 // Element Plus
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
+import ElementPlus from "element-plus"
+import zhCn from "element-plus/es/locale/lang/zh-cn"
+import "element-plus/dist/index.css"
 
-import { createApp } from "vue";
-import App from "./App.vue";
+import { createApp } from "vue"
+import App from "./App.vue"
 
 // Reset Css
-import "./assets/css/reset.css";
+import "./assets/css/reset.css"
 
 // Global Css
-import "./assets/global.scss";
+import "./assets/global.scss"
 
 // Global Component
-import components from "./components/global";
+import components from "./components/global"
 
 // Router
-import Router from "./router/index";
+import Router from "./router/index"
 
 // Pinia
-import Pinia from "./store";
+import Pinia from "./store"
 
 // Contextmenu
-import Contentmenu from "v-contextmenu";
-import "v-contextmenu/dist/themes/default.css";
+import Contentmenu from "v-contextmenu"
+import "v-contextmenu/dist/themes/default.css"
 
 // Animate css
-import "animate.css";
+import "animate.css"
 
-const app = createApp(App);
-app.config.productionTip = false;
+const app = createApp(App)
+app.config.productionTip = false
 
 // components
 for (const i in components) {
-  app.component(i, components[i]);
+  app.component(i, components[i])
 }
 
-app.use(Router);
-app.use(Pinia);
-app.use(ElementPlus);
-app.use(Contentmenu);
-app.mount("#app");
+app.use(Router)
+app.use(Pinia)
+app.use(ElementPlus, {
+  locale: zhCn
+})
+app.use(Contentmenu)
+app.mount("#app")

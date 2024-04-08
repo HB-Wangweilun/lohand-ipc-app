@@ -23,13 +23,22 @@
         @click="tabItemClick('single')"
       >
         <img class="tab_item_img" src="../image/singleProcessControl.png" />
-        <span class="title">流程单控</span>
+        <span class="title">步骤单控</span>
       </div>
     </div>
 
     <div class="flow_content_box">
       <!-- 流程单控选择模块 -->
-      <el-radio-group
+      <div class="flow_single_box" v-if="currentTab == 'single'">
+        <StepModeCard
+          v-for="(fsrd, indexF) in flowSingleRadioData"
+          :key="indexF"
+          :title="fsrd.label"
+          :isActive="flowSingleData == fsrd.label"
+          @click="setFlowSingleData"
+        ></StepModeCard>
+      </div>
+      <!-- <el-radio-group
         v-if="currentTab == 'single'"
         class="flow_single_box_group"
         v-model="flowSingleData"
@@ -41,7 +50,7 @@
           :value="fsrd.label"
           @click="flowSingleRadioClick"
         ></el-radio>
-      </el-radio-group>
+      </el-radio-group> -->
 
       <!-- 流程定义选择模块 -->
       <el-radio-group
@@ -52,21 +61,16 @@
         <el-radio
           v-for="(fdrd, index) in flowDefinitionRadioData"
           :key="index"
-          :label="fdrd.title"
-          :value="fdrd.value"
+          :label="fdrd.processName"
+          :value="fdrd.processName"
           @click="flowDefinitionRadioClick"
-          >{{ fdrd.title }}
-          <span v-for="(cl, indexC) in fdrd.contentList" :key="indexC">
-            <!-- <span v-if="indexC !== 0">&nbsp; → &nbsp;</span> -->
+          @change="flowDefinitionRadioChange(fdrd)"
+          >{{ fdrd.processName }}：
+          <span v-for="(cl, indexC) in fdrd.processStepList" :key="indexC">
             <span v-if="indexC !== 0">
               <img class="arrows_img" src="../image/to_right_arrows.png" />
             </span>
-            <span
-              :class="{
-                is_highlight: cl.isHighlight
-              }"
-              >{{ cl.value }}</span
-            >
+            <span>{{ cl.stepName }}</span>
           </span>
         </el-radio>
       </el-radio-group>
@@ -89,10 +93,10 @@
       <!-- 流程定义 -->
       <div class="definition_box" v-if="currentTab == 'definition'">
         <span class="label">当前模式：</span>
-        <span v-if="flowDefinitionData == 'mode1'" class="value">模式一</span>
-        <span v-if="flowDefinitionData == 'mode2'" class="value">模式二</span>
-        <span v-if="flowDefinitionData == 'mode3'" class="value">模式三</span>
-        <span v-if="flowDefinitionData == 'mode4'" class="value">模式四</span>
+        <span v-if="flowDefinitionData == '模式1'" class="value">模式1</span>
+        <span v-if="flowDefinitionData == '模式2'" class="value">模式2</span>
+        <span v-if="flowDefinitionData == '模式3'" class="value">模式3</span>
+        <span v-if="flowDefinitionData == '模式4'" class="value">模式4</span>
       </div>
     </div>
 
@@ -124,6 +128,17 @@
         >保存</SaveButton
       >
     </div>
+
+    <!-- 保存成功提示 -->
+    <HintPopUp
+      title="提示"
+      :show="isShowSaveSuccessHintPopUp"
+      :message-content="'保存成功！'"
+    >
+    </HintPopUp>
+
+    <!-- 加载效果 -->
+    <!-- <LoadingC></LoadingC> -->
   </div>
 </template>
 
@@ -135,10 +150,50 @@ export default defineComponent({
 </script>
 <script setup>
 import SaveButton from "../../../components/global/saveButton.vue"
+import HintPopUp from "../../../components/global/hintPopUp.vue"
+import StepModeCard from "./stepModeCard.vue"
+import LoadingC from "../../../components/loadingC/index.vue"
 import { playClickSound } from "../../../utils/other.js"
+import {
+  selectRunFlowSetApi,
+  chooseFlowApi,
+  selectAllStepApi
+} from "../../../api/paramSetting.js"
 
+// 查询流程数据的函数
+const selectRunFlowSetFunc = async () => {
+  await selectRunFlowSetApi().then((res) => {
+    console.log(res.data, "运行流程设置数据")
+    flowDefinitionRadioData.value = res.data
+    res.data.forEach((item) => {
+      if (item.isSelect == 1) {
+        flowDefinitionData.value = item.processName
+      }
+    })
+  })
+}
+
+// 查询所有流程的函数
+const selectAllStepFunc = async () => {
+  await selectAllStepApi().then((res) => {
+    flowSingleRadioData.value = res.data.map((item) => {
+      return {
+        label: item.stepName,
+        value: item.stepName,
+        stepId: item.stepId
+      }
+    })
+
+    console.log(flowSingleRadioData.value)
+  })
+}
+
+// init
 onMounted(() => {
-  console.log(currentTab.value)
+  selectRunFlowSetFunc()
+  selectAllStepFunc()
+  processId.value = 1
+  // console.log(currentTab.value)
 })
 
 // 流程单控停止点击事件
@@ -152,7 +207,21 @@ const flowSingleRunningClick = () => {
 }
 
 // 流程定义保存点击事件
-const flowDefinitionSaveClick = () => {}
+const flowDefinitionSaveClick = async () => {
+  let data = {
+    processId: processId.value
+  }
+  await chooseFlowApi(data)
+    .then((res) => {
+      isShowSaveSuccessHintPopUp.value = true
+      setTimeout(() => {
+        isShowSaveSuccessHintPopUp.value = false
+      }, 1500)
+    })
+    .finally(() => {
+      selectRunFlowSetFunc()
+    })
+}
 
 // 流程单控Radio点击事件
 const flowSingleRadioClick = () => {
@@ -162,7 +231,13 @@ const flowSingleRadioClick = () => {
 // 流程定义Radio点击事件
 const flowDefinitionRadioClick = () => {
   playClickSound()
-  console.log(flowDefinitionData.value)
+  // console.log(flowDefinitionData.value)
+}
+
+// 流程定义Radio change事件
+const flowDefinitionRadioChange = (e) => {
+  let nProcessId = e.processId
+  processId.value = nProcessId
 }
 
 // tab项点击事件
@@ -186,187 +261,32 @@ const tabItemClick = (type) => {
   }
 }
 
+// 修改步骤单控选择数据
+const setFlowSingleData = (flag) => {
+  flowSingleData.value = flag
+}
+
 /* 数据 */
 // 流程单控选择数据
 const flowSingleData = ref("采水")
 
+// 当前选择的processId
+const processId = ref(null)
+
 // 流程单控状态
 const flowSingleStatus = "停止"
 
+// 保存成功提示弹窗显示的标识
+const isShowSaveSuccessHintPopUp = ref(false)
+
 // 流程单控单选数据列表
-const flowSingleRadioData = ref([
-  {
-    label: "采水",
-    value: "采水"
-  },
-  {
-    label: "沉砂",
-    value: "沉砂"
-  },
-  {
-    label: "仪表测量",
-    value: "仪表测量"
-  },
-  {
-    label: "排空",
-    value: "排空"
-  },
-  {
-    label: "除藻清洗",
-    value: "除藻清洗"
-  },
-  {
-    label: "普通清洗",
-    value: "普通清洗"
-  },
-  {
-    label: "传感器保养",
-    value: "传感器保养"
-  },
-  {
-    label: "气吹清洗",
-    value: "气吹清洗"
-  }
-])
+const flowSingleRadioData = ref([])
 
 // 流程定义选择数据
-const flowDefinitionData = ref("mode1")
+const flowDefinitionData = ref("")
 
 // 流程定义单选数据列表
-const flowDefinitionRadioData = ref([
-  {
-    title: "模式一： ",
-    contentList: [
-      {
-        value: "采水",
-        isHighlight: false
-      },
-      {
-        value: "传感器测量",
-        isHighlight: false
-      },
-      {
-        value: "沉砂",
-        isHighlight: false
-      },
-      {
-        value: "仪表测量",
-        isHighlight: false
-      },
-      {
-        value: "排空",
-        isHighlight: false
-      },
-      {
-        value: "除藻清洗",
-        isHighlight: true
-      },
-      {
-        value: "传感器保养",
-        isHighlight: false
-      }
-    ],
-    value: "mode1"
-  },
-  {
-    title: "模式二： ",
-    contentList: [
-      {
-        value: "采水",
-        isHighlight: false
-      },
-      {
-        value: "传感器测量",
-        isHighlight: false
-      },
-      {
-        value: "沉砂",
-        isHighlight: false
-      },
-      {
-        value: "仪表测量",
-        isHighlight: false
-      },
-      {
-        value: "排空",
-        isHighlight: false
-      },
-      {
-        value: "普通清洗",
-        isHighlight: true
-      },
-      {
-        value: "传感器保养",
-        isHighlight: false
-      }
-    ],
-    value: "mode2"
-  },
-  {
-    title: "模式三： ",
-    contentList: [
-      {
-        value: "采水",
-        isHighlight: false
-      },
-      {
-        value: "传感器测量",
-        isHighlight: false
-      },
-      {
-        value: "沉砂",
-        isHighlight: false
-      },
-      {
-        value: "仪表测量",
-        isHighlight: false
-      },
-      {
-        value: "排空",
-        isHighlight: false
-      },
-      {
-        value: "气吹清洗",
-        isHighlight: true
-      },
-      {
-        value: "传感器保养",
-        isHighlight: false
-      }
-    ],
-    value: "mode3"
-  },
-  {
-    title: "模式四： ",
-    contentList: [
-      {
-        value: "采水",
-        isHighlight: false
-      },
-      {
-        value: "传感器测量",
-        isHighlight: false
-      },
-      {
-        value: "沉砂",
-        isHighlight: false
-      },
-      {
-        value: "仪表测量",
-        isHighlight: false
-      },
-      {
-        value: "排空",
-        isHighlight: false
-      },
-      {
-        value: "传感器保养",
-        isHighlight: false
-      }
-    ],
-    value: "mode4"
-  }
-])
+const flowDefinitionRadioData = ref([])
 
 // 当前tab项
 const currentTab = ref("definition")
@@ -374,7 +294,7 @@ const currentTab = ref("definition")
 // tabs数据
 const tabsData = ref([
   {
-    title: "流程单控",
+    title: "步骤单控",
     isActive: false
   },
   {
@@ -444,6 +364,15 @@ const tabsData = ref([
     }
   }
 
+  .flow_content_box {
+    .flow_single_box {
+      padding-left: 30px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
   /* 当前状态/模式 */
   .flow_status_mode_box {
     position: absolute;
@@ -483,17 +412,18 @@ const tabsData = ref([
 /* Radio */
 
 // 单控
-::v-deep .flow_single_box_group {
+:deep(.flow_single_box_group) {
   padding: 40px 0px 40px 30px;
   width: 1720px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   // border: 1px solid red;
 }
 
 // 定义
-::v-deep .flow_definition_box_group {
+:deep(.flow_definition_box_group) {
   padding: 40px 0px 40px 30px;
   width: 120px;
   display: flex;
@@ -515,7 +445,7 @@ const tabsData = ref([
   }
 }
 
-::v-deep .el-radio {
+:deep(.el-radio) {
   text-align: left;
   .el-radio__label {
     color: white;
@@ -527,7 +457,7 @@ const tabsData = ref([
   }
 }
 
-::v-deep .el-radio {
+:deep(.el-radio) {
   // height: 0px;
   .el-radio__original {
   }
@@ -546,7 +476,7 @@ const tabsData = ref([
   }
 }
 
-::v-deep .el-radio__label {
+:deep(.el-radio__label) {
   position: relative;
   top: -1px;
 }
@@ -561,7 +491,7 @@ const tabsData = ref([
 }
 
 /* save button */
-::v-deep .el-button--primary {
+:deep(.el-button--primary) {
   background: linear-gradient(
     180deg,
     rgb(23, 170, 238) 0%,
@@ -580,7 +510,7 @@ const tabsData = ref([
     color: white !important;
   }
 }
-::v-deep .el-button--primary:active {
+:deep(.el-button--primary:active) {
   transform: scale(0.9);
 }
 </style>
