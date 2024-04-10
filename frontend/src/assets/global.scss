@@ -116,10 +116,21 @@
 
 
 .el-popper {
+
   .el-select-dropdown {
     font-size: 20px;
     font-family: SYHT-Bold;
     color: rgb(126, 126, 126);
     letter-spacing: 2px;
+  }
+}
+
+
+.el-picker-panel {
+  transform: scale(1.5);
+  font-family: SYHT-Regular;
+
+  .el-picker-panel__body-wrapper {
+    .el-picker-panel__body {}
   }
 }

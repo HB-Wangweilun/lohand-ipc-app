@@ -51,6 +51,9 @@
       v-if="props.tag == 'reportedData_a'"
       src="./image/reportedData_a.png"
     />
+
+    <img v-if="props.tag == 'curveGraph'" src="./image/curveGraph.png" />
+    <img v-if="props.tag == 'curveGraph_a'" src="./image/curveGraph_a.png" />
   </div>
 </template>
 

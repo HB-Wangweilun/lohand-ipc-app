@@ -3,6 +3,8 @@ import ElementPlus from "element-plus"
 import zhCn from "element-plus/es/locale/lang/zh-cn"
 import "element-plus/dist/index.css"
 
+import "./assets/font/font.css"
+
 import { createApp } from "vue"
 import App from "./App.vue"
 
@@ -28,6 +30,10 @@ import "v-contextmenu/dist/themes/default.css"
 // Animate css
 import "animate.css"
 
+// JsonEditorVue
+import JsonEditorVue from "json-editor-vue3"
+import "jsoneditor"
+
 const app = createApp(App)
 app.config.productionTip = false
 
@@ -36,10 +42,26 @@ for (const i in components) {
   app.component(i, components[i])
 }
 
+// 异步加载字体文件
+// function loadFonts() {
+//   const fontStyles = document.createElement("link")
+//   fontStyles.href = "./assets/font.css"
+//   fontStyles.rel = "stylesheet"
+//   document.head.appendChild(fontStyles)
+//   console.log(document.head)
+// }
+
+app.use(JsonEditorVue)
 app.use(Router)
 app.use(Pinia)
 app.use(ElementPlus, {
   locale: zhCn
 })
 app.use(Contentmenu)
+
+app.mixin({
+  beforeMount() {
+    // loadFonts()
+  }
+})
 app.mount("#app")

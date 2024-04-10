@@ -104,6 +104,7 @@
         <MetricalData
           v-if="currentTabsActiveItem.title == '测量数据'"
         ></MetricalData>
+        <DataGraph v-if="currentTabsActiveItem.title == '数据图表'"></DataGraph>
       </ContentCardC>
     </div>
   </div>
@@ -118,6 +119,7 @@ export default defineComponent({
 <script setup>
 import RealTimeData from "./components/realTimeData.vue"
 import MetricalData from "./components/metricalData.vue"
+import DataGraph from "./components/dataGraph.vue"
 import ContentCardC from "../../components/global/contentCardC.vue"
 import { playClickSound } from "../../utils/other.js"
 import TabsC from "../../components/tabsC/index.vue"
@@ -141,6 +143,10 @@ const tabsOptions = ref([
   {
     title: "测量数据",
     icon: "metricalData"
+  },
+  {
+    title: "数据图表",
+    icon: "curveGraph"
   }
 ])
 </script>

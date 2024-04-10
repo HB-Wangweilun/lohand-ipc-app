@@ -31,6 +31,8 @@ export default defineComponent({
   font-weight: 700;
   color: #ffffff;
   z-index: 10;
+  font-family: SYHT-Bold;
+  letter-spacing: 2px;
 }
 
 .load-inner {

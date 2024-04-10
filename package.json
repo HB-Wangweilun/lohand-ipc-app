@@ -55,6 +55,7 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "child_process": "^1.0.2",
     "dayjs": "^1.10.7",
     "ee-core": "^2.8.1",

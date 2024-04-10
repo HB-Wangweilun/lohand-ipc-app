@@ -1,7 +1,67 @@
 <template>
   <div class="water_polo" :id="cId">
     <div class="top_content">
-      <img class="icon" src="../image/andan.png" />
+      <img
+        class="icon"
+        v-if="props.paramName == '氨氮'"
+        src="../image/andan.png"
+      />
+      <img class="icon" v-if="props.paramName == 'pH'" src="../image/pH.png" />
+      <img
+        class="icon"
+        v-if="props.paramName == '余氯'"
+        src="../image/yulv.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == 'CODcr'"
+        src="../image/CODcr.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == 'COD'"
+        src="../image/CODcr.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == 'CODmn'"
+        src="../image/CODmn.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == '浊度'"
+        src="../image/zhuodu.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == 'ORP'"
+        src="../image/ORP.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == '溶解氧'"
+        src="../image/rongjieyang.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == '电导率'"
+        src="../image/diandaolv.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == '总磷'"
+        src="../image/zonglin.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == '总氮'"
+        src="../image/zongdan.png"
+      />
+      <img
+        class="icon"
+        v-if="props.paramName == '温度'"
+        src="../image/temp.png"
+      />
       <span class="paramName">{{ props.paramName }}</span>
     </div>
     <span class="unit">{{ props.unit }}</span>
@@ -9,7 +69,14 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, onMounted, nextTick } from "vue"
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  nextTick,
+  onBeforeUnmount
+} from "vue"
 export default defineComponent({
   name: "WaterPolo"
 })
@@ -36,10 +103,12 @@ nextTick(() => {
 })
 
 // EC init
+let ecEl
+let waterPoloEc
 const ecInit = () => {
   console.log(cId.value, "水球ID")
-  let ecEl = document.getElementById(cId.value)
-  let waterPoloEc = echarts.init(ecEl, null, { renderer: "svg" })
+  ecEl = document.getElementById(cId.value)
+  waterPoloEc = echarts.init(ecEl, null, { renderer: "svg" })
   // 水球内部数据--蓝色
   // var value = 0.72
   // // 水球颞部数据--灰色
@@ -56,8 +125,11 @@ const ecInit = () => {
         type: "liquidFill", //水位图
         radius: "86%", //显示比例
         center: ["50%", "50%"], //中心点
-        amplitude: 14, //水波振幅
-        data: [0.5, 0.5, 0.5], // data个数代表波浪数
+        waveAnimation: true, //停止动画 动画占用cpu过高 核心代码
+        animationDuration: 0, //停止动画 动画占用cpu过高 核心代码
+        animationDurationUpdate: 0, //停止动画 动画占用cpu过高 核心代码
+        amplitude: 8, //水波振幅
+        data: [0.5], // data个数代表波浪数
         color: [
           {
             type: "linear",
@@ -95,7 +167,7 @@ const ecInit = () => {
           borderDistance: 0,
           itemStyle: {
             borderWidth: 1,
-            borderColor: "rgba(24, 40, 101,0.7)"
+            borderColor: "rgba(39, 113, 250,0.6)"
           }
         }
       }
@@ -109,6 +181,11 @@ const cId = ref("")
 
 onMounted(() => {
   cId.value = generateLetterPrefixedId()
+  console.log(props)
+})
+
+onBeforeUnmount(() => {
+  waterPoloEc.dispose()
 })
 </script>
 

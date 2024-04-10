@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue"
+import { defineComponent, ref, onMounted } from "vue"
 export default defineComponent({
   name: "RealTimeDataCard"
 })
@@ -27,6 +27,10 @@ const props = defineProps([
   "scope",
   "status"
 ])
+
+onMounted(() => {
+  console.log(props)
+})
 </script>
 
 <style lang="scss" scoped>

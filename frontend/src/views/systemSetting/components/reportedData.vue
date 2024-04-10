@@ -1,5 +1,7 @@
 <template>
-  <div class="reported_data_wrap">ReportedData</div>
+  <div class="reported_data_wrap">
+    <JsonEditors></JsonEditors>
+  </div>
 </template>
 
 <script>
@@ -8,6 +10,8 @@ export default defineComponent({
   name: "ReportedData"
 })
 </script>
-<script setup></script>
+<script setup>
+import JsonEditors from "./jsonEditors.vue"
+</script>
 
 <style lang="scss" scoped></style>

@@ -1,6 +1,44 @@
 <template>
   <div class="metrical_data_wrap">
-    <div class="header_box"></div>
+    <div class="header_box">
+      <!-- 查询表单 -->
+      <el-form :inline="true" :model="queryFormData" class="demo-form-inline">
+        <el-form-item label="开始时间">
+          <el-date-picker
+            v-model="queryFormData.startTime"
+            type="date"
+            placeholder="选择开始时间"
+            clearable
+            :editable="false"
+            @change="playClickSound"
+            @focus="playClickSound"
+          />
+        </el-form-item>
+        <el-form-item label="结束时间">
+          <el-date-picker
+            v-model="queryFormData.endTime"
+            type="date"
+            placeholder="选择结束时间"
+            clearable
+            :editable="false"
+            @change="playClickSound"
+            @focus="playClickSound"
+          />
+        </el-form-item>
+        <el-form-item>
+          <div class="action_button_box">
+            <el-button type="primary" @click="queryClick">
+              <img class="icon" src="../image/query.png" />
+              <span>查询</span>
+            </el-button>
+            <el-button type="primary" @click="exportClick">
+              <img class="icon" src="../image/export.png" />
+              <span>导出</span>
+            </el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </div>
     <div class="table_box metrical_data_table">
       <el-table
         :data="tableData"
@@ -8,6 +46,7 @@
         style="width: 100%; height: 100%"
         :highlight-current-row="true"
         @row-click="tableRowClick"
+        v-loading="isTableLoading"
       >
         <el-table-column
           prop="number"
@@ -63,6 +102,16 @@ export default defineComponent({
 import mData from "../data/metricalData.json"
 import { playClickSound, generateTableRowNumber } from "../../../utils/other.js"
 
+// 查询点击事件
+const queryClick = () => {
+  playClickSound()
+}
+
+// 导出点击事件
+const exportClick = () => {
+  playClickSound()
+}
+
 // 表格行点击事件
 const tableRowClick = () => {
   playClickSound()
@@ -87,14 +136,26 @@ const size = ref(10)
 const total = ref(500)
 
 // 表格数据
-//
 const tableData = ref(mData.tableData)
+
+// 表格加载标识
+const isTableLoading = ref(false)
+
+// 查询表单数据
+const queryFormData = ref({
+  startTime: "",
+  endTime: ""
+})
 
 // Init
 onMounted(() => {
   tableData.value.forEach((item, index) => {
     item.number = generateTableRowNumber(page.value, size.value, index)
   })
+  isTableLoading.value = true
+  setTimeout(() => {
+    isTableLoading.value = false
+  }, 1000)
 })
 </script>
 
@@ -106,13 +167,14 @@ onMounted(() => {
 
   .header_box {
     width: 100%;
-    height: 12%;
+    height: 10%;
     background-color: rgba(255, 255, 255, 0.15);
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow:
       1px 1px 4px rgba(255, 255, 255, 0.3),
       -1px -1px 4px rgba(255, 255, 255, 0.3);
+    padding: 15px 0px 0px 40px;
   }
 
   .table_box {
@@ -125,6 +187,16 @@ onMounted(() => {
     bottom: 0;
     right: 0px;
     // transform: scale(1.4);
+  }
+
+  .action_button_box {
+    position: relative;
+    left: -16px;
+
+    .icon {
+      width: 26px;
+      margin-right: 14px;
+    }
   }
 }
 
@@ -217,8 +289,8 @@ onMounted(() => {
 :deep(.el-pagination) {
   .btn-prev,
   .btn-next {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
 
     .el-icon {
       font-size: 22px;
@@ -232,10 +304,72 @@ onMounted(() => {
 
   .el-pager {
     li {
-      width: 44px;
-      height: 44px;
+      width: 52px;
+      height: 52px;
       font-size: 18px;
     }
   }
+}
+
+/* form */
+:deep(.demo-form-inline) {
+  .el-form-item {
+    margin-right: 60px;
+    .el-form-item__label {
+      color: white;
+      font-size: 18px;
+      font-family: SYHT-Bold;
+      letter-spacing: 2px;
+      position: relative;
+      top: 5px;
+    }
+
+    .el-form-item__content {
+      .el-input {
+        height: 44px;
+        .el-input__wrapper {
+          .el-input__prefix {
+            .el-input__prefix-inner {
+              font-size: 22px;
+            }
+          }
+
+          .el-input__inner {
+            // text-align: center;
+            font-size: 16px;
+            // font-family: SYHT-Bold;
+            font-family: SYHT-Regular;
+            letter-spacing: 2px;
+            margin-left: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/*  button */
+:deep(.el-button--primary) {
+  background: linear-gradient(
+    180deg,
+    rgb(23, 170, 238) 0%,
+    rgba(15, 104, 251, 1) 100%
+  );
+
+  box-shadow:
+    1px 1px 1px rgba(255, 255, 255, 0.2),
+    -1px -1px 1px rgba(255, 255, 255, 0.2);
+  font-family: "SYHT-Bold";
+  font-size: 20px;
+  padding: 26px 30px 26px 48px;
+  letter-spacing: 14px;
+  border-radius: 10px;
+  margin-right: 16px;
+  span {
+    color: white !important;
+  }
+}
+:deep(.el-button--primary:active) {
+  transform: scale(0.9);
 }
 </style>
