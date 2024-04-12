@@ -1,0 +1,27 @@
+/* pagination */
+:deep(.el-pagination) {
+
+  .btn-prev,
+  .btn-next {
+    width: 52px;
+    height: 52px;
+
+    .el-icon {
+      font-size: 22px;
+    }
+  }
+
+  .el-pagination__total {
+    color: white !important;
+    letter-spacing: 1px;
+    font-size: 16px;
+  }
+
+  .el-pager {
+    li {
+      width: 52px;
+      height: 52px;
+      font-size: 18px;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+/* table */
+:deep(.el-table) {
+  border-radius: 8px;
+  background: transparent !important;
+  --el-table-row-hover-bg-color: var(--el-color-primary-light-9);
+  // --el-table-current-row-bg-color: var(--el-color-primary-light-9);
+
+  .el-table__inner-wrapper {
+    .el-table__header-wrapper {
+      height: 70px;
+      border-bottom: 1px solid rgb(187, 186, 186);
+      box-shadow:
+        1px 1px 4px rgba(0, 0, 0, 1),
+        -1px -1px 4px rgba(0, 0, 0, 1) !important;
+      // border-radius: 20px;
+
+      .el-table__header {
+        height: 70px;
+        // border-radius: 20px;
+
+        thead {
+          height: 70px;
+
+          tr {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.92) !important;
+
+            th {
+              background: transparent !important;
+              border-right: 0px;
+              color: rgb(90, 89, 89);
+
+              border-color: rgb(212, 210, 210);
+
+              .cell {
+                font-family: SYHT-Bold !important;
+                font-weight: 500;
+                letter-spacing: 4px;
+                font-size: 18px;
+                margin-left: 2px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .el-table__body-wrapper {
+      .el-scrollbar {
+        .el-scrollbar__wrap {
+          .el-scrollbar__view {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.82) !important;
+
+            .el-table__body {
+              tbody {
+                tr {
+                  background: rgba(255, 255, 255, 0) !important;
+                  height: 55px;
+
+                  td {
+                    letter-spacing: 2px;
+                    border-color: rgb(212, 210, 210);
+                    font-size: 16px;
+                    // font-family: "SJDHJT-Z";
+                    font-family: SYHT-Regular !important;
+                  }
+                }
+
+                tr:hover {
+                  // background: red !important;
+                }
+
+                tr:focus {
+                  background: red !important;
+                }
+              }
+            }
+
+            /* 空状态 */
+            .el-table__empty-block {
+              height: 100%;
+              background: rgba(255, 255, 255, 0.82) !important;
+              // border: 1px solid red;
+
+              .el-table__empty-text {
+                font-size: 34px;
+                letter-spacing: 5px;
+                font-family: SYHT-Bold;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

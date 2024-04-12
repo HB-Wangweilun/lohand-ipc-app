@@ -144,7 +144,7 @@ const selectHomeParamDataFunc = async () => {
 var updateTimer = setInterval(() => {
   selectHomeParamDataFunc()
   console.log("数据查询计时中....")
-}, 30000)
+}, 3000000)
 
 // init
 onMounted(() => {

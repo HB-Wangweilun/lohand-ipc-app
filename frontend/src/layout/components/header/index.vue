@@ -19,6 +19,7 @@
         <!-- <span class="text">返回首页</span> -->
       </div>
     </div>
+    <HorizontalTextSlider></HorizontalTextSlider>
     <img
       v-if="
         globalVariableStore.envMode == 'development' &&
@@ -92,7 +93,9 @@ import dayjs from "dayjs"
 import { useGlobalVariableStore, useUserStore } from "../../../store"
 import { useRouter } from "vue-router"
 import LoginC from "../../../components/loginC/index.vue"
+import HorizontalTextSlider from "./HorizontalTextSlider.vue"
 import { openScreenKeyboardFunc, playClickSound } from "../../../utils/other.js"
+import { ipc } from "../../../utils/ipcRenderer"
 
 const globalVariableStore = useGlobalVariableStore()
 const userStore = useUserStore()
@@ -107,6 +110,7 @@ const userLoginInfo = ref({
 // 刷新页面的点击事件
 const reloadPage = () => {
   location.reload()
+  // ipc.send("restart")
 }
 
 // 是否显示用户登录弹窗的标识

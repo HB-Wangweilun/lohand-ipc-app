@@ -71,47 +71,57 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted } from "vue"
 export default defineComponent({
-  name: "Main",
-});
+  name: "Main"
+})
 </script>
 <script setup>
-import GlassCard from "../../../../components/global/GlassCard.vue";
-import { ipc } from "../../../../utils/ipcRenderer.js";
-import { playClickSound } from "../../../../utils/other.js";
-import { useRouter, useRoute } from "vue-router";
-import IconC from "./iconC.vue";
+import GlassCard from "../../../../components/global/GlassCard.vue"
+import { ipc } from "../../../../utils/ipcRenderer.js"
+import { playClickSound } from "../../../../utils/other.js"
+import { useRouter, useRoute } from "vue-router"
+import IconC from "./iconC.vue"
+import { ElMessage } from "element-plus"
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
 // 图标拼接函数
 const iconPathJoinF = (icon) => {
-  return `home-module-icon-${icon}.png`;
-};
+  return `home-module-icon-${icon}.png`
+}
 
 // 首页模块列表
-const homeModuleList = ref([]);
+const homeModuleList = ref([])
 
 // 模块点击事件
 const moduleItemClick = (item) => {
-  playClickSound();
-  if (item.meta.title == "退出系统") {
-    ipc.send("close");
-    ipc.send("window-close");
-  }
+  playClickSound()
+  switch (item.meta.title) {
+    case "退出系统":
+      ipc.send("close")
+      ipc.send("window-close")
+      break
+    case "更多功能":
+      ElMessage.info("该页面待开发!")
+      break
 
-  router.push({ path: item.path });
-};
+    default:
+      router.push({ path: item.path })
+      break
+  }
+  // if (item.meta.title == "退出系统") {
+  // }
+}
 
 // init
 onMounted(() => {
   let moduleRoutes = router
     .getRoutes()
-    .filter((routeItem) => routeItem.meta.isModulePage);
-  homeModuleList.value = moduleRoutes;
-});
+    .filter((routeItem) => routeItem.meta.isModulePage)
+  homeModuleList.value = moduleRoutes
+})
 </script>
 
 <style lang="scss" scoped>

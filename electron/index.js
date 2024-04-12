@@ -9,12 +9,12 @@ const ExcelJS = require("exceljs")
 // console.log(dialog.showOpenDialog({ properties: [ 'openFile', 'openDirectory', 'multiSelections' ]}));
 const path = require("path")
 const request = require("request")
-const { exec } = require("child_process")
+const { exec, spawn } = require("child_process")
 // const { screen } = require("electron/main");
 // const { showVirtualKeyboard, hideVirtualKeyboard } = require("./utils");
 
 // 启动时打开第三方服务的 Url
-const startAppUrl = `${path.resolve()}\\${app.isPackaged ? "resources" : "build"}\\extraResources\\server\\server.bat`
+const startAppUrl = `${path.resolve()}\\${app.isPackaged ? "resources" : "build"}\\extraResources\\server\\devCommunication2-0.0.1-SNAPSHOT\\start.bat`
 // const fileUrl = `file://${__dirname}/index.html`;
 // const serverUrl = `${__dirname}/index.html`;
 // const store = new Store()
@@ -46,7 +46,57 @@ class Index extends Application {
     })
 
     // 应用打开时启动第三方程序
-    // shell.openPath(startAppUrl);
+
+    // const result = spawn("net stop devCommunication2", ["/c", "dir"], {
+    //   stdio: "inherit"
+    // })
+
+    // console.log(result)
+    // exec(
+    //   `net stop devCommunication2`,
+    //   {
+    //     shell: true, // 在Windows上，你需要设置shell为true
+    //     elevation: true // 这是一个自定义选项，Electron没有内置的elevation选项，这个例子中我们不使用
+    //   },
+    //   (error, stdout, stderr) => {
+    //     if (error) {
+    //       console.error(`服务停止错误: ${error}`)
+    //       return
+    //     }
+    //     console.log(`服务启动输出: ${stdout}`)
+    //   }
+    // )
+    // exec(
+    //   "runas /user:1 net stop devCommunication2",
+    //   (error, stdout, stderr) => {
+    //     // 处理结果或错误
+    //     console.log(error)
+    //   }
+    // )
+
+    // exec(
+    //   "net stop devCommunication2",
+    //   {
+    //     name: "Electron",
+    //     admin: true,
+    //     cwd: process.cwd(),
+    //     env: process.env
+    //   },
+    //   (err, stdout, stderr) => {
+    //     if (err) {
+    //       console.error(err)
+    //       return
+    //     }
+    //     console.log(stdout)
+    //   }
+    // )
+    // shell.openExternal("net stop devCommunication2", { sudo: true })
+    // const spawnS = spawn("net stop devCommunication2", ["/c", "dir"], {
+    //   stdio: "inherit"
+    // })
+    // console.log(spawnS)
+    // shell.openPath(startAppUrl)
+    // exec(startAppUrl, {})
 
     // console.log(app.isPackaged);
 
@@ -107,6 +157,12 @@ class Index extends Application {
     ipcMain.on("sendMsgMain", (e, msg) => {
       console.log(e, msg)
       // childWin.webContents.send("msgFromMain", msg);
+    })
+
+    // 重启软件
+    ipcMain.on("restart", () => {
+      app.relaunch()
+      app.exit()
     })
 
     // 下载文件

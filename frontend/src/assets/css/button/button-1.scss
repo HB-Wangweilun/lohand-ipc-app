@@ -1,0 +1,24 @@
+/*  button */
+:deep(.el-button--primary) {
+  background: linear-gradient(180deg,
+      rgb(23, 170, 238) 0%,
+      rgba(15, 104, 251, 1) 100%);
+
+  box-shadow:
+    1px 1px 1px rgba(255, 255, 255, 0.2),
+    -1px -1px 1px rgba(255, 255, 255, 0.2);
+  font-family: "SYHT-Bold";
+  font-size: 20px;
+  padding: 26px 30px 26px 48px;
+  letter-spacing: 14px;
+  border-radius: 10px;
+  margin-right: 16px;
+
+  span {
+    color: white !important;
+  }
+}
+
+:deep(.el-button--primary:active) {
+  transform: scale(0.9);
+}

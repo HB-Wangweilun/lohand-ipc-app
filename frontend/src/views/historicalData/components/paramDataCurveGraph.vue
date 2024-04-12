@@ -1,5 +1,5 @@
 <template>
-  <div class="param_data_curve_graph_wrap" id="curveEl">
+  <div class="param_data_curve_graph_wrap" id="curveEl" @click="playClickSound">
     <!-- ParamDataCurveGraph -->
   </div>
 </template>
@@ -13,8 +13,7 @@ export default defineComponent({
 <script setup>
 import * as echarts from "echarts"
 import "echarts-gl"
-import { formatter } from "element-plus"
-import { type } from "os"
+import { playClickSound, generateToolTipEleFunc } from "../../../utils/other.js"
 
 // props
 const props = defineProps(["paramName", "dataList"])
@@ -133,15 +132,16 @@ const paramDataCurveChartsInit = () => {
     backgroundColor: "transparent",
     tooltip: {
       trigger: "axis",
+      className: "curve_graph_tooltip_wrap",
       axisPointer: {
         type: "line"
       },
-      // formatter: function (params) {
-      //   console.log(params)
-      //   return `111`
-      // },
-      backgroundColor: "rgba(56, 121, 238,0.6)",
-      borderColor: "rgba(58, 16, 125, 0.5)",
+      formatter: function (params) {
+        console.log(params)
+        return generateToolTipEleFunc(params[0])
+      },
+      backgroundColor: "transparent",
+      borderColor: "rgba(58, 16, 125, 0)",
       textStyle: {
         color: "rgba(255, 255, 255, 1)"
       }
@@ -172,7 +172,7 @@ const paramDataCurveChartsInit = () => {
         show: false
       },
       axisLabel: {
-        fontSize: 16,
+        fontSize: 18,
         interval: 0,
         color: "white",
         fontFamily: "SYHT-Regular"
@@ -226,5 +226,6 @@ onMounted(() => {})
   width: 100%;
   height: 93%;
   border: 0px solid rgb(27, 216, 137);
+  // background-color: transparent
 }
 </style>

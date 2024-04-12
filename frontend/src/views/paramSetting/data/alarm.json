@@ -1,0 +1,28 @@
+{
+  "paramUnitList": {
+    "管路压力": "kPa",
+    "站内温度": "℃",
+    "温度": "℃",
+    "pH": "",
+    "溶解氧": "mg/L",
+    "电导率": "μS/cm",
+    "浊度": "NTU",
+    "氨氮": "mg/L",
+    "总磷": "mg/L",
+    "总氮": "mg/L",
+    "COD": "mg/L"
+  },
+  "paramIconList": {
+    "管路压力": "pipeline",
+    "站内温度": "instationTemp",
+    "温度": "temp",
+    "pH": "ph",
+    "溶解氧": "rongjieyang",
+    "电导率": "diandaolv",
+    "浊度": "zhuodu",
+    "氨氮": "andan",
+    "总磷": "zonglin",
+    "总氮": "zongdan",
+    "COD": "CODcr"
+  }
+}

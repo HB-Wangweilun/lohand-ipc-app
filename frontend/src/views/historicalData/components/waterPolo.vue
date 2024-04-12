@@ -1,5 +1,5 @@
 <template>
-  <div class="water_polo" :id="cId">
+  <div class="water_polo" :id="cId" @click="playClickSound">
     <div class="top_content">
       <img
         class="icon"
@@ -85,7 +85,10 @@ export default defineComponent({
 import * as echarts from "echarts"
 import "echarts-liquidfill/src/liquidFill.js"
 // import "echarts-gl"
-import { generateLetterPrefixedId } from "../../../utils/other.js"
+import {
+  generateLetterPrefixedId,
+  playClickSound
+} from "../../../utils/other.js"
 
 // props
 const props = defineProps([
@@ -126,8 +129,8 @@ const ecInit = () => {
         radius: "86%", //显示比例
         center: ["50%", "50%"], //中心点
         waveAnimation: true, //停止动画 动画占用cpu过高 核心代码
-        animationDuration: 0, //停止动画 动画占用cpu过高 核心代码
-        animationDurationUpdate: 0, //停止动画 动画占用cpu过高 核心代码
+        // animationDuration: 0, //停止动画 动画占用cpu过高 核心代码
+        // animationDurationUpdate: 0, //停止动画 动画占用cpu过高 核心代码
         amplitude: 8, //水波振幅
         data: [0.5], // data个数代表波浪数
         color: [

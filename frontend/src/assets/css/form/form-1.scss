@@ -1,0 +1,38 @@
+/* form */
+:deep(.demo-form-inline) {
+  .el-form-item {
+    margin-right: 60px;
+
+    .el-form-item__label {
+      color: white;
+      font-size: 18px;
+      font-family: SYHT-Bold;
+      letter-spacing: 2px;
+      position: relative;
+      top: 5px;
+    }
+
+    .el-form-item__content {
+      .el-input {
+        height: 44px;
+
+        .el-input__wrapper {
+          .el-input__prefix {
+            .el-input__prefix-inner {
+              font-size: 22px;
+            }
+          }
+
+          .el-input__inner {
+            // text-align: center;
+            font-size: 16px;
+            // font-family: SYHT-Bold;
+            font-family: SYHT-Regular;
+            letter-spacing: 2px;
+            margin-left: 12px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -28,11 +28,11 @@
         <el-form-item>
           <div class="action_button_box">
             <el-button type="primary" @click="queryClick">
-              <img class="icon" src="../image/query.png" />
+              <img class="icon" src="../../../assets/image/query.png" />
               <span>查询</span>
             </el-button>
             <el-button type="primary" @click="exportClick">
-              <img class="icon" src="../image/export.png" />
+              <img class="icon" src="../../../assets/image/export.png" />
               <span>导出</span>
             </el-button>
           </div>
@@ -160,6 +160,12 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@import url(../../../assets/css/table/table-1.scss);
+@import url(../../../assets/css/pagination/pagination-1.scss);
+@import url(../../../assets/css/form/form-1.scss);
+@import url(../../../assets/css/select/select-1.scss);
+@import url(../../../assets/css/button/button-1.scss);
+
 .metrical_data_wrap {
   width: 100%;
   height: 100%;
@@ -184,7 +190,7 @@ onMounted(() => {
 
   .pagination {
     position: absolute;
-    bottom: 0;
+    bottom: 6px;
     right: 0px;
     // transform: scale(1.4);
   }
@@ -198,178 +204,5 @@ onMounted(() => {
       margin-right: 14px;
     }
   }
-}
-
-/* table */
-:deep(.el-table) {
-  border-radius: 8px;
-  background: transparent !important;
-  .el-table__inner-wrapper {
-    .el-table__header-wrapper {
-      height: 70px;
-      // border-radius: 20px;
-
-      .el-table__header {
-        height: 70px;
-        // border-radius: 20px;
-
-        thead {
-          height: 70px;
-
-          tr {
-            height: 70px;
-            background: rgba(255, 255, 255, 0.92) !important;
-
-            th {
-              background: transparent !important;
-              border-right: 0px;
-              color: rgb(90, 89, 89);
-
-              border-color: rgb(212, 210, 210);
-
-              .cell {
-                font-family: SYHT-Bold !important;
-                font-weight: 500;
-                letter-spacing: 4px;
-                font-size: 18px;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .el-table__body-wrapper {
-      .el-scrollbar {
-        .el-scrollbar__wrap {
-          .el-scrollbar__view {
-            height: 100%;
-            .el-table__body {
-              tbody {
-                tr {
-                  background: rgba(255, 255, 255, 0.82) !important;
-                  height: 55px;
-
-                  td {
-                    letter-spacing: 2px;
-                    border-color: rgb(212, 210, 210);
-                    font-size: 16px;
-                  }
-                }
-
-                tr:hover {
-                  // background: red !important;
-                }
-                tr:focus {
-                  background: red !important;
-                }
-              }
-            }
-
-            /* 空状态 */
-            .el-table__empty-block {
-              height: 100%;
-              background: rgba(255, 255, 255, 0.82) !important;
-              // border: 1px solid red;
-
-              .el-table__empty-text {
-                font-size: 34px;
-                letter-spacing: 5px;
-                font-family: SYHT-Bold;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-/* pagination */
-:deep(.el-pagination) {
-  .btn-prev,
-  .btn-next {
-    width: 52px;
-    height: 52px;
-
-    .el-icon {
-      font-size: 22px;
-    }
-  }
-  .el-pagination__total {
-    color: white !important;
-    letter-spacing: 1px;
-    font-size: 16px;
-  }
-
-  .el-pager {
-    li {
-      width: 52px;
-      height: 52px;
-      font-size: 18px;
-    }
-  }
-}
-
-/* form */
-:deep(.demo-form-inline) {
-  .el-form-item {
-    margin-right: 60px;
-    .el-form-item__label {
-      color: white;
-      font-size: 18px;
-      font-family: SYHT-Bold;
-      letter-spacing: 2px;
-      position: relative;
-      top: 5px;
-    }
-
-    .el-form-item__content {
-      .el-input {
-        height: 44px;
-        .el-input__wrapper {
-          .el-input__prefix {
-            .el-input__prefix-inner {
-              font-size: 22px;
-            }
-          }
-
-          .el-input__inner {
-            // text-align: center;
-            font-size: 16px;
-            // font-family: SYHT-Bold;
-            font-family: SYHT-Regular;
-            letter-spacing: 2px;
-            margin-left: 12px;
-          }
-        }
-      }
-    }
-  }
-}
-
-/*  button */
-:deep(.el-button--primary) {
-  background: linear-gradient(
-    180deg,
-    rgb(23, 170, 238) 0%,
-    rgba(15, 104, 251, 1) 100%
-  );
-
-  box-shadow:
-    1px 1px 1px rgba(255, 255, 255, 0.2),
-    -1px -1px 1px rgba(255, 255, 255, 0.2);
-  font-family: "SYHT-Bold";
-  font-size: 20px;
-  padding: 26px 30px 26px 48px;
-  letter-spacing: 14px;
-  border-radius: 10px;
-  margin-right: 16px;
-  span {
-    color: white !important;
-  }
-}
-:deep(.el-button--primary:active) {
-  transform: scale(0.9);
 }
 </style>

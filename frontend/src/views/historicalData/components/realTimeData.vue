@@ -45,27 +45,12 @@ import UnitJson from "../../../data/unit.json"
 // 参数数据列表
 const paramDataList = ref([
   {
-    paramName: "pH",
+    paramName: "温度",
     paramValue: "--",
-    paramUnit: ""
+    paramUnit: "℃"
   },
   {
-    paramName: "氨氮",
-    paramValue: "--",
-    paramUnit: "mg/L"
-  },
-  {
-    paramName: "余氯",
-    paramValue: "--",
-    paramUnit: "mg/L"
-  },
-  {
-    paramName: "CODcr",
-    paramValue: "--",
-    paramUnit: "mg/L"
-  },
-  {
-    paramName: "CODmn",
+    paramName: "总磷",
     paramValue: "--",
     paramUnit: "mg/L"
   },
@@ -75,9 +60,19 @@ const paramDataList = ref([
     paramUnit: "NTU"
   },
   {
-    paramName: "ORP",
+    paramName: "电导率",
     paramValue: "--",
-    paramUnit: "mV"
+    paramUnit: "μS/cm"
+  },
+  {
+    paramName: "pH",
+    paramValue: "--",
+    paramUnit: ""
+  },
+  {
+    paramName: "COD",
+    paramValue: "--",
+    paramUnit: "mg/L"
   },
   {
     paramName: "溶解氧",
@@ -85,9 +80,14 @@ const paramDataList = ref([
     paramUnit: "mg/L"
   },
   {
-    paramName: "电导率",
+    paramName: "氨氮",
     paramValue: "--",
-    paramUnit: "μS/cm"
+    paramUnit: "mg/L"
+  },
+  {
+    paramName: "总氮",
+    paramValue: "--",
+    paramUnit: "mg/L"
   }
 ])
 

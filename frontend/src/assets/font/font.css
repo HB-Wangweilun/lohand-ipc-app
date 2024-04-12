@@ -7,3 +7,8 @@
   font-family: "SYHT-Bold";
   src: url("./SourceHanSansSC-Bold-2.otf");
 }
+
+@font-face {
+  font-family: "SJDHJT-Z";
+  src: url("./SourceHanSansSC-Bold-2.otf");
+}

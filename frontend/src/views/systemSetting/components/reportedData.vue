@@ -14,4 +14,8 @@ export default defineComponent({
 import JsonEditors from "./jsonEditors.vue"
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.reported_data_wrap {
+  height: 100%;
+}
+</style>

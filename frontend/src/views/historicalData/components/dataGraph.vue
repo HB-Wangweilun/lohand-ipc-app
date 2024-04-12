@@ -63,6 +63,7 @@ import { playClickSound } from "../../../utils/other.js"
 
 // 模式选择点击事件
 const modeItemClick = (mode) => {
+  playClickSound()
   currentMode.value = mode
   console.log(currentMode.value)
   selectDataFunc()
