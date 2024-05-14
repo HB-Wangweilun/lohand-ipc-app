@@ -131,6 +131,7 @@
 
     <!-- 保存成功提示 -->
     <HintPopUp
+      v-if="isShowSaveSuccessHintPopUp"
       title="提示"
       :show="isShowSaveSuccessHintPopUp"
       :message-content="'保存成功！'"
@@ -138,7 +139,7 @@
     </HintPopUp>
 
     <!-- 加载效果 -->
-    <!-- <LoadingC></LoadingC> -->
+    <LoadingC v-if="isLoading" class="loading_mode"></LoadingC>
   </div>
 </template>
 
@@ -160,8 +161,12 @@ import {
   selectAllStepApi
 } from "../../../api/paramSetting.js"
 
+// 加载标识
+const isLoading = ref(false)
+
 // 查询流程数据的函数
 const selectRunFlowSetFunc = async () => {
+  isLoading.value = true
   await selectRunFlowSetApi().then((res) => {
     console.log(res.data, "运行流程设置数据")
     flowDefinitionRadioData.value = res.data
@@ -170,11 +175,14 @@ const selectRunFlowSetFunc = async () => {
         flowDefinitionData.value = item.processName
       }
     })
+
+    isLoading.value = false
   })
 }
 
 // 查询所有流程的函数
 const selectAllStepFunc = async () => {
+  isLoading.value = true
   await selectAllStepApi().then((res) => {
     flowSingleRadioData.value = res.data.map((item) => {
       return {
@@ -185,6 +193,7 @@ const selectAllStepFunc = async () => {
     })
 
     console.log(flowSingleRadioData.value)
+    isLoading.value = false
   })
 }
 
@@ -406,6 +415,13 @@ const tabsData = ref([
     position: absolute;
     bottom: 0;
     right: 20px;
+  }
+
+  .loading_mode {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 

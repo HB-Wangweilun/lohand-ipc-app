@@ -3,6 +3,10 @@ import ElementPlus from "element-plus"
 import zhCn from "element-plus/es/locale/lang/zh-cn"
 import "element-plus/dist/index.css"
 
+// Vant
+import { FloatingBubble } from "vant"
+import "vant/lib/index.css"
+
 import "./assets/font/font.css"
 
 import { createApp } from "vue"
@@ -37,6 +41,11 @@ import "jsoneditor"
 const app = createApp(App)
 app.config.productionTip = false
 
+// 屏蔽黄色警告信息
+app.config.warnHandler = (e, data) => {
+  console.log(e, data)
+}
+
 // components
 for (const i in components) {
   app.component(i, components[i])
@@ -51,13 +60,16 @@ for (const i in components) {
 //   console.log(document.head)
 // }
 
-app.use(JsonEditorVue)
 app.use(Router)
 app.use(Pinia)
 app.use(ElementPlus, {
   locale: zhCn
 })
 app.use(Contentmenu)
+app.use(JsonEditorVue)
+
+// vant悬浮按钮组件注册
+app.use(FloatingBubble)
 
 app.mixin({
   beforeMount() {

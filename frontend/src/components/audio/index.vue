@@ -1,16 +1,17 @@
 <template>
   <div>
     <audio id="myAudio">
-      <source src="./click_sound1.mp3" type="audio/mpeg" />
+      <!-- <source src="./click_sound1.mp3" type="audio/mpeg" /> -->
+      <source src="./5db157b32b7d2.mp3" type="audio/mpeg" />
     </audio>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "ClickAudio",
-});
+  name: "ClickAudio"
+})
 </script>
 
 <script setup></script>

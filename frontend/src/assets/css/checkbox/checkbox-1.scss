@@ -1,0 +1,23 @@
+:deep(.el-checkbox) {
+  .el-checkbox__input {
+    width: 24px;
+    height: 24px;
+
+    .el-checkbox__inner {
+      width: 22px;
+      height: 22px;
+      background: transparent;
+      border: 2px solid white;
+    }
+
+
+    .el-checkbox__inner::after {
+      // width: 5px;
+      // transform: scale(.5);
+      transform: rotate(45deg) scaleY(0.8) scale(2);
+      top: 3px;
+      left: 7px;
+
+    }
+  }
+}

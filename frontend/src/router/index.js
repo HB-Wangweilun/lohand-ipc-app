@@ -1,24 +1,25 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import routerMap from "./routerMap";
-import { useGlobalVariableStore } from "../store";
+import { createRouter, createWebHashHistory } from "vue-router"
+import routerMap from "./routerMap"
+import routesWhiteList from "./routesWhiteList"
+import { useGlobalVariableStore } from "../store"
 
 const Router = createRouter({
   history: createWebHashHistory(),
-  routes: routerMap,
-});
+  routes: routerMap
+})
 
 Router.beforeEach((to, from, next) => {
-  const globalVariableStore = useGlobalVariableStore();
+  const globalVariableStore = useGlobalVariableStore()
   console.log(
     `去到的路由path是--${to.path},去到的路由title是--${to.meta.title}`
-  );
-  globalVariableStore.navTitle = to.meta.title;
+  )
+  globalVariableStore.navTitle = to.meta.title
   if (to.path == "/home") {
-    globalVariableStore.isHome = true;
+    globalVariableStore.isHome = true
   } else {
-    globalVariableStore.isHome = false;
+    globalVariableStore.isHome = false
   }
-  next();
-});
+  next()
+})
 
-export default Router;
+export default Router

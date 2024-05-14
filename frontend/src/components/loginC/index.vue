@@ -43,7 +43,7 @@ const closeDialog = () => {
 
 const okClick = () => {
   emits("okClick")
-  emits("closeDialog")
+  // emits("closeDialog")
 }
 
 const closeUserLoginDialog = () => {

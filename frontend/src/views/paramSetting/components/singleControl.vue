@@ -58,6 +58,11 @@
           class="icon"
           src="../image/进样泵排水.png"
         />
+        <img
+          v-if="mscl.icon == '隔膜泵排水'"
+          class="icon"
+          src="../image/gemobengpaishui.png"
+        />
         <span class="label">{{ mscl.moduleName }}：</span>
         <el-switch
           v-model="mscl.status"
@@ -75,6 +80,7 @@
 
     <!-- 提示 -->
     <HintPopUp
+      v-if="isShowHintPopUp"
       title="提示"
       :show="isShowHintPopUp"
       :message-content="popMessage"
@@ -86,6 +92,7 @@
 
     <!-- 提示 - 复位成功 -->
     <HintPopUp
+      v-if="isShowResetPop"
       title="提示"
       :show="isShowResetPop"
       :message-content="resetMessageContent"
@@ -95,6 +102,7 @@
 
     <!-- 提示 - 保存成功 -->
     <HintPopUp
+      v-if="isShowSaveSuccessHintPopUp"
       title="提示"
       :show="isShowSaveSuccessHintPopUp"
       :message-content="'保存成功!'"
@@ -165,30 +173,57 @@ const isShowHintPopUp = ref(false)
 
 // 单控项change事件
 const modeSingleItemSwitchChange = (item) => {
+  console.log(item, "开关")
   playClickSound()
+
+  // 判断是否是 采样泵1 和 采样泵2
   if (item.moduleName == "采样泵1" || item.moduleName == "采样泵2") {
-    switch (item.moduleName) {
-      case "采样泵1":
-        popMessage.value = "请先确认已打开采样泵1、采样泵3!"
-        isShowHintPopUp.value = true
-        setTimeout(() => {
-          isShowHintPopUp.value = false
-        }, 1500)
-        break
-      case "采样泵2":
-        popMessage.value = "请先确认已打开采样泵2、采样泵3!"
-        isShowHintPopUp.value = true
-        setTimeout(() => {
-          isShowHintPopUp.value = false
-        }, 1500)
-        break
-      default:
-        break
+    // 判断是开启还是关闭
+    if (item.status) {
+      // 开启
+      switch (item.moduleName) {
+        case "采样泵1":
+          popMessage.value = "将会同时打开 进样阀1、进样阀3!"
+          isShowHintPopUp.value = true
+          setTimeout(() => {
+            isShowHintPopUp.value = false
+          }, 3000)
+          break
+        case "采样泵2":
+          popMessage.value = "将会同时打开 进样阀2、进样阀3!"
+          isShowHintPopUp.value = true
+          setTimeout(() => {
+            isShowHintPopUp.value = false
+          }, 3000)
+          break
+        default:
+          break
+      }
+    } else {
+      // 关闭
+      switch (item.moduleName) {
+        case "采样泵1":
+          popMessage.value = "将会同时关闭 进样阀1、进样阀3!"
+          isShowHintPopUp.value = true
+          setTimeout(() => {
+            isShowHintPopUp.value = false
+          }, 1500)
+          break
+        case "采样泵2":
+          popMessage.value = "将会同时关闭 进样阀2、进样阀3!"
+          isShowHintPopUp.value = true
+          setTimeout(() => {
+            isShowHintPopUp.value = false
+          }, 3000)
+          break
+        default:
+          break
+      }
     }
   }
   setTimeout(() => {
     runModuleFunc(item)
-  }, 1500)
+  }, 200)
   console.log(item)
 }
 
@@ -205,10 +240,20 @@ const runModuleFunc = async (item) => {
       // setTimeout(() => {
       //   isShowSaveSuccessHintPopUp.value = false
       // }, 1500)
-      setTimeout(() => {
-        selectModuleSetFunc()
-      }, 1000)
+      if (res.result == "success") {
+        setTimeout(() => {
+          selectModuleSetFunc()
+        }, 1000)
+      } else {
+        console.log("...............")
+        // popMessage.value = "请先确认已打开进样阀2、进样阀3!"
+        // isShowHintPopUp.value = true
+        // setTimeout(() => {
+        //   isShowHintPopUp.value = false
+        // }, 1500)
+      }
     })
+    .catch(() => {})
     .finally(() => {})
 }
 
@@ -228,7 +273,8 @@ const iconList = {
   排空阀3: "排空阀",
   加药阀: "加药阀",
   进样泵进水: "进样泵进水",
-  进样泵排水: "进样泵排水"
+  进样泵排水: "进样泵排水",
+  隔膜泵排水: "隔膜泵排水"
 }
 
 // 查询模块单控设置数据的函数

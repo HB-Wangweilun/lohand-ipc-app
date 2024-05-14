@@ -1,4 +1,5 @@
 // @import './assets/font/font.css';
+@import url(./assets/css/van-floating-bubble/floating-1.scss);
 
 * {
   user-select: none;
@@ -18,4 +19,7 @@
 .v-screen-box {
   background: linear-gradient(180deg, rgba(37, 117, 252, 1) 0%, rgba(106, 17, 203, 1) 100%) !important;
   // background: linear-gradient(180deg, rgba(106, 17, 203, 1) 0%, rgba(37, 117, 252, 1) 100%) !important;
+
+  // background: linear-gradient(180deg, rgba(128, 208, 199, 1) 0%, rgba(19, 84, 122, 1)100%) !important;
 }
+

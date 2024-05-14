@@ -3,29 +3,29 @@
  * @type { *[] }
  */
 
-import Layout from "../layout/index.vue";
-import Loading from "../views/loading/index.vue";
-import Home from "../views/home/index.vue";
-import Login from "../views/login/index.vue";
-import MeterManagement from "../views/meterManagement/index.vue";
-import ParamSetting from "../views/paramSetting/index.vue";
-import SystemSetting from "../views/systemSetting/index.vue";
-import SelectData from "../views/historicalData/index.vue";
-import LogManagement from "../views/logManagement/index.vue";
-import OperationManagement from "../views/operationManagement/index.vue";
-import MoreFunction from "../views/moreFunction/index.vue";
-import XxxManagement from "../views/xxxManagement/index.vue";
+import Layout from "../layout/index.vue"
+import Loading from "../views/loading/index.vue"
+import Home from "../views/home/index.vue"
+import Login from "../views/login/index.vue"
+import MeterManagement from "../views/meterManagement/index.vue"
+import ParamSetting from "../views/paramSetting/index.vue"
+import SystemSetting from "../views/systemSetting/index.vue"
+import SelectData from "../views/historicalData/index.vue"
+import LogManagement from "../views/logManagement/index.vue"
+import OperationManagement from "../views/operationManagement/index.vue"
+import MoreFunction from "../views/moreFunction/index.vue"
+import XxxManagement from "../views/xxxManagement/index.vue"
 
 const constantRouterMap = [
   {
     path: "/",
-    redirect: "/loading",
+    redirect: "/loading"
   },
   {
     path: "/loading",
     name: "Loading",
     // component: () => import("../views/loading/index.vue"),
-    component: Loading,
+    component: Loading
   },
   {
     path: "/layout",
@@ -40,8 +40,8 @@ const constantRouterMap = [
         component: Home,
         meta: {
           title: "首页",
-          isModulePage: false,
-        },
+          isModulePage: false
+        }
       },
       {
         path: "/login",
@@ -50,8 +50,8 @@ const constantRouterMap = [
         // component: () => import("../views/login/index.vue"),
         meta: {
           title: "登录页",
-          isModulePage: false,
-        },
+          isModulePage: false
+        }
       },
       // 仪表管理
       {
@@ -64,7 +64,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "meterManagement",
           backgroundColor: "#026bda",
-        },
+          isRouteWhite: true
+        }
       },
       // 参数设置
       {
@@ -77,7 +78,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "paramSetting",
           backgroundColor: "rgb(53, 169, 136)",
-        },
+          isRouteWhite: false
+        }
       },
       // 系统设置
       {
@@ -90,7 +92,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "systemSetting",
           backgroundColor: "#0b9bda",
-        },
+          isRouteWhite: false
+        }
       },
       // 数据查询
       {
@@ -103,7 +106,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "historicalData",
           backgroundColor: "#CC6600",
-        },
+          isRouteWhite: true
+        }
       },
       // 日志管理
       {
@@ -116,7 +120,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "logManagement",
           backgroundColor: "rgba(138, 80, 213,1)",
-        },
+          isRouteWhite: false
+        }
       },
       // 运维管理
       {
@@ -129,7 +134,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "operationManagement",
           backgroundColor: "#3588A3",
-        },
+          isRouteWhite: false
+        }
       },
       // 更多功能
       {
@@ -138,11 +144,12 @@ const constantRouterMap = [
         // component: () => import("../views/moreFunction/index.vue"),
         component: MoreFunction,
         meta: {
-          title: "更多功能",
+          title: "系统概览",
           isModulePage: true,
           icon: "moreFunction",
           backgroundColor: "#6666CC",
-        },
+          isRouteWhite: true
+        }
       },
       // xxx
       {
@@ -155,7 +162,8 @@ const constantRouterMap = [
           isModulePage: true,
           icon: "logOut",
           backgroundColor: "#8b8b8b",
-        },
+          isRouteWhite: true
+        }
       },
 
       {
@@ -166,15 +174,15 @@ const constantRouterMap = [
           {
             path: "/example",
             name: "ExampleHelloIndex",
-            component: () => import("@/views/example/hello/Index.vue"),
-          },
+            component: () => import("@/views/example/hello/Index.vue")
+          }
         ],
         meta: {
-          title: "模板页",
-        },
-      },
-    ],
-  },
-];
+          title: "模板页"
+        }
+      }
+    ]
+  }
+]
 
-export default constantRouterMap;
+export default constantRouterMap

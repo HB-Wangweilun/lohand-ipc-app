@@ -92,11 +92,14 @@
 
     <!-- 保存成功提示 -->
     <HintPopUp
+      v-if="isShowSaveSuccessHintPopUp"
       title="提示"
       :show="isShowSaveSuccessHintPopUp"
       :message-content="'保存成功！'"
     >
     </HintPopUp>
+
+    <LoadingC v-if="isLoading" class="loading_mode"></LoadingC>
   </div>
 </template>
 
@@ -110,11 +113,15 @@ export default defineComponent({
 import TitleC from "../../../components/global/titleC.vue"
 import SaveButton from "../../../components/global/saveButton.vue"
 import HintPopUp from "../../../components/global/hintPopUp.vue"
+import LoadingC from "../../../components/loadingC/index.vue"
 import { playClickSound } from "../../../utils/other.js"
 import {
   selectRunParamSetApi,
   updateRunParamSetApi
 } from "../../../api/paramSetting.js"
+
+// 加载标识
+const isLoading = ref(false)
 
 // 保存点击事件
 const saveClick = async () => {
@@ -174,6 +181,7 @@ const isShowSaveSuccessHintPopUp = ref(false)
 
 // 查询运行参数设置的函数
 const selectRunParamSetFunc = async () => {
+  isLoading.value = true
   await selectRunParamSetApi().then((res) => {
     console.log(res.data, "运行参数设置数据")
     paramSettingData.value.runParamId = res.data.runParamId
@@ -204,6 +212,8 @@ const selectRunParamSetFunc = async () => {
     // 样杯进排水时间
     paramSettingData.value.sampleCupInflowAndDrainWaterTime =
       res.data.temWaterOutTime
+
+    isLoading.value = false
   })
 }
 
@@ -256,6 +266,13 @@ onMounted(() => {
     bottom: 0;
     right: 20px;
   }
+
+  .loading_mode {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* save button */
@@ -283,21 +300,32 @@ onMounted(() => {
 
 /* Number - input */
 :deep(.el-input-number) {
-  width: 180px;
+  width: 200px;
   height: 40px;
+  position: relative;
+  top: -4px;
+
   .el-input-number__decrease {
     width: 46px;
     font-size: 20px;
+    z-index: 0;
   }
 
   .el-input-number__increase {
     font-size: 20px;
     width: 46px;
+    z-index: 0;
   }
 
   .el-input {
+    // z-index: 2;
+    margin-left: 47px;
+    width: 52.8%;
     .el-input__wrapper {
+      padding: 0;
+      // z-index: 2;
       .el-input__inner {
+        // z-index: 2;
         font-size: 18px;
         font-family: SYHT-Bold;
         color: gray;

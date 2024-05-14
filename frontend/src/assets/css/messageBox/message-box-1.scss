@@ -1,0 +1,17 @@
+:deep(.el-message-box){
+  .el-message-box__header{
+    background: rgba(94, 142, 230, 0.4) !important;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    .el-message-box__title{
+      span{
+      background: rgba(94, 142, 230, 0.4) !important;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      }
+    }
+    .el-message-box__headerbtn{
+      display: none !important;
+    }
+  }
+}

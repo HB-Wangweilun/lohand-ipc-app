@@ -43,7 +43,7 @@
     <div class="chart_box">
       <ParamDataCurveGraph
         v-if="isCharts"
-        :data-list="dataListComp"
+        :data-list="chartData"
         :param-name="currentParamName"
       ></ParamDataCurveGraph>
     </div>
@@ -60,6 +60,10 @@ export default defineComponent({
 import DataGraphImg from "./dataGraphImg.vue"
 import ParamDataCurveGraph from "./paramDataCurveGraph.vue"
 import { playClickSound } from "../../../utils/other.js"
+import { selectParamCurveDataApi } from "../../../api/historicalData.js"
+import { useParamHistoricalDataStore } from "../../../store"
+
+const paramHistoricalDataStore = useParamHistoricalDataStore()
 
 // 模式选择点击事件
 const modeItemClick = (mode) => {
@@ -84,33 +88,6 @@ const paramItemClick = (item) => {
 //   })
 
 // })
-
-const dataList = [
-  { name: "00:00", value: 25 },
-  { name: "01:00", value: 50 },
-  { name: "02:00", value: 29 },
-  { name: "03:00", value: 26 },
-  { name: "04:00", value: 30 },
-  { name: "05:00", value: 70 },
-  { name: "06:00", value: 75 },
-  { name: "07:00", value: 26 },
-  { name: "08:00", value: 36 },
-  { name: "09:00", value: 62 },
-  { name: "10:00", value: 43 },
-  { name: "11:00", value: 75 },
-  { name: "12:00", value: 26 },
-  { name: "13:00", value: 24 },
-  { name: "14:00", value: 75 },
-  { name: "15:00", value: 26 },
-  { name: "16:00", value: 36 },
-  { name: "17:00", value: 62 },
-  { name: "18:00", value: 43 },
-  { name: "19:00", value: 75 },
-  { name: "20:00", value: 26 },
-  { name: "21:00", value: 24 },
-  { name: "22:00", value: 75 },
-  { name: "23:00", value: 26 }
-]
 
 // dataList ComP
 const dataListComp = computed(() => {
@@ -199,10 +176,30 @@ const dataListComp = computed(() => {
 
 // 数据查询函数
 const selectDataFunc = async () => {
-  isCharts.value = false
-  setTimeout(() => {
-    isCharts.value = true
-  }, 100)
+  let data = {
+    param: currentParamName.value,
+    dateFlag: currentMode.value
+  }
+  await selectParamCurveDataApi(data).then((res) => {
+    let nData = res.data.map((item) => {
+      return {
+        name: item.dataTime,
+        value: item.paramValue == "--" ? 0 : Number(item.paramValue)
+      }
+    })
+    // for (let i = 0; i < 50; i++) {
+    //   nData.push({
+    //     name: "2024-05-06 14:29:59",
+    //     value: nData[0].value
+    //   })
+    // }
+    chartData.value = nData
+    isCharts.value = false
+    setTimeout(() => {
+      isCharts.value = true
+    }, 100)
+    console.log(nData, "数据曲线图数据")
+  })
 }
 
 /* 数据 ---------------------------------------------- */
@@ -258,8 +255,14 @@ const paramSelectList = ref([
   }
 ])
 
+// 图表展示数据
+const chartData = ref([])
+
 // Init
 onMounted(() => {
+  if (paramHistoricalDataStore.currentHomeClickParamName != "")
+    currentParamName.value = paramHistoricalDataStore.currentHomeClickParamName
+
   selectDataFunc()
 })
 </script>

@@ -60,11 +60,14 @@
 
     <!-- 保存成功提示 -->
     <HintPopUp
+      v-if="isShowHintPopUp"
       title="提示"
       :show="isShowHintPopUp"
       :message-content="'保存成功！'"
     >
     </HintPopUp>
+
+    <LoadingC class="loading_mode" v-if="isLoading"></LoadingC>
   </div>
 </template>
 
@@ -78,12 +81,16 @@ export default defineComponent({
 import TitleC from "../../../components/global/titleC.vue"
 import SaveButton from "../../../components/global/saveButton.vue"
 import HintPopUp from "../../../components/global/hintPopUp.vue"
+import LoadingC from "../../../components/loadingC/index.vue"
 import { playClickSound } from "../../../utils/other.js"
 import {
   selectInitSetDataApi,
   updateInitSetDataApi
 } from "../../../api/paramSetting.js"
 // import { ElMessage } from "element-plus"
+
+// 加载标识
+const isLoading = ref(false)
 
 // 保存点击事件
 const saveClick = async () => {
@@ -219,7 +226,9 @@ const initSetId = ref(null)
 
 // 查询初始化设置的函数
 const selectInitSetFunc = async () => {
+  isLoading.value = true
   await selectInitSetDataApi().then((res) => {
+    // console.log("初始化数据：", res.data)
     initSetId.value = res.data.initSetId
     // 清洗水入口选择数据处理
     cleaningWaterEntranceIndex.value =
@@ -235,7 +244,9 @@ const selectInitSetFunc = async () => {
 
     // 传感器选择数据处理
     sensorIndex.value =
-      sensorOptions.value[Number(res.data.sensorselect - 1)].name
+      sensorOptions.value[Number(res.data.sensorSelect - 1)].name
+
+    isLoading.value = false
   })
 }
 
@@ -333,6 +344,12 @@ onMounted(() => {
   top: -1px;
 }
 
+.loading_mode {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 // :deep .el-button--primary {
 //   background: linear-gradient(
 //     180deg,

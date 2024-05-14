@@ -23,7 +23,7 @@
         />
         <span class="title">仪表通信设置</span>
       </div>
-      <div
+      <!-- <div
         :class="{
           communication_tab_item: true,
           is_active: tabsData[1].isActive,
@@ -33,7 +33,7 @@
       >
         <img class="tab_item_img" src="../image/platform.png" />
         <span class="title">平台通信设置</span>
-      </div>
+      </div> -->
     </div>
 
     <!-- 仪表通信设置内容 -->
@@ -211,23 +211,32 @@ const communicationParamData = ref({
 <style lang="scss" scoped>
 /* Number - input */
 :deep(.el-input-number) {
-  width: 160px;
+  width: 200px;
   height: 40px;
   position: relative;
-  top: 0px;
+  top: -4px;
+
   .el-input-number__decrease {
     width: 46px;
     font-size: 20px;
+    z-index: 0;
   }
 
   .el-input-number__increase {
     font-size: 20px;
     width: 46px;
+    z-index: 0;
   }
 
   .el-input {
+    // z-index: 2;
+    margin-left: 47px;
+    width: 52.8%;
     .el-input__wrapper {
+      padding: 0;
+      // z-index: 2;
       .el-input__inner {
+        // z-index: 2;
         font-size: 18px;
         font-family: SYHT-Bold;
         color: gray;

@@ -1,13 +1,17 @@
 <template>
-  <div class="hint_pop_up_wrap">
+  <div
+    class="hint_pop_up_wrap"
+    style="z-index: 999999999999999999999999999999999"
+  >
     <el-dialog
+      style="z-index: 999999999999999999999999999999999"
       v-model="props.show"
       :title="props.title"
       width="800"
       @close="closeDialog"
       class="dialogc"
       :destroy-on-close="true"
-      :close-on-click-modal="false"
+      :close-on-click-modal="true"
     >
       <template #header="{ close, titleId, titleClass }">
         <div class="dialogc_header_box">
@@ -27,12 +31,12 @@
       </div>
       <!-- <span>This is a message</span> -->
 
-      <!-- <template #footer v-if="props.isFooter">
-      <div class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
-        <el-button type="primary" @click="okClick"> 确定 </el-button>
-      </div>
-    </template> -->
+       <!-- <template #footer >
+        <div class="dialog-footer">
+          <el-button @click="closeDialog">取消</el-button>
+          <el-button type="primary" @click="okClick"> 确定 </el-button>
+        </div>
+      </template> -->
     </el-dialog>
   </div>
 </template>
@@ -74,8 +78,17 @@ const letterSpacingCom = computed(() => {
 $fontSizeCom: v-bind(fontSizeCom);
 $letterSpacingCom: v-bind(letterSpacingCom);
 
+.hint_pop_up_wrap {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 .message_content_box {
   color: white;
+  z-index: 9999999999999999999999;
   height: 400px;
   font-size: 47px;
   position: relative;
@@ -106,7 +119,17 @@ $letterSpacingCom: v-bind(letterSpacingCom);
     }
   }
 }
+
+:deep(.el-overlay) {
+  // position: absolute !important;
+  // z-index: 1 !important;
+  // position: fixed !;
+  // top: 0;
+  // left: 0;
+}
+
 :deep(.dialogc) {
+  // position: absolute !important;
   background: linear-gradient(
     to bottom,
     rgba(16, 119, 184, 0.8),
@@ -118,6 +141,7 @@ $letterSpacingCom: v-bind(letterSpacingCom);
   margin-top: 20vh;
 
   .el-dialog__header {
+    z-index: 999999999999999999999999999 !important;
     padding: 0 !important;
     .dialogc_header_box {
       padding: 16px 0px;

@@ -1,0 +1,185 @@
+{
+  "dataOne": [
+    {
+      "label": "氨氮",
+      "value": "23.1",
+      "unit": "mg/L"
+    },
+    {
+      "label": "测量时间",
+      "value": "--"
+    },
+    {
+      "label": "状态",
+      "value": "--"
+    },
+    {
+      "label": "报警标志",
+      "value": "--"
+    },
+    {
+      "label": "运行日志",
+      "value": "--"
+    },
+    {
+      "label": "测量模式",
+      "value": "--"
+    },
+    {
+      "label": "测量间隔",
+      "value": "--"
+    },
+    {
+      "label": "零点核查间隔",
+      "value": "--"
+    },
+    {
+      "label": "跨度核查间隔",
+      "value": "--"
+    },
+    {
+      "label": "标准核查间隔",
+      "value": "--"
+    },
+    {
+      "label": "斜率",
+      "value": "--"
+    },
+    {
+      "label": "截距",
+      "value": "--"
+    },
+    {
+      "label": "消解温度",
+      "value": "--"
+    },
+    {
+      "label": "消解时长",
+      "value": "--"
+    }
+  ],
+  "dataTwo": [
+    {
+      "label": "消解池温度",
+      "value": "--"
+    },
+    {
+      "label": "混样池温度",
+      "value": "--"
+    },
+    {
+      "label": "量程下限",
+      "value": "--"
+    },
+    {
+      "label": "量程上限",
+      "value": "--"
+    },
+    {
+      "label": "标定时间",
+      "value": "--"
+    },
+    {
+      "label": "标样参考值",
+      "value": "--"
+    },
+    {
+      "label": "标液一浓度",
+      "value": "--"
+    },
+    {
+      "label": "标液一测量过程值",
+      "value": "--"
+    },
+    {
+      "label": "标液二浓度",
+      "value": "--"
+    },
+    {
+      "label": "标液二测量过程值",
+      "value": "--"
+    },
+    {
+      "label": "吸光度",
+      "value": "--"
+    },
+    {
+      "label": "校准系数",
+      "value": "--"
+    },
+    {
+      "label": "标样实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "标样数据时间",
+      "value": "--"
+    }
+  ],
+  "dataThree": [
+    {
+      "label": "空白实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "空白数据实测时间",
+      "value": "--"
+    },
+    {
+      "label": "零点核查实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "零点核查数据时间",
+      "value": "--"
+    },
+    {
+      "label": "跨度核查实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "跨度核查数据时间",
+      "value": "--"
+    },
+    {
+      "label": "加标回收实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "加标回收数据时间",
+      "value": "--"
+    },
+    {
+      "label": "加标前实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "加标前数据时间",
+      "value": "--"
+    },
+    {
+      "label": "加标后实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "加标后数据时间",
+      "value": "--"
+    },
+    {
+      "label": "平行样实测值",
+      "value": "--",
+      "unit": "mg/L"
+    },
+    {
+      "label": "平行样数据时间",
+      "value": "--"
+    }
+  ]
+}

@@ -8,25 +8,29 @@
       :key="i"
     ></RealTimeDataCard> -->
     <div class="top">
-      <RealTimeDataCard
-        v-for="(itemT, indexT) in topListComp"
-        :key="indexT"
-        :cId="`waterPolo_top_${indexT}`"
-        :paramName="itemT.paramName"
-        :unit="itemT.paramUnit"
-        :value="itemT.paramValue"
-      ></RealTimeDataCard>
+      <template v-if="isShowCharts">
+        <RealTimeDataCard
+          v-for="(itemT, indexT) in topListComp"
+          :key="indexT"
+          :cId="`waterPolo_top_${indexT}`"
+          :paramName="itemT.paramName"
+          :unit="itemT.paramUnit"
+          :value="itemT.paramValue"
+        ></RealTimeDataCard>
+      </template>
     </div>
 
     <div class="bottom">
-      <RealTimeDataCard
-        v-for="(itemB, indexB) in bottomListComp"
-        :key="indexB"
-        :cId="`waterPolo_bottom_${indexB}`"
-        :paramName="itemB.paramName"
-        :unit="itemB.paramUnit"
-        :value="itemB.paramValue"
-      ></RealTimeDataCard>
+      <template v-if="isShowCharts">
+        <RealTimeDataCard
+          v-for="(itemB, indexB) in bottomListComp"
+          :key="indexB"
+          :cId="`waterPolo_bottom_${indexB}`"
+          :paramName="itemB.paramName"
+          :unit="itemB.paramUnit"
+          :value="itemB.paramValue"
+        ></RealTimeDataCard>
+      </template>
     </div>
   </div>
 </template>
@@ -41,6 +45,8 @@ export default defineComponent({
 import RealTimeDataCard from "./realTimeDataCard.vue"
 import { selectHomeParamDataApi } from "../../../api/home.js"
 import UnitJson from "../../../data/unit.json"
+
+const isShowCharts = ref(true)
 
 // 参数数据列表
 const paramDataList = ref([
@@ -103,6 +109,8 @@ const bottomListComp = computed(() => {
 
 // 处理参数数据的函数
 const disposeParamDataFunc = (params) => {
+  console.log(params, "params")
+
   if (params == null) return
   let nParamData = []
   for (const param in params) {
@@ -116,10 +124,12 @@ const disposeParamDataFunc = (params) => {
 
   paramDataList.value = nParamData
   console.log(paramDataList.value)
+  isShowCharts.value = true
 }
 
 // 查询参数数据的函数
 const selectHomeParamDataFunc = async () => {
+  isShowCharts.value = false
   await selectHomeParamDataApi().then((res) => {
     disposeParamDataFunc(res.data.checkDataMap)
   })
@@ -128,6 +138,9 @@ const selectHomeParamDataFunc = async () => {
 // init
 onMounted(() => {
   selectHomeParamDataFunc()
+  setInterval(() => {
+    selectHomeParamDataFunc()
+  }, 60000)
 })
 </script>
 

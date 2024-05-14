@@ -1,22 +1,18 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { defineStore } from "pinia"
+import { ref, computed } from "vue"
 
 const storeSetup = () => {
   /* 定义数据--------------------------------------------------------------------- */
   const userInfo = ref({
-    userName: "",
-    userPwd: "",
-  });
+    userId: "",
+    userPass: ""
+  })
 
-  const isUserLogin = computed(() => {
-    let flag;
-    if (userInfo.value.userName == "" && userInfo.value.userPwd == "") {
-      flag = false;
-    } else {
-      flag = true;
-    }
-    return flag;
-  });
+  // 登录状态标识
+  const isUserLogin = ref(false)
+
+  // 是否显示无权限弹窗的标识
+  const isShowNoAccessDialog = ref(false)
 
   /* 定义函数--------------------------------------------------------------------- */
 
@@ -24,8 +20,9 @@ const storeSetup = () => {
   return {
     userInfo,
     isUserLogin,
-  };
-};
+    isShowNoAccessDialog
+  }
+}
 
 // 导出Store
-export const useUserStore = defineStore("user", storeSetup, { persist: true });
+export const useUserStore = defineStore("user", storeSetup, { persist: false })

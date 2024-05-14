@@ -7,6 +7,15 @@
         <router-view></router-view>
       </div>
     </div>
+    <HoverButton></HoverButton>
+    <HintPopUp
+      v-if="userStore.isShowNoAccessDialog"
+      :show="userStore.isShowNoAccessDialog"
+      :title="`提示`"
+      font-size="40"
+      :is-show-icon="false"
+      :message-content="`该用户无权限访问`"
+    ></HintPopUp>
   </VScaleScreen>
 </template>
 
@@ -17,10 +26,20 @@ export default defineComponent({
 })
 </script>
 <script setup>
+import HintPopUp from "../components/global/hintPopUp.vue"
 import Header from "./components/header/index.vue"
 import Bubble from "./components/bubble/index.vue"
 import VScaleScreen from "v-scale-screen"
+import HoverButton from "../components/global/hoverButton.vue"
 import { enterScreensaverFunc } from "../utils/other.js"
+import { useUserStore } from "../store"
+import { showToast } from "vant"
+
+const userStore = useUserStore()
+
+// const onClick = () => {
+//   showToast("点击气泡")
+// }
 
 /* 判断用户多长时间无操作 - 30分钟进入屏保程序 */
 let idleTime = 0

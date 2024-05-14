@@ -113,6 +113,7 @@
 
     <!-- 保存成功提示 -->
     <HintPopUp
+      v-if="isShowSaveSuccessHintPopUp"
       title="提示"
       :show="isShowSaveSuccessHintPopUp"
       :message-content="'保存成功！'"
@@ -323,19 +324,28 @@ onMounted(() => {
   height: 40px;
   position: relative;
   top: -4px;
+
   .el-input-number__decrease {
     width: 46px;
     font-size: 20px;
+    z-index: 0;
   }
 
   .el-input-number__increase {
     font-size: 20px;
     width: 46px;
+    z-index: 0;
   }
 
   .el-input {
+    // z-index: 2;
+    margin-left: 47px;
+    width: 52.8%;
     .el-input__wrapper {
+      padding: 0;
+      // z-index: 2;
       .el-input__inner {
+        // z-index: 2;
         font-size: 18px;
         font-family: SYHT-Bold;
         color: gray;

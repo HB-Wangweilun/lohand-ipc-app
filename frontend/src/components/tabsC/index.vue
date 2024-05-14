@@ -48,7 +48,7 @@ const joinIconCTag = (icon, index) => {
 }
 
 onMounted(() => {
-  console.log(props)
+  // console.log(props)
 })
 </script>
 

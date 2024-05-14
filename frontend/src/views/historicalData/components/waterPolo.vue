@@ -161,7 +161,7 @@ const ecInit = () => {
         label: {
           //标签设置
           position: ["50%", "64%"],
-          formatter: props.value, //显示文本,
+          formatter: JSON.stringify(props.value), //显示文本,
           fontSize: "36", //文本字号,
           color: "#fff"
         },
@@ -188,7 +188,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  waterPoloEc.dispose()
+  // waterPoloEc.dispose()
 })
 </script>
 

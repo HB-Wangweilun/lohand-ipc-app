@@ -123,6 +123,9 @@ import DataGraph from "./components/dataGraph.vue"
 import ContentCardC from "../../components/global/contentCardC.vue"
 import { playClickSound } from "../../utils/other.js"
 import TabsC from "../../components/tabsC/index.vue"
+import { useRoute } from "vue-router"
+
+const route = useRoute()
 
 // 当前tabs的activeItem
 const currentTabsActiveItem = ref({
@@ -149,6 +152,12 @@ const tabsOptions = ref([
     icon: "curveGraph"
   }
 ])
+
+onMounted(() => {
+  if (route.query.activeItem) {
+    currentTabsActiveItem.value = JSON.parse(route.query.activeItem)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

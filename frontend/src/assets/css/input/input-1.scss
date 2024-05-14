@@ -1,0 +1,10 @@
+:deep(.el-input) {
+  height: 40px;
+
+  .el-input__wrapper {
+    .el-input__inner {
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+  }
+}

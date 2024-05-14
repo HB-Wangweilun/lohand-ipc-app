@@ -15,8 +15,11 @@ const storeSetup = () => {
   // 文字滚动的信息
   const textRollInfo = ref({
     msg: "设备采水成功!",
-    status: "success"
+    status: "error"
   })
+
+  // 按钮操作状态
+  const operateStatus = ref(false)
 
   /* 定义函数--------------------------------------------------------------------- */
 
@@ -25,7 +28,8 @@ const storeSetup = () => {
     navTitle,
     isHome,
     envMode,
-    textRollInfo
+    textRollInfo,
+    operateStatus
   }
 }
 

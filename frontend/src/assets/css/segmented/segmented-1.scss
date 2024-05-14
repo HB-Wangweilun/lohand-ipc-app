@@ -1,0 +1,40 @@
+:deep(.el-segmented) {
+  padding: 0;
+  background-color: #3577f1;
+  color: white;
+  font-size: 20px;
+  font-family: SYHT-Bold;
+  letter-spacing: 2px;
+  box-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3), -1px -1px 4px rgba(255, 255, 255, 0.3);
+
+  .el-segmented__group {
+    .el-segmented__item {
+      padding: 10px 40px;
+    }
+
+    .is-selected {
+      background-color: white;
+      color: #3577f1;
+    }
+
+
+    .el-segmented__item-selected {
+      background-color: white;
+      color: #3577f1;
+    }
+
+
+    .el-segmented__item:hover {
+      color: white;
+      background-color: #3577f1;
+    }
+
+    .el-segmented__item-selected:hover {
+      color: #3577f1;
+    }
+
+    .is-selected:hover {
+      color: #3577f1;
+    }
+  }
+}

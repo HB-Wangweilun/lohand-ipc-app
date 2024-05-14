@@ -146,6 +146,9 @@ const paramDataCurveChartsInit = () => {
         color: "rgba(255, 255, 255, 1)"
       }
     },
+    dataZoom: {
+      type: "inside"
+    },
     grid: {
       x: 40,
       y: 20,
@@ -154,7 +157,7 @@ const paramDataCurveChartsInit = () => {
     },
     xAxis: {
       type: "category",
-      boundaryGap: false,
+      boundaryGap: true,
       data: xData,
       axisPointer: {
         handle: {
@@ -172,10 +175,11 @@ const paramDataCurveChartsInit = () => {
         show: false
       },
       axisLabel: {
-        fontSize: 18,
-        interval: 0,
+        fontSize: 13,
+        interval: result.length > 10 ? 4 : 0,
         color: "white",
         fontFamily: "SYHT-Regular"
+        // offset: 20
       }
     },
     yAxis: [

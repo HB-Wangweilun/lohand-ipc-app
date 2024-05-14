@@ -488,23 +488,32 @@ const samplingSwitchStatus = ref(false)
 
 /* Number - input */
 :deep(.el-input-number) {
-  width: 180px;
+  width: 200px;
   height: 40px;
   position: relative;
   top: -4px;
+
   .el-input-number__decrease {
     width: 46px;
     font-size: 20px;
+    z-index: 0;
   }
 
   .el-input-number__increase {
     font-size: 20px;
     width: 46px;
+    z-index: 0;
   }
 
   .el-input {
+    // z-index: 2;
+    margin-left: 47px;
+    width: 52.8%;
     .el-input__wrapper {
+      padding: 0;
+      // z-index: 2;
       .el-input__inner {
+        // z-index: 2;
         font-size: 18px;
         font-family: SYHT-Bold;
         color: gray;

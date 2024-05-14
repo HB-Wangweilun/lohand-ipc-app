@@ -98,7 +98,7 @@
     <!-- content View -->
     <div class="content_view_box">
       <ContentCardC>
-        <AlarmLog v-if="currentTabsActiveItem.title == '报警日志'"></AlarmLog>
+        <AlarmLog v-if="currentTabsActiveItem.title == '异常日志'"></AlarmLog>
         <OperationLog
           v-if="currentTabsActiveItem.title == '操作日志'"
         ></OperationLog>
@@ -143,7 +143,7 @@ const tabsOptions = ref([
     icon: "operationLog"
   },
   {
-    title: "报警日志",
+    title: "异常日志",
     icon: "alarmLog"
   }
 ])

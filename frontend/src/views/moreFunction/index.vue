@@ -1,12 +1,12 @@
 <template>
-  <div>更多功能</div>
+  <div>系统概览</div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 export default defineComponent({
-  name: "MoreFunction",
-});
+  name: "MoreFunction"
+})
 </script>
 <script setup></script>
 

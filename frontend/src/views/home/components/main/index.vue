@@ -67,6 +67,14 @@
     <GlassCard class="glass_card_item" width="460" height="360"></GlassCard>
     <GlassCard class="glass_card_item" width="460" height="360"></GlassCard>
     <GlassCard class="glass_card_item" width="460" height="360"></GlassCard> -->
+    <!-- <HintPopUp
+      v-if="isShowNoAccessDialog"
+      :show="isShowNoAccessDialog"
+      :title="`提示`"
+      font-size="40"
+      :is-show-icon="false"
+      :message-content="`该用户无权限访问`"
+    ></HintPopUp> -->
   </div>
 </template>
 
@@ -78,14 +86,21 @@ export default defineComponent({
 </script>
 <script setup>
 import GlassCard from "../../../../components/global/GlassCard.vue"
+import HintPopUp from "../../../../components/global/hintPopUp.vue"
 import { ipc } from "../../../../utils/ipcRenderer.js"
 import { playClickSound } from "../../../../utils/other.js"
 import { useRouter, useRoute } from "vue-router"
 import IconC from "./iconC.vue"
 import { ElMessage } from "element-plus"
+import { useUserStore } from "../../../../store"
+
+const userStore = useUserStore()
 
 const router = useRouter()
 const route = useRoute()
+
+// 无权限提示弹窗显示标识
+const isShowNoAccessDialog = ref(false)
 
 // 图标拼接函数
 const iconPathJoinF = (icon) => {
@@ -98,18 +113,46 @@ const homeModuleList = ref([])
 // 模块点击事件
 const moduleItemClick = (item) => {
   playClickSound()
-  switch (item.meta.title) {
-    case "退出系统":
-      ipc.send("close")
-      ipc.send("window-close")
-      break
-    case "更多功能":
-      ElMessage.info("该页面待开发!")
-      break
 
-    default:
-      router.push({ path: item.path })
-      break
+  // 判断是否是已登录状态
+  if (!userStore.isUserLogin) {
+    // 未登录则进行判断是否是白名单路由
+    if (item.meta.isRouteWhite) {
+      // 白名单路由直接跳转
+      switch (item.meta.title) {
+        case "退出系统":
+          ipc.send("close")
+          ipc.send("window-close")
+          break
+        case "更多功能":
+          ElMessage.info("该页面待开发!")
+          break
+
+        default:
+          router.push({ path: item.path })
+          break
+      }
+    } else {
+      // 不是白名单路由则进行提示
+      userStore.isShowNoAccessDialog = true
+      setTimeout(() => {
+        userStore.isShowNoAccessDialog = false
+      }, 2000)
+    }
+  } else {
+    switch (item.meta.title) {
+      case "退出系统":
+        ipc.send("close")
+        ipc.send("window-close")
+        break
+      case "更多功能":
+        ElMessage.info("该页面待开发!")
+        break
+
+      default:
+        router.push({ path: item.path })
+        break
+    }
   }
   // if (item.meta.title == "退出系统") {
   // }
@@ -130,7 +173,7 @@ onMounted(() => {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 50px 210px 100px 210px;
+  padding: 20px 210px 100px 210px;
   animation-duration: 0.3s;
 
   .glass_card_item {

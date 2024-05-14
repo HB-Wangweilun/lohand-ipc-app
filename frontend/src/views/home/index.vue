@@ -1,14 +1,17 @@
 <template>
   <div class="home_wrap">
     <!-- <Header></Header> -->
-    <Main class="animate__animated animate__fadeInDown"></Main>
+    <Main
+      class="animate__animated animate__fadeInDown"
+      v-contextmenu:contextmenu
+    ></Main>
     <Footer class="animate__animated animate__fadeInUp"></Footer>
     <!--  v-contextmenu:contextmenu -->
-    <!-- <v-contextmenu ref="contextmenu">
+    <v-contextmenu ref="contextmenu">
       <v-contextmenu-item>复制</v-contextmenu-item>
       <v-contextmenu-item>粘贴</v-contextmenu-item>
       <v-contextmenu-item>撤销</v-contextmenu-item>
-    </v-contextmenu> -->
+    </v-contextmenu>
     <!-- <h1>Home</h1>
 
     <el-button type="primary" @click="toLogin">去登录</el-button>
@@ -21,30 +24,30 @@
 </template>
 
 <script>
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted } from "vue"
 export default defineComponent({
-  name: "Home",
-});
+  name: "Home"
+})
 </script>
 <script setup>
-import Main from "./components/main/index.vue";
-import Footer from "./components/footer/index.vue";
-import { useRouter } from "vue-router";
+import Main from "./components/main/index.vue"
+import Footer from "./components/footer/index.vue"
+import { useRouter } from "vue-router"
 
-const router = useRouter();
+const router = useRouter()
 const toLogin = () => {
   router.push({
-    path: "/login",
-  });
-};
+    path: "/login"
+  })
+}
 
 const toExample = () => {
   router.push({
-    path: "/example",
-  });
-};
+    path: "/example"
+  })
+}
 
-onMounted(() => {});
+onMounted(() => {})
 </script>
 
 <style lang="scss" scoped></style>

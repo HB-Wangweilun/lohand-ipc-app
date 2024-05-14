@@ -10,6 +10,7 @@
             placeholder="选择开始时间"
             clearable
             :editable="false"
+            value-format="YYYY-MM-DD"
             @change="playClickSound"
             @focus="playClickSound"
           />
@@ -21,10 +22,27 @@
             placeholder="选择结束时间"
             clearable
             :editable="false"
+            value-format="YYYY-MM-DD"
             @change="playClickSound"
             @focus="playClickSound"
           />
         </el-form-item>
+        <!-- <el-form-item label="选择参数">
+          <el-select
+            v-model="viewParams"
+            multiple
+            collapse-tags
+            placeholder="Select"
+            style="width: 160px; height: 46px"
+          >
+            <el-option
+              v-for="pitem in params"
+              :key="pitem"
+              :label="pitem"
+              :value="pitem"
+            />
+          </el-select>
+        </el-form-item> -->
         <el-form-item>
           <div class="action_button_box">
             <el-button type="primary" @click="queryClick">
@@ -38,6 +56,41 @@
           </div>
         </el-form-item>
       </el-form>
+
+      <!-- 筛选参数 -->
+      <el-popover
+        :visible="isShowFillterCard"
+        placement="bottom"
+        trigger="click"
+        :width="240"
+      >
+        <div class="select_box">
+          <div
+            class="item_box"
+            style="padding-left: 24px"
+            v-for="(ps, indexP) in params"
+            :key="indexP"
+          >
+            <el-checkbox
+              v-model="ps.isActive"
+              :label="ps.paramName"
+              size="large"
+            />
+          </div>
+        </div>
+        <!-- <div
+          class="text_box"
+          style="width: 240; height: 400px; border: 1px solid red"
+        ></div> -->
+        <template #reference>
+          <img
+            class="fillter_param_icon"
+            @click="isShowFillterCard = !isShowFillterCard"
+            src="../image/shaixuan.png"
+          />
+          <el-button>筛选</el-button>
+        </template>
+      </el-popover>
     </div>
     <div class="table_box metrical_data_table">
       <el-table
@@ -55,29 +108,67 @@
           width="100"
         />
         <el-table-column
-          prop="date"
+          prop="dataTime"
           align="center"
           label="检测时间"
           width="226"
         />
-        <el-table-column prop="温度" align="center" label="温度" width="170" />
-        <el-table-column prop="pH" align="center" label="氨氮" width="170" />
-        <el-table-column prop="氨氮" align="center" label="氨氮" width="170" />
-        <el-table-column prop="余氯" align="center" label="余氯" width="170" />
-        <el-table-column prop="COD" align="center" label="COD" width="170" />
-        <el-table-column prop="浊度" align="center" label="浊度" width="170" />
         <el-table-column
-          prop="电导率"
+          v-if="formItemJudgeShow('温度')"
+          prop="temValue"
           align="center"
-          label="电导率"
+          label="温度"
+        />
+        <el-table-column
+          v-if="formItemJudgeShow('ph')"
+          prop="phvalue"
+          align="center"
+          label="ph"
           width="170"
         />
-        <el-table-column prop="ORP" align="center" label="ORP" width="170" />
         <el-table-column
-          prop="溶解氧"
+          v-if="formItemJudgeShow('总磷')"
+          prop="zonglinValue"
+          align="center"
+          label="总磷"
+        />
+        <el-table-column
+          v-if="formItemJudgeShow('总氮')"
+          prop="zongdanValue"
+          align="center"
+          label="总氮"
+        />
+        <el-table-column
+          v-if="formItemJudgeShow('氨氮')"
+          prop="andanValue"
+          align="center"
+          label="氨氮"
+        />
+        <el-table-column
+          v-if="formItemJudgeShow('电导率')"
+          prop="diandaolvValue"
+          align="center"
+          label="电导率"
+        />
+
+        <el-table-column
+          v-if="formItemJudgeShow('溶解氧')"
+          prop="rongjieyangValue"
           align="center"
           label="溶解氧"
-          width="170"
+        />
+
+        <el-table-column
+          v-if="formItemJudgeShow('COD')"
+          prop="codValue"
+          align="center"
+          label="COD"
+        />
+        <el-table-column
+          v-if="formItemJudgeShow('浊度')"
+          prop="zhuoduValue"
+          align="center"
+          label="浊度"
         />
       </el-table>
     </div>
@@ -93,7 +184,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue"
+import { defineComponent, ref, onMounted, watch } from "vue"
 export default defineComponent({
   name: "MetricalData"
 })
@@ -101,10 +192,12 @@ export default defineComponent({
 <script setup>
 import mData from "../data/metricalData.json"
 import { playClickSound, generateTableRowNumber } from "../../../utils/other.js"
+import { selectMeasurementDataApi } from "../../../api/historicalData.js"
 
 // 查询点击事件
 const queryClick = () => {
   playClickSound()
+  selectMeasurementDataFunc()
 }
 
 // 导出点击事件
@@ -120,9 +213,7 @@ const tableRowClick = () => {
 // 分页器的 change 事件
 const pageChange = () => {
   playClickSound()
-  tableData.value.forEach((item, index) => {
-    item.number = generateTableRowNumber(page.value, size.value, index)
-  })
+  selectMeasurementDataFunc()
 }
 
 /* 数据 ----------------------------------------- */
@@ -136,7 +227,7 @@ const size = ref(10)
 const total = ref(500)
 
 // 表格数据
-const tableData = ref(mData.tableData)
+const tableData = ref([])
 
 // 表格加载标识
 const isTableLoading = ref(false)
@@ -147,15 +238,113 @@ const queryFormData = ref({
   endTime: ""
 })
 
+// 筛选参数卡片展示标识
+const isShowFillterCard = ref(false)
+
+// 展示参数
+const viewParams = ref([])
+
+// 所有参数
+const params = ref([
+  {
+    paramName: "温度",
+    isActive: true
+  },
+  {
+    paramName: "ph",
+    isActive: true
+  },
+  {
+    paramName: "总磷",
+    isActive: true
+  },
+  {
+    paramName: "总氮",
+    isActive: true
+  },
+  {
+    paramName: "氨氮",
+    isActive: true
+  },
+  {
+    paramName: "电导率",
+    isActive: true
+  },
+  {
+    paramName: "溶解氧",
+    isActive: true
+  },
+  {
+    paramName: "COD",
+    isActive: true
+  },
+  {
+    paramName: "浊度",
+    isActive: true
+  }
+])
+
+// 监听筛选数据
+watch(
+  () => params.value,
+  (newData, oldData) => {
+    fillterArrUpdate()
+    console.log(viewParams.value, "新数据")
+  },
+  { deep: true }
+)
+
+// 筛选展示数组更新函数
+const fillterArrUpdate = () => {
+  let arr = []
+  params.value.forEach((item) => {
+    if (item.isActive) {
+      arr.push(item.paramName)
+    }
+  })
+  viewParams.value = arr
+}
+
+// 表单项判断显示函数
+const formItemJudgeShow = (keyW) => {
+  return viewParams.value.indexOf(keyW) !== -1 ? true : false
+}
+
+// 查询测量数据表格数据的函数
+const selectMeasurementDataFunc = async () => {
+  // 开启加载效果
+  isTableLoading.value = true
+  let startTime = ""
+  let endTime = ""
+  if (queryFormData.value.startTime)
+    startTime = queryFormData.value.startTime + " 00:00:00"
+  if (queryFormData.value.endTime)
+    endTime = queryFormData.value.endTime + " 23:59:59"
+
+  let data = {
+    page: page.value,
+    size: size.value,
+    startTime: startTime,
+    endTime: endTime
+  }
+  console.log(data, "分页查询参数")
+  await selectMeasurementDataApi(data).then((res) => {
+    res.data.list.forEach((item, indexD) => {
+      item.number = generateTableRowNumber(page.value, size.value, indexD)
+    })
+    console.log(res.data.list, "测量数据-表格数据")
+    tableData.value = res.data.list
+    total.value = res.data.total
+
+    // 关闭加载效果
+    isTableLoading.value = false
+    fillterArrUpdate()
+  })
+}
+
 // Init
 onMounted(() => {
-  tableData.value.forEach((item, index) => {
-    item.number = generateTableRowNumber(page.value, size.value, index)
-  })
-  isTableLoading.value = true
-  setTimeout(() => {
-    isTableLoading.value = false
-  }, 1000)
+  selectMeasurementDataFunc()
 })
 </script>
 
@@ -165,6 +354,7 @@ onMounted(() => {
 @import url(../../../assets/css/form/form-1.scss);
 @import url(../../../assets/css/select/select-1.scss);
 @import url(../../../assets/css/button/button-1.scss);
+@import url(../../../assets/css/checkbox/checkbox-2.scss);
 
 .metrical_data_wrap {
   width: 100%;
@@ -181,6 +371,35 @@ onMounted(() => {
       1px 1px 4px rgba(255, 255, 255, 0.3),
       -1px -1px 4px rgba(255, 255, 255, 0.3);
     padding: 15px 0px 0px 40px;
+    position: relative;
+
+    .fillter_param_icon {
+      position: absolute;
+      right: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      // border:1px solid;
+      cursor: pointer;
+    }
+
+    .select_box {
+      width: 240;
+      height: 500px;
+      background: red;
+      border: 4px solid red;
+      padding: 100px;
+      display: block;
+
+      .item_box {
+        width: 100%;
+        height: 50px;
+        border: 1px solid red;
+        background: red;
+        font-size: 28px;
+      }
+    }
   }
 
   .table_box {

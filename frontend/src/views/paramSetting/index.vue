@@ -218,7 +218,8 @@ const tabClick = (e) => {
     width: 100%;
     // border: 1px solid red;
     background: rgba(255, 255, 255, 0);
-    height: 880px;
+    height: 870px;
+    margin-top: 10px;
   }
 }
 

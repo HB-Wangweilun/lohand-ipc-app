@@ -1,5 +1,5 @@
 <template>
-  <div class="operation_log_wrap">
+  <div class="run_log_wrap">
     <div class="header_box">
       <!-- queryFormLogTypeData -->
       <el-form
@@ -22,20 +22,29 @@
             ></el-option>
           </el-select>
         </el-form-item> -->
-        <el-form-item label="日志事件">
-          <el-select
-            class="log_event"
-            v-model="queryRunLogFormData.logEvent"
-            placeholder="请选择日志事件"
-            size="large"
-          >
-            <el-option
-              v-for="(qfle, indexE) in queryFormLogEventData"
-              :key="indexE"
-              :label="qfle.label"
-              :value="qfle.value"
-            ></el-option>
-          </el-select>
+        <el-form-item label="开始时间">
+          <el-date-picker
+            v-model="queryFormData.startTime"
+            type="date"
+            placeholder="选择开始时间"
+            clearable
+            :editable="false"
+            value-format="YYYY-MM-DD"
+            @change="playClickSound"
+            @focus="playClickSound"
+          />
+        </el-form-item>
+        <el-form-item label="结束时间">
+          <el-date-picker
+            v-model="queryFormData.endTime"
+            type="date"
+            placeholder="选择结束时间"
+            clearable
+            :editable="false"
+            value-format="YYYY-MM-DD"
+            @change="playClickSound"
+            @focus="playClickSound"
+          />
         </el-form-item>
         <el-form-item>
           <div class="action_button_box">
@@ -80,19 +89,19 @@
           width="350"
         /> -->
         <el-table-column
-          prop="logEvent"
+          prop="devLogType"
           align="center"
-          label="日志事件"
+          label="日志类型"
           width="350"
         />
         <el-table-column
-          prop="logContent"
+          prop="devLogContent"
           align="center"
           label="日志内容"
           width="920"
         />
         <el-table-column
-          prop="createTime"
+          prop="devLogCreateTime"
           align="center"
           label="时间"
           width="436"
@@ -117,12 +126,13 @@ export default defineComponent({
 })
 </script>
 <script setup>
-import runLogData from "../data/runLogData.json"
 import { playClickSound, generateTableRowNumber } from "../../../utils/other.js"
+import { selectDevLogByPageApi } from "../../../api/devLog.js"
 
 // 查询点击事件
 const queryClick = () => {
   playClickSound()
+  selectLogDataFunc()
 }
 
 // 导出点击事件
@@ -138,9 +148,7 @@ const tableRowClick = () => {
 // 分页器的 change 事件
 const pageChange = () => {
   playClickSound()
-  tableData.value.forEach((item, index) => {
-    item.number = generateTableRowNumber(page.value, size.value, index)
-  })
+  selectLogDataFunc()
 }
 
 /* 数据 ----------------------------------------- */
@@ -153,91 +161,55 @@ const size = ref(10)
 // 总共多少条
 const total = ref(500)
 
+// 日志类型
+const logType = ref("操作日志")
+
 // 表格数据
-const tableData = ref(runLogData.tableData)
+const tableData = ref([])
 
 // 表格加载标识
 const isTableLoading = ref(false)
 
 // 查询表单数据
-const queryRunLogFormData = ref({
-  logType: "",
-  logEvent: "所有事件"
+const queryFormData = ref({
+  startTime: "",
+  endTime: ""
 })
 
-// 查询表单日志类型选择数据
-const queryFormLogTypeData = ref([
-  {
-    label: "所有类型",
-    value: "所有类型"
-  },
-  {
-    label: "设备运行日志",
-    value: "设备运行日志"
-  },
-  {
-    label: "设备操作日志",
-    value: "设备操作日志"
-  },
-  {
-    label: "设备异常日志",
-    value: "设备异常日志"
-  },
-  {
-    label: "数据上传",
-    value: "数据上传"
+// 查询日志数据的函数
+const selectLogDataFunc = async () => {
+  isTableLoading.value = true
+  let data = {
+    page: page.value,
+    size: size.value,
+    devLogType: logType.value,
+    startTime:
+      queryFormData.value.startTime == "" ||
+      queryFormData.value.startTime == null
+        ? ""
+        : queryFormData.value.startTime + " 00:00:00",
+    endTime:
+      queryFormData.value.endTime == "" || queryFormData.value.endTime == null
+        ? ""
+        : queryFormData.value.endTime + " 23:59:59"
   }
-])
-
-// 查询表单日志事件选择数据
-const queryFormLogEventData = ref([
-  {
-    label: "所有事件",
-    value: "所有事件"
-  },
-  {
-    label: "设备上线",
-    value: "设备上线"
-  },
-  {
-    label: "设备离线",
-    value: "设备离线"
-  },
-  {
-    label: "登录日志",
-    value: "登录日志"
-  },
-  {
-    label: "设备操作",
-    value: "设备操作"
-  },
-  {
-    label: "运行日志",
-    value: "运行日志"
-  },
-  {
-    label: "异常检测",
-    value: "异常检测"
-  },
-  {
-    label: "门禁日志",
-    value: "门禁日志"
-  },
-  {
-    label: "运维记录",
-    value: "运维记录"
-  }
-])
+  await selectDevLogByPageApi(data).then((res) => {
+    console.log(res.data, "日志数据")
+    total.value = res.data.total
+    res.data.list.forEach((item, index) => {
+      item.number = generateTableRowNumber(page.value, size.value, index)
+    })
+    tableData.value = res.data.list
+    isTableLoading.value = false
+  })
+}
 
 // Init
 onMounted(() => {
+  selectLogDataFunc()
   tableData.value.forEach((item, index) => {
     item.number = generateTableRowNumber(page.value, size.value, index)
   })
-  isTableLoading.value = true
-  setTimeout(() => {
-    isTableLoading.value = false
-  }, 1000)
 })
 </script>
 
@@ -248,7 +220,7 @@ onMounted(() => {
 @import url(../../../assets/css/select/select-1.scss);
 @import url(../../../assets/css/button/button-1.scss);
 
-.operation_log_wrap {
+.run_log_wrap {
   width: 100%;
   height: 100%;
   position: relative;

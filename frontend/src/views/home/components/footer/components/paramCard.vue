@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" @click="toHistoricalDataPage">
     <div class="content">
       <div class="mark">
         <div class="bottom">
@@ -100,8 +100,27 @@ export default defineComponent({
 </script>
 <script setup>
 import CountUp from "vue-countup-v3"
+import { useParamHistoricalDataStore } from "../../../../../store"
+import { useRouter } from "vue-router"
+
+const paramHistoricalDataStore = useParamHistoricalDataStore()
+const router = useRouter()
 
 const props = defineProps(["paramName", "paramValue", "paramUnit"])
+
+// 跳转到参数历史记录页面
+const toHistoricalDataPage = () => {
+  paramHistoricalDataStore.currentHomeClickParamName = props.paramName
+  router.push({
+    path: "/historicalData",
+    query: {
+      activeItem: JSON.stringify({
+        title: "数据图表",
+        icon: "curveGraph"
+      })
+    }
+  })
+}
 
 const isShowParamIconFunc = (name) => {
   let flag

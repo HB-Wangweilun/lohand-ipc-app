@@ -79,7 +79,7 @@
 
     <!-- 当前模式 -->
     <div class="current_mode_box">
-      <div class="current_mode_item">
+      <!-- <div class="current_mode_item">
         <span class="info_label">当前状态：</span>
         <span
           :class="{
@@ -90,7 +90,7 @@
         >
           {{ currentStatus ? "正常" : "停止" }}
         </span>
-      </div>
+      </div> -->
       <div class="current_mode_item">
         <span class="info_label">当前模式：</span>
         <span class="info_value">
@@ -134,11 +134,14 @@
 
     <!-- 保存成功提示 -->
     <HintPopUp
+      v-if="isShowSaveSuccessHintPopUp"
       title="提示"
       :show="isShowSaveSuccessHintPopUp"
       :message-content="'保存成功！'"
     >
     </HintPopUp>
+
+    <LoadingC v-if="isLoading" class="loading_mode"></LoadingC>
   </div>
 </template>
 
@@ -152,12 +155,16 @@ export default defineComponent({
 import TitleC from "../../../components/global/titleC.vue"
 import SaveButton from "../../../components/global/saveButton.vue"
 import HintPopUp from "../../../components/global/hintPopUp.vue"
+import LoadingC from "../../../components/loadingC/index.vue"
 import { playClickSound } from "../../../utils/other.js"
 import runModeStaticData from "../data/runningModeData.json"
 import {
   selectRunModeSetApi,
   updateRunModeSetApi
 } from "../../../api/paramSetting.js"
+
+// 加载显示标识
+const isLoading = ref(false)
 
 // 周期模式起始时间的Select点击事件
 const periodStartTimeSelectClick = () => {
@@ -386,6 +393,7 @@ const produceDisabledTimeFunc = () => {
 
 // 查询运行模式设置的函数
 const selectRunModeSetFunc = async () => {
+  isLoading.value = true
   await selectRunModeSetApi().then((res) => {
     console.log(res, "运行模式设置数据")
     // 根据请求的数据更改默认模式
@@ -411,6 +419,8 @@ const selectRunModeSetFunc = async () => {
       intervalTime: res.data.cycleMode.cycleModeIntervalHour,
       startTime: res.data.cycleMode.cycleModeStartHour
     }
+
+    isLoading.value = false
   })
 }
 
@@ -508,7 +518,7 @@ onMounted(() => {
 
   .current_mode_box {
     width: 70%;
-    height: 70px;
+    height: 30px;
     position: absolute;
     bottom: 0;
     left: 0px;
@@ -563,6 +573,13 @@ onMounted(() => {
     position: absolute;
     bottom: 0;
     right: 20px;
+  }
+
+  .loading_mode {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 

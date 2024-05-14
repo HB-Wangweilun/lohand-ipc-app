@@ -3,6 +3,7 @@
   border-radius: 8px;
   background: transparent !important;
   --el-table-row-hover-bg-color: var(--el-color-primary-light-9);
+  --el-table-index:0 !important;
   // --el-table-current-row-bg-color: var(--el-color-primary-light-9);
 
   .el-table__inner-wrapper {
@@ -93,5 +94,9 @@
         }
       }
     }
+  }
+
+  .el-table__inner-wrapper::before{
+    z-index: 0;
   }
 }

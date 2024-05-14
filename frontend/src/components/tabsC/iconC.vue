@@ -1,5 +1,6 @@
 <template>
   <div class="icon_c_wrap">
+    <!-- 参数设置 -->
     <img v-if="props.tag == 'init'" src="./image/init.png" />
     <img v-if="props.tag == 'init_a'" src="./image/init_a.png" />
     <img v-if="props.tag == 'runningMode'" src="./image/runningMode.png" />
@@ -25,6 +26,8 @@
     />
     <img v-if="props.tag == 'alarm'" src="./image/alarm.png" />
     <img v-if="props.tag == 'alarm_a'" src="./image/alarm_a.png" />
+
+    <!-- 历史数据 -->
     <img v-if="props.tag == 'metricalData'" src="./image/metricalData.png" />
     <img
       v-if="props.tag == 'metricalData_a'"
@@ -35,7 +38,9 @@
       v-if="props.tag == 'realTimeData_a'"
       src="./image/realTimeData_a.png"
     />
-
+    <img v-if="props.tag == 'curveGraph'" src="./image/curveGraph.png" />
+    <img v-if="props.tag == 'curveGraph_a'" src="./image/curveGraph_a.png" />
+    <!-- 日志管理 -->
     <img v-if="props.tag == 'runLog'" src="./image/runLog.png" />
     <img v-if="props.tag == 'runLog_a'" src="./image/runLog_a.png" />
     <img v-if="props.tag == 'alarmLog'" src="./image/alarmLog.png" />
@@ -46,14 +51,26 @@
       src="./image/operationLog_a.png"
     />
 
+    <!-- 系统设置 -->
     <img v-if="props.tag == 'reportedData'" src="./image/reportedData.png" />
     <img
       v-if="props.tag == 'reportedData_a'"
       src="./image/reportedData_a.png"
     />
 
-    <img v-if="props.tag == 'curveGraph'" src="./image/curveGraph.png" />
-    <img v-if="props.tag == 'curveGraph_a'" src="./image/curveGraph_a.png" />
+    <!-- 仪表管理 -->
+    <img v-if="props.tag == 'andan'" src="./image/andan.png" />
+    <img v-if="props.tag == 'andan_a'" src="./image/andan_a.png" />
+    <img v-if="props.tag == 'zonglin'" src="./image/zonglin.png" />
+    <img v-if="props.tag == 'zonglin_a'" src="./image/zonglin_a.png" />
+    <img v-if="props.tag == 'zongdan'" src="./image/zongdan.png" />
+    <img v-if="props.tag == 'zongdan_a'" src="./image/zongdan_a.png" />
+    <img v-if="props.tag == 'CODcr'" src="./image/CODcr.png" />
+    <img v-if="props.tag == 'CODcr_a'" src="./image/CODcr_a.png" />
+    <img v-if="props.tag == 'CODmn'" src="./image/CODmn.png" />
+    <img v-if="props.tag == 'CODmn_a'" src="./image/CODmn_a.png" />
+    <img v-if="props.tag == 'sensor'" src="./image/sensor.png" />
+    <img v-if="props.tag == 'sensor_a'" src="./image/sensor_a.png" />
   </div>
 </template>
 

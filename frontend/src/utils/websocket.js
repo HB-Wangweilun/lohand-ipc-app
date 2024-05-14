@@ -1,0 +1,1 @@
+import { useGlobalVariableStore } from "../store"
